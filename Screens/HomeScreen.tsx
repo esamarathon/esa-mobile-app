@@ -6,11 +6,20 @@ export default class HomeScreen extends Component {
     title: 'Home',
   };
 
+  Auth = () => {
+    console.log("Auth all you want you");
+  };
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>This is the ESA App</Text>
-        <Button title="Contacts" onPress={() => this.props.navigation.navigate('Contact')}></Button>
+        <View style={styles.topContainer}>
+          <Text>Welcome to ESA Summer 2019</Text>
+        </View>
+        <View>
+          <Text>Some features are locked behind authentication</Text>
+          <Button title="Auth with Twitch" onPress={this.Auth} />
+        </View>
       </View>
     );
   }
@@ -22,6 +31,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  topContainer: {
+    flex: 1,
   },
   welcome: {
     fontSize: 20,

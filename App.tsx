@@ -7,29 +7,26 @@ Icon.loadFont();
 
 import HomeScreen from './Screens/HomeScreen';
 import ContactScreen from './Screens/ContactScreen';
-
-// const AppNavigator = createStackNavigator(
-//   {
-//     Home: HomeScreen,
-//     Contact: ContactScreen
-//   },{
-//     initialRouteName: "Home",
-//     defaultNavigationOptions: {
-//       headerStyle: {
-//         backgroundColor: '#881AE8',
-//       },
-//       headerTintColor: '#fff',
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//       },
-//     },
-//   },
-// );
+import AnnouncementsScreen from './Screens/AnnouncementsScreen';
+import ScheduleScreen from './Screens/ScheduleScreen';
+import NotificationScreen from './Screens/NotificationScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   // Details: DetailsScreen,
 });
+
+const ScheduleStack = createStackNavigator({
+  Schedule: ScheduleScreen
+});
+
+const NotificationStack = createStackNavigator({
+  Notification: NotificationScreen
+})
+
+const AnnouncementsStack = createStackNavigator({
+  Announcements: AnnouncementsScreen
+})
 
 const MoreStack = createStackNavigator({
   Contact: ContactScreen,
@@ -38,8 +35,11 @@ const MoreStack = createStackNavigator({
 
 const TabNavigator = createBottomTabNavigator(
   {
+    Notification: NotificationStack,
+    Schedule: ScheduleStack,
     Home: HomeStack,
-    Stuff: MoreStack,
+    Announcements: AnnouncementsStack,
+    More: MoreStack,
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -50,7 +50,7 @@ const TabNavigator = createBottomTabNavigator(
           iconName = `home`;
           // Sometimes we want to add badges to some icons. 
           // You can check the implementation below.
-        } else if (routeName === 'Stuff') {
+        } else {
           iconName = `ellipsis-h`;
         }
 
