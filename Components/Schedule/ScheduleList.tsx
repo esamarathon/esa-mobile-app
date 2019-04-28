@@ -9,11 +9,13 @@ export default class ScheduleList extends Component {
         <ScheduleItem run={item} />
     );
 
-    keyExtractor = (item) => {
-        return item.runnerName;
+    keyExtractor = (item, idx) => {
+        return `run-name-${idx}`;
     };
 
     render() {
+        console.log(this.props.runs);
+
         return (
             <View style={styles.container}>
                 <FlatList

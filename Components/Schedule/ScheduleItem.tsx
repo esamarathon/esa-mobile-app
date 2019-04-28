@@ -12,10 +12,10 @@ export default class ScheduleItem extends Component {
         return (
             <View style={styles.itemBlock}>
                 <View style={styles.metaBlock}>
-                    <Text style={styles.title}>{this.props.run.runnerName}</Text>
+                    <Text style={styles.title}>{this.props.run['Player(s)']}</Text>
                     <Text style={styles.game}>
-                        {this.props.run.game},
-                        <Text style={styles.category}> {this.props.run.category} </Text>
+                        {this.props.run.Game},
+                        <Text style={styles.category}> {this.props.run.Category} </Text>
                     </Text>
                     <Text style={styles.date}>{this.props.run.startDate}</Text>
                 </View>
@@ -29,7 +29,6 @@ export default class ScheduleItem extends Component {
 
 const styles = StyleSheet.create({
     title: {
-        color: "#cccccc"
     },
     game: {},
     category: {},
