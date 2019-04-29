@@ -4,8 +4,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class ScheduleItem extends Component {
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            starred: false
+        }
+    }
+
     handleStarClick = (item) => {
         console.log(item);
+        this.setState({
+            starred: true
+        })
     };
 
     render() {
@@ -20,7 +31,7 @@ export default class ScheduleItem extends Component {
                     <Text style={styles.date}>{this.props.run.startDate}</Text>
                 </View>
                 <View style={styles.infoBlock}>
-                    <Icon name="star" size={30} color="#f3f3f3" onPress={() => this.handleStarClick(this.props.run)} />
+                    <Icon name="star" size={30} color={this.state.starred ? "yellow" : "#f3f3f3"} onPress={() => this.handleStarClick(this.props.run)} />
                 </View>
             </View>
         );
