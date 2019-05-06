@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
 
@@ -38,5 +38,3 @@ export default class ScheduleScreen extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({});

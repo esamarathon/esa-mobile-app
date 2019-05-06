@@ -5,7 +5,22 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint . --ext .tsx,.ts,.jsx,.js",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{tsx,ts,jsx,js}": [
+        "eslint --fix",
+        "prettier --write",
+        "git add"
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
   },
   "dependencies": {
     "react": "16.8.3",
@@ -23,10 +38,19 @@
     "@types/react-native": "0.57.41",
     "@types/react-native-vector-icons": "^6.4.0",
     "@types/react-test-renderer": "16.8.1",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
     "babel-jest": "24.5.0",
-    "eslint": "5.15.3",
+    "eslint": "^5.15.3",
+    "eslint-config-prettier": "^4.2.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-native": "^3.7.0",
+    "husky": "^2.2.0",
     "jest": "24.5.0",
+    "lint-staged": "^8.1.6",
     "metro-react-native-babel-preset": "0.53.1",
+    "prettier": "^1.17.0",
     "react-test-renderer": "16.8.3",
     "typescript": "3.3.4000"
   },

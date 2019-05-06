@@ -41,7 +41,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
-            tabBarIcon: ({focused, horizontal, tintColor}) => {
+            tabBarIcon: () => {
                 const {routeName} = navigation.state;
                 let iconName;
                 if (routeName === 'Home') {
