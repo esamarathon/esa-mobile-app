@@ -1,21 +1,20 @@
 import React, {Component} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
-
 import ScheduleItem from './ScheduleItem';
+import {IRun} from '../../Services/ScheduleService';
 
-export default class ScheduleList extends Component {
+interface IProps {
+    runs: IRun[];
+}
 
-    renderItem = ({item}) => (
-        <ScheduleItem run={item} />
-    );
+export default class ScheduleList extends Component<IProps> {
+    renderItem = ({item}: {item: IRun}) => <ScheduleItem run={item} />;
 
-    keyExtractor = (item, idx) => {
-        return `run-name-${idx}`;
+    keyExtractor = (item: IRun, index: number) => {
+        return `run-name-${index}`;
     };
 
     render() {
-        console.log(this.props.runs);
-
         return (
             <View style={styles.container}>
                 <FlatList
@@ -30,7 +29,7 @@ export default class ScheduleList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        backgroundColor: "#000000"
+        height: '100%',
+        backgroundColor: '#000000'
     }
 });

@@ -1,30 +1,30 @@
-export interface dataItem {
+export interface IDataItem {
     name: string;
     type: string;
 }
 
-export interface person {
+export interface IPerson {
     // Person to come
 }
 
-export interface elementData {
+export interface IElementData {
     estimate: string;
     platform: string;
 }
 
-export interface element {
+export interface IElement {
     start: string;
     end: string;
     column: string;
     revision: number;
     name: string;
-    data: elementData[];
-    people: person[];
+    data: IElementData[];
+    people: IPerson[];
 }
 
-export interface schedule {
+export interface ISchedule {
     id: string;
     name: string;
-    dataItems: dataItem[];
-    elements: element[];
+    dataItems: IDataItem[];
+    elements: IElement[];
 }
