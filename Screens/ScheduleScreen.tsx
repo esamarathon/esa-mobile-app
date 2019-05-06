@@ -10,12 +10,12 @@ interface IState {
 
 export default class ScheduleScreen extends Component {
     static navigationOptions = {
-        title: 'Schedule'
+        title: 'Schedule',
     };
 
     state: IState = {
         runs: [],
-        loading: true
+        loading: true,
     };
 
     async componentDidMount() {
@@ -23,7 +23,7 @@ export default class ScheduleScreen extends Component {
             const runs = await LoadHoraro();
             this.setState({
                 loading: false,
-                runs
+                runs,
             });
         } catch (error) {
             console.error(error);

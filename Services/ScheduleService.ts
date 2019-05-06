@@ -63,9 +63,9 @@ export async function LoadHoraro() {
         return item.data.reduce(
             (total, next, index) => ({
                 ...total,
-                [columns[index]]: next
+                [columns[index]]: next,
             }),
-            {}
+            {},
         ) as IRun;
     });
 }

@@ -10,24 +10,24 @@ import NotificationScreen from './Screens/NotificationScreen';
 Icon.loadFont();
 
 const HomeStack = createStackNavigator({
-    Home: HomeScreen
+    Home: HomeScreen,
     // Details: DetailsScreen,
 });
 
 const ScheduleStack = createStackNavigator({
-    Schedule: ScheduleScreen
+    Schedule: ScheduleScreen,
 });
 
 const NotificationStack = createStackNavigator({
-    Notification: NotificationScreen
+    Notification: NotificationScreen,
 });
 
 const AnnouncementsStack = createStackNavigator({
-    Announcements: AnnouncementsScreen
+    Announcements: AnnouncementsScreen,
 });
 
 const MoreStack = createStackNavigator({
-    Contact: ContactScreen
+    Contact: ContactScreen,
     // Details: DetailsScreen,
 });
 
@@ -37,7 +37,7 @@ const TabNavigator = createBottomTabNavigator(
         Schedule: ScheduleStack,
         Home: HomeStack,
         Announcements: AnnouncementsStack,
-        More: MoreStack
+        More: MoreStack,
     },
     {
         defaultNavigationOptions: ({navigation}) => ({
@@ -54,13 +54,13 @@ const TabNavigator = createBottomTabNavigator(
 
                 // You can return any component that you like here!
                 return <Icon name={iconName} size={30} color="#881AE8" />;
-            }
+            },
         }),
         tabBarOptions: {
             activeTintColor: '#881AE8',
-            inactiveTintColor: 'gray'
-        }
-    }
+            inactiveTintColor: 'gray',
+        },
+    },
 );
 
 export default createAppContainer(TabNavigator);

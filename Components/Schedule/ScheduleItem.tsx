@@ -43,15 +43,15 @@ const styles = StyleSheet.create({
 
     itemBlock: {
         flexDirection: 'row',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
     },
     metaBlock: {
-        flex: 1
+        flex: 1,
     },
     infoBlock: {
         flex: 0.2,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#cccccc'
-    }
+        backgroundColor: '#cccccc',
+    },
 });

@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 
 export default class NotificationScreen extends Component {
     static navigationOptions = {
-        title: 'Notification'
+        title: 'Notification',
     };
 
     render() {
@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF'
-    }
+        backgroundColor: '#F5FCFF',
+    },
 });
