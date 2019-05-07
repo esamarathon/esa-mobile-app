@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, Button, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {IRun} from '../../Services/ScheduleService';
 
-export default class ScheduleItem extends Component {
+interface IProps {
+    run: IRun;
+}
 
-    handleStarClick = (item) => {
+export default class ScheduleItem extends Component<IProps> {
+    handleStarClick = (item: IRun) => {
         console.log(item);
     };
 
@@ -17,10 +21,14 @@ export default class ScheduleItem extends Component {
                         {this.props.run.Game},
                         <Text style={styles.category}> {this.props.run.Category} </Text>
                     </Text>
-                    <Text style={styles.date}>{this.props.run.startDate}</Text>
                 </View>
                 <View style={styles.infoBlock}>
-                    <Icon name="star" size={30} color="#f3f3f3" onPress={() => this.handleStarClick(this.props.run)} />
+                    <Icon
+                        name="star"
+                        size={30}
+                        color="#f3f3f3"
+                        onPress={() => this.handleStarClick(this.props.run)}
+                    />
                 </View>
             </View>
         );
@@ -28,24 +36,22 @@ export default class ScheduleItem extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
-    },
+    title: {},
     game: {},
     category: {},
     date: {},
 
     itemBlock: {
-        flexDirection: "row",
-        backgroundColor: "#ffffff"
+        flexDirection: 'row',
+        backgroundColor: '#ffffff',
     },
     metaBlock: {
-        flex: 1
-
+        flex: 1,
     },
     infoBlock: {
         flex: 0.2,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#cccccc"
-    }
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#cccccc',
+    },
 });

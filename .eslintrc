@@ -1,0 +1,32 @@
+{
+    "root": true,
+    "env": {
+        "react-native/react-native": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "plugins": ["@typescript-eslint", "prettier", "react", "react-native"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "plugin:react/recommended",
+        "plugin:react-native/all"
+    ],
+    "rules": {
+        "no-console": 1,
+        "prettier/prettier": "warn",
+        "react/display-name": 0,
+        "@typescript-eslint/no-use-before-define": 0,
+        "@typescript-eslint/interface-name-prefix": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/explicit-member-accessibility": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "react-native/sort-styles": 0,
+        "react-native/no-unused-styles": 0,
+        "react-native/no-color-literals": 0
+    }
+}

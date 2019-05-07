@@ -7,7 +7,6 @@ export default class NotificationScreen extends Component {
     };
 
     render() {
-
         return (
             <View style={styles.container}>
                 <Text>Notification view</Text>

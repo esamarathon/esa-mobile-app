@@ -1,30 +1,33 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, View} from 'react-native';
+import {View} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
+import {LoadHoraro, IRun} from '../Services/ScheduleService';
 
-import {LoadHoraro} from '../Services/ScheduleService';
+interface IState {
+    runs: IRun[];
+    loading: boolean;
+}
 
 export default class ScheduleScreen extends Component {
     static navigationOptions = {
         title: 'Schedule',
     };
 
-    constructor(props) {
-        super(props);
+    state: IState = {
+        runs: [],
+        loading: true,
+    };
 
-        this.state = {
-            runs: [],
-            loading: true
-        }
-    }
-
-    componentWillMount() {
-        LoadHoraro().then((response) => {
+    async componentDidMount() {
+        try {
+            const runs = await LoadHoraro();
             this.setState({
-                runs: response,
-                loading: false
-            })
-        })
+                loading: false,
+                runs,
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     render() {
@@ -35,7 +38,3 @@ export default class ScheduleScreen extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-
-});
