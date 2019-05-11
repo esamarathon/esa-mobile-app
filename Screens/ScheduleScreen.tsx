@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
 
 interface IState {
     runs: IRun[];
+    error: Error | undefined;
     loading: boolean;
 }
 
@@ -15,6 +16,7 @@ export default class ScheduleScreen extends Component {
 
     state: IState = {
         runs: [],
+        error: undefined,
         loading: true,
     };
 
@@ -22,19 +24,40 @@ export default class ScheduleScreen extends Component {
         try {
             const runs = await LoadHoraro();
             this.setState({
-                loading: false,
                 runs,
             });
         } catch (error) {
             console.error(error);
+
+            this.setState({
+                error,
+            });
+        } finally {
+            this.setState({
+                loading: false,
+            });
         }
     }
 
     render() {
+        const {loading, runs} = this.state;
+
         return (
-            <View>
-                <ScheduleList runs={this.state.runs} />
+            <View style={loading ? styles.loadingScreen : undefined}>
+                {loading ? (
+                    <ActivityIndicator size="large" color="#ccc" />
+                ) : (
+                    <ScheduleList runs={runs} />
+                )}
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    loadingScreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});

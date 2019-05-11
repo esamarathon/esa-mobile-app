@@ -14,11 +14,15 @@ export default class HomeScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.topContainer}>
-                    <Text>Welcome to ESA Summer 2019</Text>
+                    <Text style={styles.welcome}>Welcome to ESA Summer 2019</Text>
                 </View>
                 <View>
-                    <Text>Some features are locked behind authentication</Text>
-                    <Button title="Auth with Twitch" onPress={this.authenticate} />
+                    <Text style={styles.instructions}>
+                        Some features are locked behind authentication
+                    </Text>
+                    <View style={styles.button}>
+                        <Button title="Auth with Twitch" onPress={this.authenticate} />
+                    </View>
                 </View>
             </View>
         );
@@ -33,16 +37,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
     topContainer: {
-        flex: 1,
+        paddingVertical: 10,
     },
     welcome: {
         fontSize: 20,
+        fontWeight: 'bold',
         textAlign: 'center',
         margin: 10,
+        color: '#000',
     },
     instructions: {
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5,
+    },
+    button: {
+        marginTop: 5,
     },
 });

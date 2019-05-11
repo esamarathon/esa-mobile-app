@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 
 export default class AnnouncementsScreen extends Component {
     static navigationOptions = {
-        title: 'Contacts',
+        title: 'Announcements',
     };
 
     render() {

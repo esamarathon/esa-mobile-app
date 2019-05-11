@@ -44,13 +44,36 @@ interface IRunsResponse {
 }
 
 export interface IRun {
-    Game: string;
-    'Player(s)': string;
-    Platform: string;
-    Category: string;
-    Note: string | null;
-    Layout: string;
-    Info: string | null;
+    length: string;
+    length_t: number;
+    scheduled: string;
+    scheduled_t: number;
+    Game?: string;
+    'Player(s)'?: string;
+    Platform?: string;
+    Category?: string;
+    Note?: string | null;
+    Layout?: string;
+    Info?: string | null;
+}
+
+export function extractLinks(markdown?: string) {
+    if (!markdown) {
+        return [];
+    }
+
+    const pattern = /\[([^\]]+)?\]\(([^\)]+)?\)/g; // match [name](link) in a string anywhere
+    const matches = [];
+
+    let match = null;
+    while ((match = pattern.exec(markdown))) {
+        matches.push({
+            name: match[1],
+            link: match[2],
+        });
+    }
+
+    return matches;
 }
 
 export async function LoadHoraro() {
@@ -59,13 +82,13 @@ export async function LoadHoraro() {
 
     const columns = Object.values(schedule.columns);
 
-    return schedule.items.map((item) => {
-        return item.data.reduce(
+    return schedule.items.map(({data, ...rest}) => {
+        return data.reduce<IRun>(
             (total, next, index) => ({
                 ...total,
                 [columns[index]]: next,
             }),
-            {},
-        ) as IRun;
+            {...rest},
+        );
     });
 }
