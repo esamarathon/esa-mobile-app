@@ -40,25 +40,30 @@ const TabNavigator = createBottomTabNavigator(
         More: MoreStack,
     },
     {
+        initialRouteName: 'Home',
         defaultNavigationOptions: ({navigation}) => ({
-            tabBarIcon: () => {
+            tabBarIcon: ({tintColor}) => {
                 const {routeName} = navigation.state;
-                let iconName;
-                if (routeName === 'Home') {
-                    iconName = `home`;
-                    // Sometimes we want to add badges to some icons.
-                    // You can check the implementation below.
-                } else {
-                    iconName = `ellipsis-h`;
-                }
 
-                // You can return any component that you like here!
-                return <Icon name={iconName} size={30} color="#881AE8" />;
+                const icons: {[x: string]: string} = {
+                    Home: 'home',
+                    Notification: 'bell',
+                    Schedule: 'calendar',
+                    Announcements: 'comments',
+                };
+
+                const iconName = icons[routeName] || 'ellipsis-h';
+
+                return <Icon name={iconName} size={20} color={tintColor || undefined} />;
             },
         }),
         tabBarOptions: {
             activeTintColor: '#881AE8',
             inactiveTintColor: 'gray',
+            labelStyle: {
+                marginTop: 0,
+                marginBottom: 5,
+            },
         },
     },
 );
