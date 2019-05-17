@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 
 export default class AnnouncementsScreen extends Component {
     static navigationOptions = {
-        title: 'Contacts',
+        title: 'Announcements',
     };
 
     render() {
@@ -17,19 +17,19 @@ export default class AnnouncementsScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
+        flex: 1,
+        justifyContent: 'center',
+    },
+    instructions: {
+        color: '#333333',
+        marginBottom: 5,
+        textAlign: 'center',
     },
     welcome: {
         fontSize: 20,
-        textAlign: 'center',
         margin: 10,
-    },
-    instructions: {
         textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
     },
 });

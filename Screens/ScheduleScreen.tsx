@@ -1,41 +1,63 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, View} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
+import {LoadHoraro, IRun} from '../Services/ScheduleService';
 
-import {LoadHoraro} from '../Services/ScheduleService';
+interface IState {
+    runs: IRun[];
+    error: Error | undefined;
+    loading: boolean;
+}
 
 export default class ScheduleScreen extends Component {
     static navigationOptions = {
         title: 'Schedule',
     };
 
-    constructor(props) {
-        super(props);
+    state: IState = {
+        runs: [],
+        error: undefined,
+        loading: true,
+    };
 
-        this.state = {
-            runs: [],
-            loading: true
+    async componentDidMount() {
+        try {
+            const runs = await LoadHoraro();
+            this.setState({
+                runs,
+            });
+        } catch (error) {
+            console.error(error);
+
+            this.setState({
+                error,
+            });
+        } finally {
+            this.setState({
+                loading: false,
+            });
         }
     }
 
-    componentWillMount() {
-        LoadHoraro().then((response) => {
-            this.setState({
-                runs: response,
-                loading: false
-            })
-        })
-    }
-
     render() {
+        const {loading, runs} = this.state;
+
         return (
-            <View>
-                <ScheduleList runs={this.state.runs} />
+            <View style={loading ? styles.loadingScreen : undefined}>
+                {loading ? (
+                    <ActivityIndicator size="large" color="#ccc" />
+                ) : (
+                    <ScheduleList runs={runs} />
+                )}
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-
+    loadingScreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

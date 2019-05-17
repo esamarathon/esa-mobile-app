@@ -1,18 +1,17 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, Button, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, {PureComponent} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import * as moment from 'moment';
+import Icon from 'react-native-vector-icons/Feather';
+import {IRun, extractLinks} from '../../Services/ScheduleService';
 
-export default class ScheduleItem extends Component {
+interface IProps {
+    run: IRun;
+    open: boolean;
+    onClick: (run: IRun | undefined) => void;
+}
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            starred: false
-        }
-    }
-
-    handleStarClick = (item) => {
+export default class ScheduleItem extends PureComponent<IProps> {
+    handleStarClick = (item: IRun) => {
         console.log(item);
         this.setState({
             starred: true
@@ -20,43 +19,97 @@ export default class ScheduleItem extends Component {
     };
 
     render() {
+        const {run, onClick, open} = this.props;
+
+        const players = extractLinks(run['Player(s)'])
+            .map(({name}) => name)
+            .join(' vs ');
+
+        const game = extractLinks(run.Game)
+            .map(({name}) => name)
+            .join(', ');
+
+        const date = moment.default(run.scheduled_t * 1000);
+
+        const category = run.Category
+            ? run.Category.replace('Any%', '').trim() || undefined
+            : undefined;
+
         return (
-            <View style={styles.itemBlock}>
-                <View style={styles.metaBlock}>
-                    <Text style={styles.title}>{this.props.run['Player(s)']}</Text>
-                    <Text style={styles.game}>
-                        {this.props.run.Game},
-                        <Text style={styles.category}> {this.props.run.Category} </Text>
-                    </Text>
-                    <Text style={styles.date}>{this.props.run.startDate}</Text>
+            <TouchableOpacity onPress={() => onClick(open ? undefined : run)}>
+                <View style={styles.itemBlock}>
+                    <View style={styles.timeBlock}>
+                        <Text style={styles.time}>{date.format('HH:mm')}</Text>
+                    </View>
+                    <View style={styles.metaBlock}>
+                        <Text style={styles.title}>{players}</Text>
+                        <Text style={styles.game}>
+                            {game}
+                            {category ? <Text style={styles.category}> - {category}</Text> : null}
+                        </Text>
+                        {open ? (
+                            <>
+                                {run.Info ? <Text>Info: {run.Info}</Text> : null}
+                                {run.Layout ? <Text>Layout: {run.Layout}</Text> : null}
+                                {run.Note ? <Text>Note: {run.Note}</Text> : null}
+                                {run.Platform ? <Text>Platform: {run.Platform}</Text> : null}
+                            </>
+                        ) : null}
+                    </View>
+                    {open ? (
+                        <View style={styles.infoBlock}>
+                            <Icon
+                                name="heart"
+                                size={22}
+                                onPress={() => this.handleStarClick(run)}
+                            />
+                        </View>
+                    ) : null}
                 </View>
-                <View style={styles.infoBlock}>
-                    <Icon name="star" size={30} color={this.state.starred ? "yellow" : "#f3f3f3"} onPress={() => this.handleStarClick(this.props.run)} />
-                </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
 
 const styles = StyleSheet.create({
     title: {
+        fontWeight: 'bold',
+        color: '#000',
+        fontSize: 18,
     },
-    game: {},
-    category: {},
+    game: {
+        fontWeight: 'bold',
+    },
+    category: {
+        fontWeight: 'normal',
+    },
     date: {},
-
     itemBlock: {
-        flexDirection: "row",
-        backgroundColor: "#ffffff"
+        flex: 1,
+        paddingLeft: 10,
+        paddingVertical: 5,
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        backgroundColor: '#ffffff',
     },
     metaBlock: {
-        flex: 1
-
+        flex: 1,
     },
     infoBlock: {
-        flex: 0.2,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#cccccc"
-    }
+        flex: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 40,
+    },
+    duration: {},
+    time: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginTop: 3,
+    },
+    timeBlock: {
+        flex: 0,
+        marginRight: 10,
+        textAlign: 'right',
+    },
 });

@@ -1,27 +1,55 @@
 import React, {Component} from 'react';
-import {StyleSheet, FlatList, View} from 'react-native';
-
+import {StyleSheet, SectionList, Text, View} from 'react-native';
+import * as moment from 'moment';
 import ScheduleItem from './ScheduleItem';
+import {IRun} from '../../Services/ScheduleService';
 
-export default class ScheduleList extends Component {
+interface IProps {
+    runs: IRun[];
+}
 
-    renderItem = ({item}) => (
-        <ScheduleItem run={item} />
-    );
+interface IState {
+    openedRun: IRun | undefined;
+}
 
-    keyExtractor = (item, idx) => {
-        return `run-name-${idx}`;
+export default class ScheduleList extends Component<IProps, IState> {
+    state = {
+        openedRun: undefined,
+    };
+
+    onClick = (run: IRun | undefined) => {
+        this.setState({openedRun: run});
     };
 
     render() {
-        console.log(this.props.runs);
+        const {runs} = this.props;
+        const {openedRun} = this.state;
+
+        const filteredRuns = runs.reduce<{[x: string]: IRun[]}>((days, run) => {
+            const day = moment.default(run.scheduled_t * 1000).format('YYYY-MM-DD');
+
+            return {
+                ...days,
+                [day]: (days[day] || []).concat(run),
+            };
+        }, {});
 
         return (
             <View style={styles.container}>
-                <FlatList
-                    data={this.props.runs}
-                    keyExtractor={this.keyExtractor}
-                    renderItem={this.renderItem}
+                <SectionList
+                    sections={Object.entries(filteredRuns).map(([day, runs]) => ({
+                        title: day,
+                        data: runs,
+                    }))}
+                    keyExtractor={(run) => run.scheduled_t + run.Game + run['Player(s)']}
+                    renderItem={({item}) => (
+                        <ScheduleItem open={openedRun === item} onClick={this.onClick} run={item} />
+                    )}
+                    renderSectionHeader={({section: {data}}) => (
+                        <Text style={styles.sectionHeader}>
+                            {moment.default(data[0].scheduled_t * 1000).format('ddd, MMMM Do')}
+                        </Text>
+                    )}
                 />
             </View>
         );
@@ -30,7 +58,13 @@ export default class ScheduleList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        backgroundColor: "#000000"
-    }
+        backgroundColor: '#ffffff',
+    },
+    sectionHeader: {
+        backgroundColor: '#F2F2F2',
+        color: '#000',
+        marginTop: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
 });
