@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
-import {LoadEvents} from '../Services/EventsService';
 
 export default class HomeScreen extends Component {
     static navigationOptions = {
@@ -13,15 +12,6 @@ export default class HomeScreen extends Component {
         this.state = {
             events: [],
         };
-    }
-
-    // @TODO This is just for testing, and will be replaced somehow with State management / Context Api?
-    componentDidMount() {
-        LoadEvents().then((response) => {
-            this.setState({
-                events: response,
-            });
-        });
     }
 
     authenticate = () => {

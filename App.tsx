@@ -6,6 +6,10 @@ import ContactScreen from './Screens/ContactScreen';
 import AnnouncementsScreen from './Screens/AnnouncementsScreen';
 import ScheduleScreen from './Screens/ScheduleScreen';
 import NotificationScreen from './Screens/NotificationScreen';
+import {LoadEvents} from './Services/EventsService';
+import {ThemedBottomTabBar} from './Components/Navigation/ThemedTabBar';
+
+const ThemeContext = React.createContext(null);
 
 Icon.loadFont();
 
@@ -31,6 +35,14 @@ const MoreStack = createStackNavigator({
     // Details: DetailsScreen,
 });
 
+const WrappedTabBar = () => {
+    return (
+        <ThemeContext.Consumer>
+            {({theme}) => <ThemedBottomTabBar theme={theme} />}
+        </ThemeContext.Consumer>
+    );
+};
+
 const TabNavigator = createBottomTabNavigator(
     {
         Notification: NotificationStack,
@@ -41,6 +53,7 @@ const TabNavigator = createBottomTabNavigator(
     },
     {
         initialRouteName: 'Home',
+        tabBarComponent: WrappedTabBar,
         defaultNavigationOptions: ({navigation}) => ({
             tabBarIcon: ({tintColor}) => {
                 const {routeName} = navigation.state;
@@ -68,4 +81,14 @@ const TabNavigator = createBottomTabNavigator(
     },
 );
 
-export default createAppContainer(TabNavigator);
+const Navigation = createAppContainer(TabNavigator);
+
+export default class AppContainer extends React.Component {
+    render() {
+        return (
+            <ThemeContext.Provider value={{theme: 'light'}}>
+                <Navigation screenProps={{theme: 'light'}} />
+            </ThemeContext.Provider>
+        );
+    }
+}
