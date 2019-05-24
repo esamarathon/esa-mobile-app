@@ -6,10 +6,10 @@ import ContactScreen from './Screens/ContactScreen';
 import AnnouncementsScreen from './Screens/AnnouncementsScreen';
 import ScheduleScreen from './Screens/ScheduleScreen';
 import NotificationScreen from './Screens/NotificationScreen';
-import {LoadEvents} from './Services/EventsService';
 import {ThemedBottomTabBar} from './Components/Navigation/ThemedTabBar';
+import {BottomTabBarProps} from 'react-navigation';
 
-const ThemeContext = React.createContext(null);
+const ThemeContext = React.createContext<{theme: 'light' | 'dark'}>({theme: 'light'});
 
 Icon.loadFont();
 
@@ -35,10 +35,10 @@ const MoreStack = createStackNavigator({
     // Details: DetailsScreen,
 });
 
-const WrappedTabBar = () => {
+const WrappedTabBar = (navigation: BottomTabBarProps) => {
     return (
         <ThemeContext.Consumer>
-            {({theme}) => <ThemedBottomTabBar theme={theme} />}
+            {({theme}) => <ThemedBottomTabBar navigation={navigation} theme={theme} />}
         </ThemeContext.Consumer>
     );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import {BottomTabBar} from 'react-navigation';
+import {BottomTabBar, BottomTabBarProps} from 'react-navigation';
 
-const ThemeConstants = {
+export const ThemeConstants = {
     light: {
         backgroundColor: '#fff',
         fontColor: '#000',
@@ -18,16 +18,23 @@ const ThemeConstants = {
     },
 };
 
-export class ThemedBottomTabBar extends React.Component {
+interface IProps {
+    theme: 'light' | 'dark';
+    navigation: BottomTabBarProps;
+}
+
+export class ThemedBottomTabBar extends React.Component<IProps> {
     render() {
+        const {theme, navigation} = this.props;
+
         return (
             <BottomTabBar
-                {...this.props}
-                activeTintColor={ThemeConstants[this.props.theme].activeTintColor}
-                inactiveTintColor={ThemeConstants[this.props.theme].inactiveTintColor}
+                {...navigation}
+                activeTintColor={ThemeConstants[theme].activeTintColor}
+                inactiveTintColor={ThemeConstants[theme].inactiveTintColor}
                 style={{
-                    backgroundColor: ThemeConstants[this.props.theme].backgroundColor,
-                    borderTopColor: ThemeConstants[this.props.theme].borderColor,
+                    backgroundColor: ThemeConstants[theme].backgroundColor,
+                    borderTopColor: ThemeConstants[theme].borderColor,
                 }}
             />
         );
