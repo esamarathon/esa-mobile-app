@@ -14,8 +14,8 @@ const Navigation = createAppContainer(TabNavigator);
 export default class AppContainer extends React.Component {
     render() {
         return (
-            <ThemeContext.Provider value={{theme: 'light'}}>
-                <Navigation screenProps={{theme: 'light'}} />
+            <ThemeContext.Provider value={{theme: 'default'}}>
+                <Navigation screenProps={{theme: 'default'}} />
             </ThemeContext.Provider>
         );
     }
