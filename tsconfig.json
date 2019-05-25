@@ -33,6 +33,8 @@
         "jest.config.js",
         "android",
         "ios",
+        "__tests__",
+        "__mocks__",
         "build",
         "outputs"
     ]

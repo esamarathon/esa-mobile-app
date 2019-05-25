@@ -2,3 +2,4 @@
 /jest.config.js
 /metro.config.js
 build
+__mocks__
