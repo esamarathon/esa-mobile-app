@@ -2,14 +2,14 @@ import React from 'react';
 import {BottomTabBar, BottomTabBarProps} from 'react-navigation';
 
 export const ThemeConstants = {
-    light: {
+    default: {
         backgroundColor: '#fff',
         fontColor: '#000',
         activeTintColor: 'blue',
         inactiveTintColor: '#ccc',
         borderColor: 'rgba(0,0,0,0.2)',
     },
-    dark: {
+    summer: {
         backgroundColor: '#000',
         fontColor: '#fff',
         activeTintColor: '#fff',
