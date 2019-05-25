@@ -6,6 +6,14 @@ export default class HomeScreen extends Component {
         title: 'Home',
     };
 
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            events: [],
+        };
+    }
+
     authenticate = () => {
         console.log('Auth all you want you');
     };
@@ -24,6 +32,9 @@ export default class HomeScreen extends Component {
                         <Button title="Auth with Twitch" onPress={this.authenticate} />
                     </View>
                 </View>
+                {this.state.events.map((event) => {
+                    return <Text key={event.name}>{event.name}</Text>;
+                })}
             </View>
         );
     }
