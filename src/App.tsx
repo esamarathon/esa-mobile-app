@@ -54,7 +54,7 @@ export default class AppContainer extends Component<IProps, IState> {
                     updateEvent: this.updateEvent,
                 }}
             >
-                <Navigation screenProps={{event: preferredEvent}} theme={preferredEvent} />
+                <Navigation theme={preferredEvent} />
             </EventContext.Provider>
         );
     }
