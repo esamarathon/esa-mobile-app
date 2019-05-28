@@ -61,13 +61,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        margin: 10,
         color: '#000',
     },
     instructions: {
         textAlign: 'center',
         color: '#333333',
-        marginBottom: 5,
+        marginBottom: 20,
     },
     button: {
         marginTop: 5,

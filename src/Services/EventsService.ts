@@ -1,5 +1,3 @@
-import {EventContext} from '../App';
-
 export interface IEvents {
     events: IEvent;
 }
