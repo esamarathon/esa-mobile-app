@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, Button, Text, View} from 'react-native';
+import {IEvent} from '../Services/EventsService';
 
-export default class HomeScreen extends Component {
+interface IProps {}
+
+interface IState {
+    events: IEvent[];
+}
+
+export default class HomeScreen extends Component<IProps, IState> {
     static navigationOptions = {
         title: 'Home',
     };

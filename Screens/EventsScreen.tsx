@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Button, FlatList, StyleSheet, View} from 'react-native';
 import {IEvent, LoadEvents} from '../Services/EventsService';
-import * as moment from 'moment';
+import {EventContext} from '../App';
+
 interface IProps {}
 
 interface IState {
@@ -21,14 +22,18 @@ export default class EventsScreen extends Component<IProps, IState> {
 
     componentDidMount() {
         LoadEvents().then((res: IEvent[]) => {
-            console.log(res);
-
             this.setState({
                 loading: false,
                 events: res,
             });
         });
     }
+
+    handleClick = (item: IEvent) => {
+        this.props.navigation.navigate('Details', {
+            event: item,
+        });
+    };
 
     _keyExtractor = (item: IEvent) => item._id;
 
@@ -37,10 +42,13 @@ export default class EventsScreen extends Component<IProps, IState> {
 
         const ListItem = (item: IEvent) => {
             return (
-                <View>
-                    <Text>{item.name}</Text>
-                    <Text>{moment.default(item.startDate).format('ddd, MMMM Do')}</Text>
-                </View>
+                <EventContext.Consumer>
+                    {({updateEvent}) => (
+                        <View>
+                            <Button title={item.name} onPress={() => updateEvent(item)} />
+                        </View>
+                    )}
+                </EventContext.Consumer>
             );
         };
 
