@@ -16,10 +16,17 @@ export const ThemeConstants = {
         inactiveTintColor: '#888',
         borderColor: 'rgba(255,255,255,0.2)',
     },
+    winter: {
+        backgroundColor: '#000',
+        fontColor: '#fff',
+        activeTintColor: '#fff',
+        inactiveTintColor: '#888',
+        borderColor: 'rgba(255,255,255,0.2)',
+    },
 };
 
 interface IProps {
-    theme: 'light' | 'dark';
+    theme: 'default' | 'summer' | 'winter';
     navigation: BottomTabBarProps;
 }
 
