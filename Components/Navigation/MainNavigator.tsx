@@ -6,9 +6,10 @@ import EventsScreen from '../../Screens/EventsScreen';
 import AnnouncementsScreen from '../../Screens/AnnouncementsScreen';
 import ScheduleScreen from '../../Screens/ScheduleScreen';
 import NotificationScreen from '../../Screens/NotificationScreen';
+import EventDetails from '../../Screens/EventDetails';
 import {ThemedBottomTabBar} from './ThemedTabBar';
 
-import {ThemeContext} from '../../App';
+import {EventContext} from '../../App';
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
@@ -29,14 +30,14 @@ const AnnouncementsStack = createStackNavigator({
 
 const MoreStack = createStackNavigator({
     Contact: EventsScreen,
-    // Details: DetailsScreen,
+    Details: EventDetails,
 });
 
 const WrappedTabBar = (navigation: BottomTabBarProps) => {
     return (
-        <ThemeContext.Consumer>
-            {({theme}) => <ThemedBottomTabBar navigation={navigation} theme={theme} />}
-        </ThemeContext.Consumer>
+        <EventContext.Consumer>
+            {({event}) => <ThemedBottomTabBar navigation={navigation} event={event} />}
+        </EventContext.Consumer>
     );
 };
 
