@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
