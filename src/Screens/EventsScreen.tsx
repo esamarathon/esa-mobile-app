@@ -1,21 +1,19 @@
 import React, {Component} from 'react';
-import {Button, FlatList, StyleSheet, View} from 'react-native';
+import {Button, Text, FlatList, StyleSheet, Image, View, TouchableHighlight} from 'react-native';
 import {IEvent, LoadEvents} from '../Services/EventsService';
-import {EventContext} from '../App';
-
-interface IProps {}
+import dayjs from 'dayjs';
 
 interface IState {
     events: IEvent[];
     loading: boolean;
 }
 
-export default class EventsScreen extends Component<IProps, IState> {
+export default class EventsScreen extends Component {
     static navigationOptions = {
         title: 'Events',
     };
 
-    state = {
+    state: IState = {
         events: [],
         loading: true,
     };
@@ -42,13 +40,23 @@ export default class EventsScreen extends Component<IProps, IState> {
 
         const ListItem = (item: IEvent) => {
             return (
-                <EventContext.Consumer>
-                    {({updateEvent}) => (
+                <TouchableHighlight onPress={() => this.handleClick(item)}>
+                    <View style={styles.itemContainer}>
                         <View>
-                            <Button title={item.name} onPress={() => updateEvent(item)} />
+                            <Image
+                                style={styles.image}
+                                source={{
+                                    uri:
+                                        'https://yt3.ggpht.com/a/AGF-l7_Y0kmUs07Bg-iluLsdRXpBeBwoPNqrMrBtmg=s900-mo-c-c0xffffffff-rj-k-no',
+                                }}
+                            />
                         </View>
-                    )}
-                </EventContext.Consumer>
+                        <View style={styles.textContainer}>
+                            <Text>{item.name}</Text>
+                            <Text>{dayjs(item.startDate).toString()}</Text>
+                        </View>
+                    </View>
+                </TouchableHighlight>
             );
         };
 
@@ -67,18 +75,19 @@ export default class EventsScreen extends Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#F5FCFF',
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
+    itemContainer: {
+        flex: 1,
+        flexDirection: 'row',
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+    textContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        marginLeft: 12,
+    },
+    image: {
+        width: 75,
+        height: 75,
     },
 });

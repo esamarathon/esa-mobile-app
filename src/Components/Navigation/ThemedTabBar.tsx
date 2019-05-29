@@ -1,26 +1,27 @@
 import React from 'react';
 import {BottomTabBar, BottomTabBarProps} from 'react-navigation';
 import {IEvent, IEventTheme} from '../../Services/EventsService';
+import {Theme} from '../../Themes';
 
 export const ThemeConstants = {
     default: {
-        backgroundColor: '#7D2DDF',
+        backgroundColor: Theme.default.backgroundColor,
         fontColor: '#fff',
-        activeTintColor: '#FFBD17',
+        activeTintColor: Theme.default.activeTint,
         inactiveTintColor: '#fff',
         borderColor: 'rgba(255,255,255,0.2)',
     },
     summer: {
-        backgroundColor: '#BA76CB',
+        backgroundColor: Theme.summer.backgroundColor,
         fontColor: '#fff',
-        activeTintColor: '#FFBD17',
+        activeTintColor: Theme.summer.activeTint,
         inactiveTintColor: '#fff',
         borderColor: 'rgba(255,255,255,0.2)',
     },
     winter: {
-        backgroundColor: '#99E1F7',
+        backgroundColor: Theme.winter.backgroundColor,
         fontColor: '#fff',
-        activeTintColor: '#1C2175',
+        activeTintColor: Theme.winter.activeTint,
         inactiveTintColor: '#fff',
         borderColor: 'rgba(255,255,255,0.2)',
     },
