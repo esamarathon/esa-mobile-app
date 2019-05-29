@@ -39,7 +39,7 @@ export default class ScheduleList extends Component<IProps, IState> {
 
         const ThemedBackground = {
             backgroundColor: Theme[this.props.theme].backgroundColor,
-            color: Theme[this.props.theme].activeTint,
+            color: Theme[this.props.theme].textColor,
         };
 
         return (
