@@ -35,13 +35,17 @@ export default class AppContainer extends Component<IProps, IState> {
     };
 
     componentDidMount() {
-        LoadEvents().then((res: IEvent[]) => {
-            this.setState({
-                events: res,
-                preferredEvent: res[0],
-                loading: false,
+        LoadEvents()
+            .then((res: IEvent[]) => {
+                this.setState({
+                    events: res,
+                    preferredEvent: res[0],
+                    loading: false,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
             });
-        });
     }
 
     render() {
