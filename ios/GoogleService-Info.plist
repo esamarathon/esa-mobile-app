@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1097149279238-4dnmni34lkg7qd4p4eriif5rbs2j8e60.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1097149279238-4dnmni34lkg7qd4p4eriif5rbs2j8e60</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAhKCrhGp6PPV3Kg7E1eb3P4YDvpFyxftA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1097149279238</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.esaMobile</string>
+	<key>PROJECT_ID</key>
+	<string>esademo-81e92</string>
+	<key>STORAGE_BUCKET</key>
+	<string>esademo-81e92.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1097149279238:ios:95ebd29f97201e27</string>
+	<key>DATABASE_URL</key>
+	<string>https://esademo-81e92.firebaseio.com</string>
+</dict>
+</plist>
