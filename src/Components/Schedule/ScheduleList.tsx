@@ -3,9 +3,12 @@ import {StyleSheet, SectionList, Text, View} from 'react-native';
 import * as moment from 'moment';
 import ScheduleItem from './ScheduleItem';
 import {IRun} from '../../Services/ScheduleService';
+import {IEventTheme} from '../../Services/EventsService';
+import {Theme} from '../../Themes';
 
 interface IProps {
     runs: IRun[];
+    theme: IEventTheme;
 }
 
 interface IState {
@@ -34,6 +37,11 @@ export default class ScheduleList extends Component<IProps, IState> {
             };
         }, {});
 
+        const ThemedBackground = {
+            backgroundColor: Theme[this.props.theme].backgroundColor,
+            color: Theme[this.props.theme].textColor,
+        };
+
         return (
             <View style={styles.container}>
                 <SectionList
@@ -46,7 +54,7 @@ export default class ScheduleList extends Component<IProps, IState> {
                         <ScheduleItem open={openedRun === item} onClick={this.onClick} run={item} />
                     )}
                     renderSectionHeader={({section: {data}}) => (
-                        <Text style={styles.sectionHeader}>
+                        <Text style={[styles.sectionHeader, ThemedBackground]}>
                             {moment.default(data[0].scheduled_t * 1000).format('ddd, MMMM Do')}
                         </Text>
                     )}
@@ -61,8 +69,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     sectionHeader: {
-        backgroundColor: '#F2F2F2',
-        color: '#000',
         marginTop: 20,
         paddingVertical: 10,
         paddingHorizontal: 20,

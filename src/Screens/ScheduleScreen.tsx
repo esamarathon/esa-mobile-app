@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, Text, Button} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
+import {EventContext} from '../App';
 
 interface IState {
     runs: IRun[];
@@ -47,7 +48,9 @@ export default class ScheduleScreen extends Component {
                 {loading ? (
                     <ActivityIndicator size="large" color="#ccc" />
                 ) : (
-                    <ScheduleList runs={runs} />
+                    <EventContext.Consumer>
+                        {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
+                    </EventContext.Consumer>
                 )}
             </View>
         );

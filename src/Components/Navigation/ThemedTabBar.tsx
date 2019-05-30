@@ -1,38 +1,42 @@
 import React from 'react';
 import {BottomTabBar, BottomTabBarProps} from 'react-navigation';
+import {IEvent, IEventTheme} from '../../Services/EventsService';
+import {Theme} from '../../Themes';
 
 export const ThemeConstants = {
     default: {
-        backgroundColor: '#fff',
-        fontColor: '#000',
-        activeTintColor: 'blue',
-        inactiveTintColor: '#ccc',
-        borderColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: Theme.default.backgroundColor,
+        fontColor: '#fff',
+        activeTintColor: Theme.default.activeTint,
+        inactiveTintColor: '#fff',
+        borderColor: 'rgba(255,255,255,0.2)',
     },
     summer: {
-        backgroundColor: '#000',
+        backgroundColor: Theme.summer.backgroundColor,
         fontColor: '#fff',
-        activeTintColor: '#fff',
-        inactiveTintColor: '#888',
+        activeTintColor: Theme.summer.activeTint,
+        inactiveTintColor: '#fff',
         borderColor: 'rgba(255,255,255,0.2)',
     },
     winter: {
-        backgroundColor: '#000',
+        backgroundColor: Theme.winter.backgroundColor,
         fontColor: '#fff',
-        activeTintColor: '#fff',
-        inactiveTintColor: '#888',
+        activeTintColor: Theme.winter.activeTint,
+        inactiveTintColor: '#fff',
         borderColor: 'rgba(255,255,255,0.2)',
     },
 };
 
 interface IProps {
-    theme: 'default' | 'summer' | 'winter';
+    event: IEvent;
     navigation: BottomTabBarProps;
 }
 
 export class ThemedBottomTabBar extends React.Component<IProps> {
     render() {
-        const {theme, navigation} = this.props;
+        const {event, navigation} = this.props;
+
+        const theme: IEventTheme = event.meta ? event.meta.theme : 'default';
 
         return (
             <BottomTabBar
