@@ -1,21 +1,49 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Alert} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AsyncStorage} from 'react-native';
 import firebase from 'react-native-firebase';
+import {IEvent, LoadEvents} from './Services/EventsService';
 
-export const ThemeContext = React.createContext<{theme: 'default' | 'summer' | 'winter'}>({
-    theme: 'default',
+interface IProps {}
+
+interface IState {
+    events: IEvent[];
+    preferredEvent: IEvent;
+    loading: boolean;
+}
+
+export const EventContext = React.createContext({
+    event: {},
+    updateEvent: {},
 });
 
 Icon.loadFont();
 
 const Navigation = createAppContainer(TabNavigator);
 
-export default class AppContainer extends React.Component {
+export default class AppContainer extends Component<IProps, IState> {
+    state = {
+        events: [],
+        preferredEvent: {},
+        loading: true,
+    };
+
     async componentDidMount() {
+        LoadEvents()
+            .then((res: IEvent[]) => {
+                this.setState({
+                    events: res,
+                    preferredEvent: res[0],
+                    loading: false,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
         this.checkPermission();
         this.createNotificationListeners();
     }
@@ -101,11 +129,24 @@ export default class AppContainer extends React.Component {
         }
     }
 
+    updateEvent = (item: IEvent) => {
+        this.setState({
+            preferredEvent: item,
+        });
+    };
+
     render() {
+        const {events, preferredEvent, loading} = this.state;
+
         return (
-            <ThemeContext.Provider value={{theme: 'default'}}>
-                <Navigation screenProps={{theme: 'default'}} />
-            </ThemeContext.Provider>
+            <EventContext.Provider
+                value={{
+                    event: preferredEvent,
+                    updateEvent: this.updateEvent,
+                }}
+            >
+                <Navigation theme={preferredEvent} />
+            </EventContext.Provider>
         );
     }
 }

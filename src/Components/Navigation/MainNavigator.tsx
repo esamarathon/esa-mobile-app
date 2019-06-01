@@ -2,13 +2,14 @@ import React from 'react';
 import {createStackNavigator, createBottomTabNavigator, BottomTabBarProps} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../../Screens/HomeScreen';
-import ContactScreen from '../../Screens/ContactScreen';
+import EventsScreen from '../../Screens/EventsScreen';
 import AnnouncementsScreen from '../../Screens/AnnouncementsScreen';
 import ScheduleScreen from '../../Screens/ScheduleScreen';
 import NotificationScreen from '../../Screens/NotificationScreen';
+import EventDetails from '../../Screens/EventDetails';
 import {ThemedBottomTabBar} from './ThemedTabBar';
 
-import {ThemeContext} from '../../App';
+import {EventContext} from '../../App';
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
@@ -28,15 +29,15 @@ const AnnouncementsStack = createStackNavigator({
 });
 
 const MoreStack = createStackNavigator({
-    Contact: ContactScreen,
-    // Details: DetailsScreen,
+    Contact: EventsScreen,
+    Details: EventDetails,
 });
 
 const WrappedTabBar = (navigation: BottomTabBarProps) => {
     return (
-        <ThemeContext.Consumer>
-            {({theme}) => <ThemedBottomTabBar navigation={navigation} theme={theme} />}
-        </ThemeContext.Consumer>
+        <EventContext.Consumer>
+            {({event}) => <ThemedBottomTabBar navigation={navigation} event={event} />}
+        </EventContext.Consumer>
     );
 };
 
@@ -46,7 +47,7 @@ export const TabNavigator = createBottomTabNavigator(
         Schedule: ScheduleStack,
         Home: HomeStack,
         Announcements: AnnouncementsStack,
-        More: MoreStack,
+        Events: MoreStack,
     },
     {
         initialRouteName: 'Home',
