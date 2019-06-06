@@ -43,10 +43,10 @@ const WrappedTabBar = (navigation: BottomTabBarProps) => {
 
 export const TabNavigator = createBottomTabNavigator(
     {
-        Notification: NotificationStack,
+        // Notification: NotificationStack,
         Schedule: ScheduleStack,
         Home: HomeStack,
-        Announcements: AnnouncementsStack,
+        // Announcements: AnnouncementsStack,
         Events: MoreStack,
     },
     {
@@ -65,7 +65,7 @@ export const TabNavigator = createBottomTabNavigator(
 
                 const iconName = icons[routeName] || 'ellipsis-h';
 
-                return <Icon name={iconName} size={20} color={tintColor || undefined} />;
+                return <Icon name={iconName} size={24} color={tintColor || undefined} />;
             },
         }),
         tabBarOptions: {

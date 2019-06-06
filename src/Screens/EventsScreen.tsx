@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
-import {Button, Text, FlatList, StyleSheet, Image, View, TouchableHighlight} from 'react-native';
+import {Text, FlatList, StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import {IEvent, LoadEvents} from '../Services/EventsService';
 import dayjs from 'dayjs';
+import SvgUri from 'react-native-svg-uri';
+
+interface IProps {
+    navigation: any;
+}
 
 interface IState {
     events: IEvent[];
     loading: boolean;
 }
 
-export default class EventsScreen extends Component {
+export default class EventsScreen extends Component<IProps, IState> {
     static navigationOptions = {
         title: 'Events',
     };
 
-    state: IState = {
+    state = {
         events: [],
         loading: true,
     };
@@ -40,23 +45,24 @@ export default class EventsScreen extends Component {
 
         const ListItem = (item: IEvent) => {
             return (
-                <TouchableHighlight onPress={() => this.handleClick(item)}>
+                <TouchableOpacity onPress={() => this.handleClick(item)}>
                     <View style={styles.itemContainer}>
                         <View>
-                            <Image
-                                style={styles.image}
+                            <SvgUri
+                                width={75}
+                                height={75}
                                 source={{
                                     uri:
-                                        'https://yt3.ggpht.com/a/AGF-l7_Y0kmUs07Bg-iluLsdRXpBeBwoPNqrMrBtmg=s900-mo-c-c0xffffffff-rj-k-no',
+                                        'https://esamarathon.com/static/img/logos/logo-borderless.svg',
                                 }}
                             />
                         </View>
                         <View style={styles.textContainer}>
                             <Text>{item.name}</Text>
-                            <Text>{dayjs(item.startDate).toString()}</Text>
+                            <Text>{dayjs(item.startDate).format('dd, DD MMM, YYYY')}</Text>
                         </View>
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             );
         };
 

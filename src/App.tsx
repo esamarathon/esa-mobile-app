@@ -4,7 +4,9 @@ import {TabNavigator} from './Components/Navigation/MainNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {IEvent, LoadEvents} from './Services/EventsService';
 
-interface IProps {}
+interface IProps {
+    theme: any;
+}
 
 interface IState {
     events: IEvent[];
@@ -49,7 +51,7 @@ export default class AppContainer extends Component<IProps, IState> {
     }
 
     render() {
-        const {events, preferredEvent, loading} = this.state;
+        const {preferredEvent} = this.state;
 
         return (
             <EventContext.Provider
