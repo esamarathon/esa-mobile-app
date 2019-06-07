@@ -11,27 +11,52 @@ import {ThemedBottomTabBar} from './ThemedTabBar';
 
 import {EventContext} from '../../App';
 
-const HomeStack = createStackNavigator({
-    Home: HomeScreen,
-    // Details: DetailsScreen,
-});
+const HomeStack = createStackNavigator(
+    {
+        Home: HomeScreen,
+        // Details: DetailsScreen,
+    },
+    {
+        headerMode: 'none',
+    },
+);
 
-const ScheduleStack = createStackNavigator({
-    Schedule: ScheduleScreen,
-});
+const ScheduleStack = createStackNavigator(
+    {
+        Schedule: ScheduleScreen,
+    },
+    {
+        headerMode: 'none',
+    },
+);
 
-const NotificationStack = createStackNavigator({
-    Notification: NotificationScreen,
-});
+const NotificationStack = createStackNavigator(
+    {
+        Notification: NotificationScreen,
+    },
+    {
+        headerMode: 'none',
+    },
+);
 
-const AnnouncementsStack = createStackNavigator({
-    Announcements: AnnouncementsScreen,
-});
+const AnnouncementsStack = createStackNavigator(
+    {
+        Announcements: AnnouncementsScreen,
+    },
+    {
+        headerMode: 'none',
+    },
+);
 
-const MoreStack = createStackNavigator({
-    Contact: EventsScreen,
-    Details: EventDetails,
-});
+const MoreStack = createStackNavigator(
+    {
+        Contact: EventsScreen,
+        Details: EventDetails,
+    },
+    {
+        headerMode: 'none',
+    },
+);
 
 const WrappedTabBar = (navigation: BottomTabBarProps) => {
     return (

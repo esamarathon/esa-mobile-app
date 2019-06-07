@@ -46,7 +46,11 @@ export default class AppContainer extends Component<IProps, IState> {
                 });
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    events: [],
+                    preferredEvent: {},
+                    loading: false,
+                });
             });
     }
 
