@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator, Text, Button} from 'react-native';
+import {View, StyleSheet, ActivityIndicator, StatusBar} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
 import {EventContext} from '../App';
@@ -49,7 +49,12 @@ export default class ScheduleScreen extends Component {
                     <ActivityIndicator size="large" color="#ccc" />
                 ) : (
                     <EventContext.Consumer>
-                        {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
+                        {({event}) => (
+                            <View>
+                                <StatusBar />
+                                <ScheduleList runs={runs} theme={event.meta.theme} />
+                            </View>
+                        )}
                     </EventContext.Consumer>
                 )}
             </View>
