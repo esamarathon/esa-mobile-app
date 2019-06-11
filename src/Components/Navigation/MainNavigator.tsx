@@ -2,13 +2,12 @@ import React from 'react';
 import {createStackNavigator, createBottomTabNavigator, BottomTabBarProps} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '../../Screens/HomeScreen';
-import EventsScreen from '../../Screens/EventsScreen';
-import AnnouncementsScreen from '../../Screens/AnnouncementsScreen';
-import ScheduleScreen from '../../Screens/ScheduleScreen';
 import NotificationScreen from '../../Screens/NotificationScreen';
+import AnnouncementsScreen from '../../Screens/AnnouncementsScreen';
+import EventsScreen from '../../Screens/EventsScreen';
+import ScheduleScreen from '../../Screens/ScheduleScreen';
 import EventDetails from '../../Screens/EventDetails';
 import {ThemedBottomTabBar} from './ThemedTabBar';
-
 import {EventContext} from '../../App';
 
 const HomeStack = createStackNavigator(
@@ -68,10 +67,8 @@ const WrappedTabBar = (navigation: BottomTabBarProps) => {
 
 export const TabNavigator = createBottomTabNavigator(
     {
-        // Notification: NotificationStack,
         Schedule: ScheduleStack,
         Home: HomeStack,
-        // Announcements: AnnouncementsStack,
         Events: MoreStack,
     },
     {

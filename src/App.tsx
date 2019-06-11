@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import {ActivityIndicator, Text} from 'react-native';
 import {createAppContainer, NavigationContainer} from 'react-navigation';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {IEvent, LoadEvents} from './Services/EventsService';
 
 interface IState {
     events: IEvent[];
     preferredEvent: IEvent | undefined;
     loading: boolean;
+    error: boolean;
 }
 
 interface IContext {
@@ -15,18 +16,16 @@ interface IContext {
     updateEvent: (event: IEvent) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
 export const EventContext = React.createContext<IContext>({} as IContext);
-
-Icon.loadFont();
 
 const Navigation: NavigationContainer = createAppContainer(TabNavigator);
 
-export default class AppContainer extends Component {
+export default class AppContainer extends Component<{}, IState> {
     state: IState = {
         events: [],
         preferredEvent: undefined,
         loading: true,
+        error: false,
     };
 
     updateEvent = (item: IEvent) => {
@@ -44,17 +43,26 @@ export default class AppContainer extends Component {
                     loading: false,
                 });
             })
-            .catch((err) => {
+            .catch(() => {
                 this.setState({
                     events: [],
-                    preferredEvent: {},
+                    preferredEvent: undefined,
+                    error: true,
                     loading: false,
                 });
             });
     }
 
     render() {
-        const {preferredEvent} = this.state;
+        const {preferredEvent, loading, error} = this.state;
+
+        if (loading) {
+            return <ActivityIndicator size="large" color="#ccc" />;
+        }
+
+        if (error) {
+            return <Text>Something went wrong</Text>;
+        }
 
         return (
             <EventContext.Provider

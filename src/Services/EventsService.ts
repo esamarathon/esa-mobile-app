@@ -5,6 +5,14 @@ export interface IEventMeta {
     horaro: string;
     twitchChannel: string;
     cause: IEventCause;
+    venue: IEventVenue;
+}
+
+export interface IEventVenue {
+    address: string;
+    city: string;
+    country: string;
+    name: string;
 }
 
 export interface IEventCause {
@@ -14,20 +22,20 @@ export interface IEventCause {
 }
 
 export interface IEvent {
-    _id?: string;
-    name?: string;
-    status?: string;
-    volunteersNeeded?: string[];
-    alwaysEditable?: string[];
-    startDate?: string;
-    endDate?: string;
-    submissionsStart?: string;
-    submissionsEnd?: string;
-    applicationsStart?: string;
-    applicationsEnd?: string;
-    meta?: IEventMeta;
-    createdAt?: string;
-    updatedAt?: string;
+    _id: string;
+    name: string;
+    status: string;
+    volunteersNeeded: string[];
+    alwaysEditable: string[];
+    startDate: string;
+    endDate: string;
+    submissionsStart: string;
+    submissionsEnd: string;
+    applicationsStart: string;
+    applicationsEnd: string;
+    meta: IEventMeta;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export async function LoadEvents(): Promise<IEvent[]> {
