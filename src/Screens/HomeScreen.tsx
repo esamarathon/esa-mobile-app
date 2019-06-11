@@ -48,12 +48,22 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     eventContainer: {
-        marginTop: 200,
+        marginTop: 150,
         textAlign: 'right',
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
         width: 310,
         alignSelf: 'flex-end',
         height: 165,
+
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+
+        elevation: 5,
     },
     containerHeader: {
         position: 'relative',

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     logoContainer: {
-        paddingVertical: 60,
+        paddingVertical: 30,
         paddingHorizontal: 20,
     },
     eventTitle: {
@@ -85,6 +85,6 @@ const styles = StyleSheet.create({
     infoText: {
         paddingLeft: 40,
         paddingRight: 130,
-        marginBottom: 90,
+        marginBottom: 50,
     },
 });

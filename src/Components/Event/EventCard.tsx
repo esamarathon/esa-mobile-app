@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 interface IProps {
     event: IEvent;
-    handleClick: any;
+    handleClick: (item: IEvent) => void;
 }
 
 export class EventCard extends React.Component<IProps> {

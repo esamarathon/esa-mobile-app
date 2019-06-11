@@ -1,32 +1,31 @@
 import React, {Component} from 'react';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, NavigationContainer} from 'react-navigation';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {IEvent, LoadEvents} from './Services/EventsService';
 
-interface IProps {
-    theme: any;
-}
-
 interface IState {
     events: IEvent[];
-    preferredEvent: IEvent;
+    preferredEvent: IEvent | undefined;
     loading: boolean;
 }
 
-export const EventContext = React.createContext({
-    event: {},
-    updateEvent: {},
-});
+interface IContext {
+    event: IEvent;
+    updateEvent: (event: IEvent) => void;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+export const EventContext = React.createContext<IContext>({} as IContext);
 
 Icon.loadFont();
 
-const Navigation = createAppContainer(TabNavigator);
+const Navigation: NavigationContainer = createAppContainer(TabNavigator);
 
-export default class AppContainer extends Component<IProps, IState> {
-    state = {
+export default class AppContainer extends Component {
+    state: IState = {
         events: [],
-        preferredEvent: {},
+        preferredEvent: undefined,
         loading: true,
     };
 
@@ -39,8 +38,6 @@ export default class AppContainer extends Component<IProps, IState> {
     componentDidMount() {
         LoadEvents()
             .then((res: IEvent[]) => {
-                console.log(res);
-
                 this.setState({
                     events: res,
                     preferredEvent: res[0],
@@ -62,11 +59,11 @@ export default class AppContainer extends Component<IProps, IState> {
         return (
             <EventContext.Provider
                 value={{
-                    event: preferredEvent,
+                    event: preferredEvent as IEvent,
                     updateEvent: this.updateEvent,
                 }}
             >
-                <Navigation theme={preferredEvent} />
+                <Navigation screenProps={{theme: preferredEvent as IEvent}} />
             </EventContext.Provider>
         );
     }

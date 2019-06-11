@@ -4,11 +4,11 @@ import {Text, Platform, Animated, StyleSheet, View, StatusBar} from 'react-nativ
 interface IProps {
     title: string | undefined;
     backgroundColor: string;
-    headerAsset: any;
+    headerAsset: string;
 }
 
 interface IState {
-    scrollY: any;
+    scrollY: Animated.Value;
 }
 
 const HEADER_MAX_HEIGHT = 150;
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         // This is not really "allowed". But it's needed to make it 100% width
+        // @ts-ignore-next-line
         width: null,
         height: HEADER_MAX_HEIGHT,
         resizeMode: 'cover',
