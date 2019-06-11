@@ -46,7 +46,6 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#EAEEF1',
     },
     eventContainer: {
         marginTop: 200,
