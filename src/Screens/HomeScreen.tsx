@@ -23,14 +23,18 @@ export default class HomeScreen extends Component {
                                     {dayjs(event.endDate).format('D MMMM')}
                                 </Text>
                                 <Text style={[styles.text, styles.alignTextRight]}>
-                                    In
-                                    {event.meta
-                                        ? `${event.meta.venue.city}, ${event.meta.venue.country}`
-                                        : 'Missing city'}
+                                    in{' '}
+                                    <Text style={styles.bold}>
+                                        {event.meta
+                                            ? `${event.meta.venue.city}, ${event.meta.venue.country}`
+                                            : 'Missing city'}
+                                    </Text>
                                 </Text>
-                                <Text style={[styles.text, styles.alignTextRight]}>
-                                    For {event.meta ? event.meta.cause.name : 'Missing Cause'}
-                                </Text>
+                                {event.meta && event.meta.cause.name ? (
+                                    <Text style={[styles.text, styles.alignTextRight]}>
+                                        for <Text style={styles.bold}>{event.meta.cause.name}</Text>
+                                    </Text>
+                                ) : null}
                             </View>
                         </View>
                     )}
@@ -46,15 +50,19 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#EAEEF1',
+    },
+    bold: {
+        fontWeight: 'bold',
+        color: '#444',
     },
     eventContainer: {
         marginTop: 150,
         textAlign: 'right',
-        backgroundColor: '#FFF',
+        backgroundColor: '#FFFFFF',
         width: 310,
         alignSelf: 'flex-end',
         height: 165,
-
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -62,7 +70,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-
         elevation: 5,
     },
     containerHeader: {
@@ -89,6 +96,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
+        color: '#000',
         fontWeight: 'bold',
     },
     date: {

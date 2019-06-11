@@ -23,6 +23,7 @@
         "experimentalDecorators": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
+        "allowUnreachableCode": false,
         "baseUrl": ".",
         "checkJs": false
     },
@@ -35,7 +36,6 @@
         "ios",
         "__tests__",
         "__mocks__",
-        "build",
-        "outputs"
+        "build"
     ]
 }

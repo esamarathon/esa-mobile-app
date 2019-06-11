@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
 import {Text, FlatList, StyleSheet, View} from 'react-native';
-import {IEvent, LoadEvents} from '../Services/EventsService';
+import {NavigationInjectedProps} from 'react-navigation';
 import SvgUri from 'react-native-svg-uri';
+import {IEvent, LoadEvents} from '../Services/EventsService';
 import {EventCard} from '../Components/Event/EventCard';
-
-interface IProps {
-    navigation: any;
-}
 
 interface IState {
     events: IEvent[];
     loading: boolean;
 }
 
-export default class EventsScreen extends Component<IProps, IState> {
+export default class EventsScreen extends Component<NavigationInjectedProps, IState> {
     state = {
         events: [],
         loading: true,

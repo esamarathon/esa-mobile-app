@@ -1,37 +1,33 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, Linking, Text, View, TouchableOpacity} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
+import SvgUri from 'react-native-svg-uri';
+import dayjs from 'dayjs';
 import {EventContext} from '../App';
 import ParallaxView from '../Components/Common/ParallaxView';
 import {GetBackgroundColorForEvent} from '../Themes';
 import {IEvent} from '../Services/EventsService';
-import dayjs from 'dayjs';
-import SvgUri from 'react-native-svg-uri';
-import {NavigationScreenConfigProps} from 'react-navigation';
 
-interface IProps {
-    navigation: NavigationScreenConfigProps;
-}
-
-export default class EventDetails extends Component<IProps> {
+export default class EventDetails extends Component<NavigationInjectedProps> {
     static navigationOptions = {
         title: 'Details',
     };
 
-    handleClick = (scheme: string) => {
-        const url =
-            scheme === 'master'
-                ? 'https://esamarathon.com/news/6af741f3-e59c-4e92-967b-0164ea818b19'
-                : scheme === 'code'
-                ? 'https://esamarathon.com/rules'
-                : 'https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb';
+    handleClick = async (scheme: 'master' | 'code' | 'attendee') => {
+        const links = {
+            attendee: 'https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb',
+            code: 'https://esamarathon.com/rules',
+            master: 'https://esamarathon.com/news/6af741f3-e59c-4e92-967b-0164ea818b19',
+        };
 
-        Linking.canOpenURL(url).then((supported) => {
-            if (supported) {
-                Linking.openURL(url);
-            } else {
-                console.log("Don't know how to open URI: " + url);
-            }
-        });
+        const url = links[scheme];
+
+        const supported = await Linking.canOpenURL(url);
+        if (supported) {
+            Linking.openURL(url);
+        } else {
+            console.error("Don't know how to open URI: " + url);
+        }
     };
 
     render() {
@@ -93,7 +89,6 @@ export default class EventDetails extends Component<IProps> {
                         </ParallaxView>
                         <View>
                             <Button
-                                style={styles.button}
                                 title={'Set as preferred event'}
                                 onPress={() => updateEvent(event)}
                             />
@@ -139,9 +134,6 @@ const styles = StyleSheet.create({
     },
     link: {
         color: 'blue',
-    },
-    button: {
-        alignSelf: 'flex-end',
     },
     image: {
         width: 75,

@@ -17,7 +17,7 @@ export class ThemedBottomTabBar extends React.Component<IProps> {
             <BottomTabBar
                 {...navigation}
                 activeTintColor={GetActiveTintForEvent(event)}
-                inactiveTintColor={'#000'}
+                inactiveTintColor={'#B0B0B0'}
                 style={styles.tabBar}
             />
         );
@@ -27,6 +27,7 @@ export class ThemedBottomTabBar extends React.Component<IProps> {
 const styles = StyleSheet.create({
     tabBar: {
         borderTopColor: '#fff',
-        backgroundColor: '#EAEEF1',
+        paddingTop: 10,
+        backgroundColor: '#fff',
     },
 });

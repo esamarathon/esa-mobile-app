@@ -24,12 +24,11 @@ export default class ScheduleScreen extends Component {
     async componentDidMount() {
         try {
             const runs = await LoadHoraro();
+
             this.setState({
                 runs,
             });
         } catch (error) {
-            console.error(error);
-
             this.setState({
                 error,
             });

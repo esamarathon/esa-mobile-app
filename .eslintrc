@@ -17,7 +17,7 @@
         "plugin:react-native/all"
     ],
     "rules": {
-        "no-console": 1,
+        "no-console": 0,
         "no-useless-escape": 0,
         "prettier/prettier": "warn",
         "react/display-name": 0,
@@ -26,7 +26,8 @@
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/explicit-member-accessibility": 0,
         "@typescript-eslint/no-empty-interface": 0,
-        "@typescript-eslint/indent": 1,
+        "@typescript-eslint/indent": 0,
+        "@typescript-eslint/no-object-literal-type-assertion": 0,
         "react-native/sort-styles": 0,
         "react-native/no-unused-styles": 0,
         "react-native/no-color-literals": 0,
