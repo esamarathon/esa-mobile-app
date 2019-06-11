@@ -27,5 +27,6 @@ export class ThemedBottomTabBar extends React.Component<IProps> {
 const styles = StyleSheet.create({
     tabBar: {
         borderTopColor: '#fff',
+        backgroundColor: '#EAEEF1',
     },
 });

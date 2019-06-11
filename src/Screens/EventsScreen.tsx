@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Text, FlatList, StyleSheet, Image, View, TouchableOpacity} from 'react-native';
+import {Text, FlatList, StyleSheet, View} from 'react-native';
 import {IEvent, LoadEvents} from '../Services/EventsService';
-import dayjs from 'dayjs';
 import SvgUri from 'react-native-svg-uri';
+import {EventCard} from '../Components/Event/EventCard';
 
 interface IProps {
     navigation: any;
@@ -14,10 +14,6 @@ interface IState {
 }
 
 export default class EventsScreen extends Component<IProps, IState> {
-    static navigationOptions = {
-        title: 'Events',
-    };
-
     state = {
         events: [],
         loading: true,
@@ -38,38 +34,35 @@ export default class EventsScreen extends Component<IProps, IState> {
         });
     };
 
-    _keyExtractor = (item: IEvent) => item._id;
+    _keyExtractor = (item: IEvent) => item._id.substring(0, 1);
 
     render() {
         const {events} = this.state;
 
         const ListItem = (item: IEvent) => {
-            return (
-                <TouchableOpacity onPress={() => this.handleClick(item)}>
-                    <View style={styles.itemContainer}>
-                        <View>
-                            <SvgUri
-                                width={75}
-                                height={75}
-                                source={{
-                                    uri:
-                                        'https://esamarathon.com/static/img/logos/logo-borderless.svg',
-                                }}
-                            />
-                        </View>
-                        <View style={styles.textContainer}>
-                            <Text>{item.name}</Text>
-                            <Text>{dayjs(item.startDate).format('dd, DD MMM, YYYY')}</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            );
+            return <EventCard event={item} handleClick={this.handleClick} />;
         };
 
         return (
             <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <SvgUri
+                        width={75}
+                        height={75}
+                        source={{
+                            uri: 'https://esamarathon.com/static/img/logos/logo-borderless.svg',
+                        }}
+                    />
+                </View>
+
+                <View style={styles.infoText}>
+                    <Text style={styles.eventTitle}>Pick your event</Text>
+                    <Text>Don&apos;t worry, you can always switch between events later</Text>
+                </View>
+
                 <FlatList
                     data={events}
+                    horizontal={true}
                     renderItem={({item}) => ListItem(item)}
                     keyExtractor={this._keyExtractor}
                 />
@@ -81,19 +74,17 @@ export default class EventsScreen extends Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF',
     },
-    itemContainer: {
-        flex: 1,
-        flexDirection: 'row',
+    logoContainer: {
+        paddingVertical: 30,
+        paddingHorizontal: 20,
     },
-    textContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        marginLeft: 12,
+    eventTitle: {
+        fontSize: 24,
     },
-    image: {
-        width: 75,
-        height: 75,
+    infoText: {
+        paddingLeft: 40,
+        paddingRight: 130,
+        marginBottom: 50,
     },
 });

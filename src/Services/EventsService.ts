@@ -1,7 +1,3 @@
-export interface IEvents {
-    events: IEvent;
-}
-
 export type IEventTheme = 'default' | 'summer' | 'winter';
 
 export interface IEventMeta {
@@ -35,11 +31,7 @@ export interface IEvent {
 }
 
 export async function LoadEvents(): Promise<IEvent[]> {
-    const response = await fetch(
-        'https://gist.githubusercontent.com/Stenkilde/da40216f35e9028f019279efca9cfee2/raw/4df36a9a056e53592c30c535b1d49df60eb59127/testme.json',
-    );
-
-    // EventContext
+    const response = await fetch('https://api.submissions.esamarathon.com/events');
 
     return await response.json();
 }

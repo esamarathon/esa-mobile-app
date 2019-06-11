@@ -6,9 +6,10 @@ import {GetBackgroundColorForEvent} from '../Themes';
 import {IEvent} from '../Services/EventsService';
 import dayjs from 'dayjs';
 import SvgUri from 'react-native-svg-uri';
+import {NavigationScreenConfigProps} from 'react-navigation';
 
 interface IProps {
-    navigation: any;
+    navigation: NavigationScreenConfigProps;
 }
 
 export default class EventDetails extends Component<IProps> {

@@ -66,6 +66,7 @@ export default class ScheduleList extends Component<IProps, IState> {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 20,
         backgroundColor: '#ffffff',
     },
     sectionHeader: {

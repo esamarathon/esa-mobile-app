@@ -1,47 +1,43 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, View} from 'react-native';
-import {IEvent} from '../Services/EventsService';
+import {StyleSheet, Text, View} from 'react-native';
+import {EventContext} from '../App';
+import dayjs from 'dayjs';
+import AnnouncementList from '../Components/Announcement/AnnouncementList';
 
-interface IProps {}
-
-interface IState {
-    events: IEvent[];
-}
-
-export default class HomeScreen extends Component<IProps, IState> {
-    static navigationOptions = {
-        title: 'Home',
-    };
-
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            events: [],
-        };
-    }
-
-    authenticate = () => {
-        console.log('Auth all you want you');
-    };
-
+export default class HomeScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.topContainer}>
-                    <Text style={styles.welcome}>Welcome to ESA Summer 2019</Text>
+                <EventContext.Consumer>
+                    {({event}) => (
+                        <View style={styles.eventContainer}>
+                            <View style={styles.containerHeader}>
+                                <View style={styles.headerSpecial} />
+                            </View>
+                            <View style={[styles.innerContainer, styles.innerEventContainer]}>
+                                <Text style={[styles.title, styles.alignTextRight]}>
+                                    {event.name}
+                                </Text>
+                                <Text style={[styles.date, styles.alignTextRight]}>
+                                    {dayjs(event.startDate).format('D')} -
+                                    {dayjs(event.endDate).format('D MMMM')}
+                                </Text>
+                                <Text style={[styles.text, styles.alignTextRight]}>
+                                    In
+                                    {event.meta
+                                        ? `${event.meta.venue.city}, ${event.meta.venue.country}`
+                                        : 'Missing city'}
+                                </Text>
+                                <Text style={[styles.text, styles.alignTextRight]}>
+                                    For {event.meta ? event.meta.cause.name : 'Missing Cause'}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
+                </EventContext.Consumer>
+                <View style={styles.innerContainer}>
+                    <AnnouncementList />
                 </View>
-                <View>
-                    <Text style={styles.instructions}>
-                        Some features are locked behind authentication
-                    </Text>
-                    <View style={styles.button}>
-                        <Button title="Auth with Twitch" onPress={this.authenticate} />
-                    </View>
-                </View>
-                {this.state.events.map((event) => {
-                    return <Text key={event.name}>{event.name}</Text>;
-                })}
             </View>
         );
     }
@@ -50,25 +46,55 @@ export default class HomeScreen extends Component<IProps, IState> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
     },
-    topContainer: {
-        paddingVertical: 10,
+    eventContainer: {
+        marginTop: 150,
+        textAlign: 'right',
+        backgroundColor: '#FFF',
+        width: 310,
+        alignSelf: 'flex-end',
+        height: 165,
+
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+
+        elevation: 5,
     },
-    welcome: {
-        fontSize: 20,
+    containerHeader: {
+        position: 'relative',
+        height: 6,
+        backgroundColor: '#881AE8',
+    },
+    headerSpecial: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        height: 6,
+        width: 50,
+        backgroundColor: '#FFBD17',
+    },
+    innerEventContainer: {
+        paddingTop: 20,
+    },
+    alignTextRight: {
+        textAlign: 'right',
+    },
+    innerContainer: {
+        paddingHorizontal: 24,
+    },
+    title: {
+        fontSize: 26,
         fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#000',
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 20,
+    date: {
+        fontSize: 14,
     },
-    button: {
-        marginTop: 5,
+    text: {
+        fontSize: 18,
     },
 });
