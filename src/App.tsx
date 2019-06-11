@@ -39,6 +39,8 @@ export default class AppContainer extends Component<IProps, IState> {
     componentDidMount() {
         LoadEvents()
             .then((res: IEvent[]) => {
+                console.log(res);
+
                 this.setState({
                     events: res,
                     preferredEvent: res[0],
