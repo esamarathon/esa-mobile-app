@@ -9,6 +9,7 @@ import ScheduleScreen from '../../Screens/ScheduleScreen';
 import EventDetails from '../../Screens/EventDetails';
 import {ThemedBottomTabBar} from './ThemedTabBar';
 import {EventContext} from '../../App';
+import {HomeIcon, EventsIcon, ScheduleIcon} from './Icons';
 
 const HomeStack = createStackNavigator(
     {
@@ -78,23 +79,25 @@ export const TabNavigator = createBottomTabNavigator(
             tabBarIcon: ({tintColor}) => {
                 const {routeName} = navigation.state;
 
-                const icons: {[x: string]: string} = {
-                    Home: 'home',
-                    Notification: 'bell',
-                    Schedule: 'calendar',
-                    Announcements: 'comments',
-                };
+                const color = tintColor || '#B8B8B8';
 
-                const iconName = icons[routeName] || 'ellipsis-h';
-
-                return <Icon name={iconName} size={24} color={tintColor || undefined} />;
+                switch (routeName) {
+                    case 'Home':
+                        return <HomeIcon color={color} />;
+                    case 'Events':
+                        return <EventsIcon color={color} />;
+                    case 'Schedule':
+                        return <ScheduleIcon color={color} />;
+                    default:
+                        return <Icon name="ellipsis-h" size={22} color={color} />;
+                }
             },
         }),
         tabBarOptions: {
             activeTintColor: '#881AE8',
-            inactiveTintColor: 'gray',
+            inactiveTintColor: '#B8B8B8',
             labelStyle: {
-                marginTop: 0,
+                marginTop: 5,
                 marginBottom: 5,
             },
         },
