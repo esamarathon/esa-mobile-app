@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
 import {IEvent} from '../../Services/EventsService';
 import dayjs from 'dayjs';
 
@@ -26,11 +26,11 @@ export class EventCard extends React.Component<IProps> {
                         </Text>
                     </View>
                     <View style={styles.meta}>
-                        <Text style={styles.metaText}>In</Text>
+                        <Text style={styles.metaText}>in</Text>
                         <Text style={styles.bold}>Malmö, Sweden</Text>
                     </View>
                     <View style={styles.meta}>
-                        <Text>For</Text>
+                        <Text>for</Text>
                         <Text style={styles.bold}>
                             {event.meta ? event.meta.cause.name : 'Missing Cause'}
                         </Text>
@@ -81,6 +81,8 @@ const styles = StyleSheet.create({
     },
     graphic: {
         position: 'absolute',
-        top: 0,
+        left: 0,
+        right: -5,
+        top: Platform.OS === 'ios' ? 0 : -5,
     },
 });

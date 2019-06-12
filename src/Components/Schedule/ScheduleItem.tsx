@@ -12,7 +12,6 @@ interface IProps {
 
 export default class ScheduleItem extends PureComponent<IProps> {
     handleStarClick = (item: IRun) => {
-        console.log(item);
         this.setState({
             starred: true,
         });
