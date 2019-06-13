@@ -60,8 +60,6 @@ export default class ParallaxView extends Component<IProps, IState> {
             extrapolate: 'clamp',
         });
 
-        console.log(imageOpacity, imageTranslate);
-
         return (
             <View style={styles.fill}>
                 <StatusBar barStyle="light-content" backgroundColor="rgba(0, 0, 0, 0.2)" />

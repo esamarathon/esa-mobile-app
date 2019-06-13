@@ -9,7 +9,7 @@ export default class AnnouncementItem extends Component {
                     <Text style={styles.metaTitle}>Schedule Release</Text>
                     <Text style={styles.itemGrow}>3 days ago</Text>
                 </View>
-                <Text>
+                <Text style={styles.text}>
                     You can now find the schedules for both streams on our website: website:
                     website: https://esamarathon.com/schedule If you wish to re-watch the re-watch
                     re-watch the live reveal, you’ll be able...
@@ -42,8 +42,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     metaTitle: {
-        fontSize: 15,
+        fontSize: 16,
+        color: '#000',
         fontWeight: 'bold',
+    },
+    text: {
+        color: 'rgba(0, 0, 0, 0.8)',
     },
     itemGrow: {
         flex: 1,

@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {BottomTabBar, BottomTabBarProps} from 'react-navigation';
 import {IEvent} from '../../Services/EventsService';
-import {GetActiveTintForEvent} from '../../Themes';
+import {GetBackgroundColorForEvent} from '../../Themes';
 
 interface IProps {
     event: IEvent;
@@ -16,7 +16,7 @@ export class ThemedBottomTabBar extends React.Component<IProps> {
         return (
             <BottomTabBar
                 {...navigation}
-                activeTintColor={GetActiveTintForEvent(event)}
+                activeTintColor={GetBackgroundColorForEvent(event)}
                 inactiveTintColor={'#B0B0B0'}
                 style={styles.tabBar}
             />
