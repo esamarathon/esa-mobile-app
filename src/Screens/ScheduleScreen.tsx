@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator, StatusBar} from 'react-native';
+import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
 import {EventContext} from '../App';
@@ -43,17 +43,12 @@ export default class ScheduleScreen extends Component {
         const {loading, runs} = this.state;
 
         return (
-            <View style={loading ? styles.loadingScreen : undefined}>
+            <View style={[loading ? styles.loadingScreen : undefined, styles.container]}>
                 {loading ? (
                     <ActivityIndicator size="large" color="#ccc" />
                 ) : (
                     <EventContext.Consumer>
-                        {({event}) => (
-                            <View>
-                                <StatusBar />
-                                <ScheduleList runs={runs} theme={event.meta.theme} />
-                            </View>
-                        )}
+                        {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
                     </EventContext.Consumer>
                 )}
             </View>
@@ -62,6 +57,9 @@ export default class ScheduleScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#EAEEF1',
+    },
     loadingScreen: {
         flex: 1,
         justifyContent: 'center',

@@ -1,44 +1,23 @@
 import React, {Component} from 'react';
 import {Text, FlatList, StyleSheet, View} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
 import SvgUri from 'react-native-svg-uri';
 import LinearGradient from 'react-native-linear-gradient';
-import {IEvent, LoadEvents} from '../Services/EventsService';
+import {IEvent} from '../Services/EventsService';
 import {EventCard} from '../Components/Event/EventCard';
+import {EventContext} from '../App';
 
-interface IState {
-    events: IEvent[];
-    loading: boolean;
+interface IProps {
+    onPickEvent: (event: IEvent) => void;
 }
 
-export default class EventsScreen extends Component<NavigationInjectedProps, IState> {
-    state = {
-        events: [],
-        loading: true,
-    };
-
-    componentDidMount() {
-        LoadEvents().then((res: IEvent[]) => {
-            this.setState({
-                loading: false,
-                events: res,
-            });
-        });
-    }
-
-    handleClick = (item: IEvent) => {
-        this.props.navigation.navigate('Details', {
-            event: item,
-        });
-    };
-
+export default class EventsScreen extends Component<IProps> {
     _keyExtractor = (item: IEvent) => item._id.substring(0, 1);
 
     render() {
-        const {events} = this.state;
+        const {onPickEvent} = this.props;
 
         const ListItem = (item: IEvent) => {
-            return <EventCard event={item} handleClick={this.handleClick} />;
+            return <EventCard event={item} handleClick={onPickEvent} />;
         };
 
         return (
@@ -67,12 +46,16 @@ export default class EventsScreen extends Component<NavigationInjectedProps, ISt
                         </Text>
                     </View>
 
-                    <FlatList
-                        data={events}
-                        horizontal={true}
-                        renderItem={({item}) => ListItem(item)}
-                        keyExtractor={this._keyExtractor}
-                    />
+                    <EventContext.Consumer>
+                        {({events}) => (
+                            <FlatList
+                                data={events}
+                                horizontal={true}
+                                renderItem={({item}) => ListItem(item)}
+                                keyExtractor={this._keyExtractor}
+                            />
+                        )}
+                    </EventContext.Consumer>
                 </View>
             </LinearGradient>
         );

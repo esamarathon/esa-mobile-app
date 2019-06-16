@@ -25,7 +25,7 @@ export default class ScheduleList extends Component<IProps, IState> {
     };
 
     render() {
-        const {runs} = this.props;
+        const {runs, theme} = this.props;
         const {openedRun} = this.state;
 
         const filteredRuns = runs.reduce<{[x: string]: IRun[]}>((days, run) => {
@@ -38,12 +38,12 @@ export default class ScheduleList extends Component<IProps, IState> {
         }, {});
 
         const ThemedBackground = {
-            backgroundColor: Theme[this.props.theme].backgroundColor,
-            color: Theme[this.props.theme].textColor,
+            backgroundColor: Theme[theme].backgroundColor,
+            color: Theme[theme].textColor,
         };
 
         return (
-            <View style={styles.container}>
+            <View>
                 <SectionList
                     sections={Object.entries(filteredRuns).map(([day, runs]) => ({
                         title: day,
@@ -65,10 +65,6 @@ export default class ScheduleList extends Component<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 20,
-        backgroundColor: '#ffffff',
-    },
     sectionHeader: {
         marginTop: 20,
         paddingVertical: 10,

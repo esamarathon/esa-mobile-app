@@ -61,6 +61,7 @@
 		CEE5DF2577854345B08B51DF /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F494ABAFAC4D998E35F4A1 /* libRNSVG.a */; };
 		0DD7FA5015404AFD8BC8FAE7 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD8AD0F0BC6A4AFF91CD6185 /* libRNSVG-tvOS.a */; };
 		2CF0A877FA7E43DAA75528C3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 986E65DF20DB43FAB09630E1 /* libBVLinearGradient.a */; };
+		C1F2E1A2E5E64ECF8862550B /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 570FA2751C4E40CDAE218560 /* libRNCAsyncStorage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -394,6 +395,8 @@
 		BD8AD0F0BC6A4AFF91CD6185 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; name = "libRNSVG-tvOS.a"; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		0D74843A25C146FABED3B081 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; name = "BVLinearGradient.xcodeproj"; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		986E65DF20DB43FAB09630E1 /* libBVLinearGradient.a */ = {isa = PBXFileReference; name = "libBVLinearGradient.a"; path = "libBVLinearGradient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		03F8B077DF9946F2B0FB2B14 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; name = "RNCAsyncStorage.xcodeproj"; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		570FA2751C4E40CDAE218560 /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; name = "libRNCAsyncStorage.a"; path = "libRNCAsyncStorage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +429,7 @@
 				AF92103DDD784EE8A555F9EB /* libRNGestureHandler.a in Frameworks */,
 				CEE5DF2577854345B08B51DF /* libRNSVG.a in Frameworks */,
 				2CF0A877FA7E43DAA75528C3 /* libBVLinearGradient.a in Frameworks */,
+				C1F2E1A2E5E64ECF8862550B /* libRNCAsyncStorage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,6 +627,7 @@
 				22730A06E067485D802F540E /* RNGestureHandler.xcodeproj */,
 				1651A31D0AB046C994797D7C /* RNSVG.xcodeproj */,
 				0D74843A25C146FABED3B081 /* BVLinearGradient.xcodeproj */,
+				03F8B077DF9946F2B0FB2B14 /* RNCAsyncStorage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1294,6 +1299,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1301,6 +1307,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Debug;
@@ -1327,6 +1334,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1334,6 +1342,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Release;
@@ -1360,6 +1369,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Debug;
@@ -1385,6 +1395,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Release;
@@ -1419,6 +1430,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1426,6 +1438,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Debug;
@@ -1460,6 +1473,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1467,6 +1481,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Release;
@@ -1500,6 +1515,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1507,6 +1523,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Debug;
@@ -1540,6 +1557,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1547,6 +1565,7 @@
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 			};
 			name = Release;

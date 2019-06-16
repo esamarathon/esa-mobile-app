@@ -41,11 +41,11 @@ export default class ScheduleItem extends PureComponent<IProps> {
                         <Text style={styles.time}>{date.format('HH:mm')}</Text>
                     </View>
                     <View style={styles.metaBlock}>
-                        <Text style={styles.title}>{players}</Text>
                         <Text style={styles.game}>
                             {game}
                             {category ? <Text style={styles.category}> - {category}</Text> : null}
                         </Text>
+                        <Text style={styles.title}>{players}</Text>
                         {open ? (
                             <>
                                 {run.Info ? <Text>Info: {run.Info}</Text> : null}
@@ -71,12 +71,12 @@ export default class ScheduleItem extends PureComponent<IProps> {
 }
 
 const styles = StyleSheet.create({
-    title: {
+    game: {
         fontWeight: 'bold',
         color: '#000',
-        fontSize: 18,
+        fontSize: 16,
     },
-    game: {
+    title: {
         fontWeight: 'bold',
     },
     category: {
@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         flexWrap: 'nowrap',
         flexDirection: 'row',
-        backgroundColor: '#ffffff',
     },
     metaBlock: {
         flex: 1,
@@ -102,8 +101,7 @@ const styles = StyleSheet.create({
     },
     duration: {},
     time: {
-        fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 13,
         marginTop: 3,
     },
     timeBlock: {
