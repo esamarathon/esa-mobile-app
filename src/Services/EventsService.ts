@@ -1,6 +1,6 @@
 export type IEventTheme = 'default' | 'summer' | 'winter';
 
-export interface IEventMeta {
+interface IEventMeta {
     theme: IEventTheme;
     horaro: string;
     twitchChannel: string;
@@ -8,14 +8,14 @@ export interface IEventMeta {
     venue: IEventVenue;
 }
 
-export interface IEventVenue {
+interface IEventVenue {
     address: string;
     city: string;
     country: string;
     name: string;
 }
 
-export interface IEventCause {
+interface IEventCause {
     name: string;
     link: string;
     logo: string;

@@ -1,20 +1,43 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 import {EventContext} from '../App';
 import dayjs from 'dayjs';
 import AnnouncementList from '../Components/Announcement/AnnouncementList';
+import {IEvent} from '../Services/EventsService';
+import {GetActiveTintForEvent, GetBackgroundColorForEvent} from '../Themes';
 
-export default class HomeScreen extends Component {
+export default class HomeScreen extends Component<NavigationInjectedProps> {
+    handleEventClick = (item: IEvent) => {
+        this.props.navigation.navigate('Details', {
+            event: item,
+        });
+    };
+
     render() {
         return (
             <View style={styles.container}>
                 <EventContext.Consumer>
                     {({event}) => (
-                        <View style={styles.eventContainer}>
-                            <View style={styles.containerHeader}>
-                                <View style={styles.headerSpecial} />
+                        <TouchableOpacity
+                            style={styles.eventContainer}
+                            activeOpacity={0.8}
+                            onPress={() => this.handleEventClick(event)}
+                        >
+                            <View
+                                style={[
+                                    styles.containerHeader,
+                                    {backgroundColor: GetBackgroundColorForEvent(event)},
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.headerSpecial,
+                                        {backgroundColor: GetActiveTintForEvent(event)},
+                                    ]}
+                                />
                             </View>
-                            <View style={[styles.innerContainer, styles.innerEventContainer]}>
+                            <View style={styles.innerContainer}>
                                 <Text style={[styles.title, styles.alignTextRight]}>
                                     {event.name}
                                 </Text>
@@ -22,21 +45,28 @@ export default class HomeScreen extends Component {
                                     {dayjs(event.startDate).format('D')} -
                                     {dayjs(event.endDate).format('D MMMM')}
                                 </Text>
-                                <Text style={[styles.text, styles.alignTextRight]}>
-                                    in{' '}
-                                    <Text style={styles.bold}>
-                                        {event.meta
-                                            ? `${event.meta.venue.city}, ${event.meta.venue.country}`
-                                            : 'Missing city'}
-                                    </Text>
-                                </Text>
-                                {event.meta && event.meta.cause.name ? (
-                                    <Text style={[styles.text, styles.alignTextRight]}>
-                                        for <Text style={styles.bold}>{event.meta.cause.name}</Text>
-                                    </Text>
-                                ) : null}
+                                {event.meta && (
+                                    <>
+                                        {event.meta.venue.city ? (
+                                            <Text style={[styles.text, styles.alignTextRight]}>
+                                                in{' '}
+                                                <Text style={styles.bold}>
+                                                    {`${event.meta.venue.city}, ${event.meta.venue.country}`}
+                                                </Text>
+                                            </Text>
+                                        ) : null}
+                                        {event.meta.cause.name ? (
+                                            <Text style={[styles.text, styles.alignTextRight]}>
+                                                for{' '}
+                                                <Text style={styles.bold}>
+                                                    {event.meta.cause.name}
+                                                </Text>
+                                            </Text>
+                                        ) : null}
+                                    </>
+                                )}
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                 </EventContext.Consumer>
                 <View style={styles.innerContainer}>
@@ -57,36 +87,35 @@ const styles = StyleSheet.create({
         color: '#444',
     },
     eventContainer: {
-        marginTop: 150,
-        textAlign: 'right',
+        marginTop: '40%',
         backgroundColor: '#FFFFFF',
-        width: 310,
+        width: '75%',
+        paddingTop: 26,
+        paddingBottom: 20,
         alignSelf: 'flex-end',
-        height: 165,
         shadowColor: '#000',
+        shadowOpacity: 0.25,
         shadowOffset: {
             width: 0,
             height: 3,
         },
-        shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        borderTopLeftRadius: 5,
+        overflow: 'hidden',
+        borderBottomLeftRadius: 5,
+        elevation: 1,
     },
     containerHeader: {
-        position: 'relative',
-        height: 6,
-        backgroundColor: '#881AE8',
-    },
-    headerSpecial: {
         position: 'absolute',
         top: 0,
+        left: 0,
         right: 0,
         height: 6,
-        width: 50,
-        backgroundColor: '#FFBD17',
     },
-    innerEventContainer: {
-        paddingTop: 20,
+    headerSpecial: {
+        alignSelf: 'flex-end',
+        height: '100%',
+        width: '20%',
     },
     alignTextRight: {
         textAlign: 'right',
@@ -96,6 +125,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
+        margin: 0,
         color: '#000',
         fontWeight: 'bold',
     },

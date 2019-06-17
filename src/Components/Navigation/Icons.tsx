@@ -50,7 +50,7 @@ export const ScheduleIcon = ({color}: IProps) => (
     </Svg>
 );
 
-export const EventsIcon = ({color}: IProps) => (
+export const SettingsIcon = ({color}: IProps) => (
     <Svg width="22" height="22" viewBox="0 0 24 24" fill="none">
         <G clip-path="url(#clip0)">
             <Path

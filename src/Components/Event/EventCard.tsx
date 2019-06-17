@@ -1,7 +1,9 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Svg, Path} from 'react-native-svg';
 import {IEvent} from '../../Services/EventsService';
 import dayjs from 'dayjs';
+import {GetBackgroundColorForEvent, GetActiveTintForEvent} from '../../Themes';
 
 interface IProps {
     event: IEvent;
@@ -13,10 +15,21 @@ export class EventCard extends React.Component<IProps> {
         const {event, handleClick} = this.props;
 
         return (
-            <TouchableOpacity style={styles.card} onPress={() => handleClick(event)}>
-                <View style={styles.graphic}>
-                    <Image source={require('../../Assets/graphics/graphic.png')} />
-                </View>
+            <TouchableOpacity
+                style={styles.card}
+                activeOpacity={0.8}
+                onPress={() => handleClick(event)}
+            >
+                <Svg style={styles.graphicSvg} viewBox="0 0 194 92" fill="none">
+                    <Path
+                        d="M68.9998 92H193.999V16.5393C193.999 4.13481 183.999 0.34456 179 0H17.5C7.77911 0 -1.17885e-05 8.50009 0 16.5393V35.1461C1.17047e-05 80.2176 46.1665 91.8277 68.9998 92Z"
+                        fill={GetBackgroundColorForEvent(event)}
+                    />
+                    <Path
+                        d="M103.737 70.9817H194V14C194 8 187 0 179.295 0H54V27.1166C54 61.8908 87.2783 70.8487 103.737 70.9817Z"
+                        fill={GetActiveTintForEvent(event)}
+                    />
+                </Svg>
                 <Text style={styles.title}>{event.name}</Text>
                 <View>
                     <View style={styles.meta}>
@@ -25,16 +38,20 @@ export class EventCard extends React.Component<IProps> {
                             {dayjs(event.endDate).format('D MMMM')}
                         </Text>
                     </View>
-                    <View style={styles.meta}>
-                        <Text style={styles.metaText}>in</Text>
-                        <Text style={styles.bold}>Malmö, Sweden</Text>
-                    </View>
-                    <View style={styles.meta}>
-                        <Text>for</Text>
-                        <Text style={styles.bold}>
-                            {event.meta ? event.meta.cause.name : 'Missing Cause'}
-                        </Text>
-                    </View>
+                    {event.meta.venue.country ? (
+                        <View style={styles.meta}>
+                            <Text style={styles.metaText}>in</Text>
+                            <Text style={styles.bold}>
+                                {event.meta.venue.city}, {event.meta.venue.country}
+                            </Text>
+                        </View>
+                    ) : null}
+                    {event.meta && event.meta.cause.name ? (
+                        <View style={styles.meta}>
+                            <Text>for</Text>
+                            <Text style={styles.bold}>{event.meta.cause.name}</Text>
+                        </View>
+                    ) : null}
                 </View>
             </TouchableOpacity>
         );
@@ -48,14 +65,13 @@ const styles = StyleSheet.create({
     card: {
         position: 'relative',
         height: 255,
-        width: 195,
+        width: 194,
         borderRadius: 18,
         backgroundColor: '#fff',
         marginHorizontal: 30,
         paddingBottom: 37,
         flex: 1,
         justifyContent: 'flex-end',
-
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -63,7 +79,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-
         elevation: 5,
     },
     bold: {
@@ -79,10 +94,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-    graphic: {
+    graphicSvg: {
         position: 'absolute',
-        left: 0,
-        right: -5,
-        top: Platform.OS === 'ios' ? 0 : -5,
+        top: -5,
+        borderRadius: 18,
+        width: 194,
+        height: 100,
     },
 });

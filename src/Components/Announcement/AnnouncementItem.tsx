@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default class AnnouncementItem extends Component {
+export default class AnnouncementItem extends PureComponent {
     render() {
         return (
             <View style={styles.item}>
