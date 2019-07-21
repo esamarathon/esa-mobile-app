@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, Alert, Text, StyleSheet} from 'react-native';
+import {ActivityIndicator, Text, StyleSheet} from 'react-native';
 import {createAppContainer, NavigationContainer} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import {createNotificationListeners, checkPermission} from './Services/PushService';
