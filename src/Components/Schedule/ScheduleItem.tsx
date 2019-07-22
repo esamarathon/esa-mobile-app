@@ -20,19 +20,25 @@ export default class ScheduleItem extends PureComponent<IProps> {
     render() {
         const {run, onClick, open} = this.props;
 
-        const players = extractLinks(run['Player(s)'])
-            .map(({name}) => name)
-            .join(' vs ');
+        const players =
+            extractLinks(run['Player(s)'])
+                .map(({name}) => name)
+                .join(' vs ')
+                .trim() ||
+            run['Player(s)'] ||
+            'Unknown players';
 
-        const game = extractLinks(run.Game)
-            .map(({name}) => name)
-            .join(', ');
+        const game =
+            extractLinks(run.Game)
+                .map(({name}) => name)
+                .join(', ')
+                .trim() ||
+            run.Game ||
+            'Unknown game';
 
         const date = moment.default(run.scheduled_t * 1000);
 
-        const category = run.Category
-            ? run.Category.replace('Any%', '').trim() || undefined
-            : undefined;
+        const category = run.Category ? run.Category.trim() || undefined : undefined;
 
         return (
             <TouchableOpacity onPress={() => onClick(open ? undefined : run)}>

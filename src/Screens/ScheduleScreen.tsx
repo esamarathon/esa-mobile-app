@@ -1,60 +1,55 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
+import {IEvent} from '../Services/EventsService';
 import {EventContext} from '../App';
 
-interface IState {
-    runs: IRun[];
-    error: Error | undefined;
-    loading: boolean;
-}
+const ScheduleScreen: React.FunctionComponent<NavigationInjectedProps> = () => {
+    const context = useContext(EventContext);
+    const [runs, setRuns] = useState<IRun[]>([]);
+    const [error, setError] = useState<Error | undefined>(undefined);
+    const [loading, setLoading] = useState(true);
 
-export default class ScheduleScreen extends Component {
-    static navigationOptions = {
-        title: 'Schedule',
-    };
-
-    state: IState = {
-        runs: [],
-        error: undefined,
-        loading: true,
-    };
-
-    async componentDidMount() {
+    async function loadEvents(event: IEvent) {
         try {
-            const runs = await LoadHoraro();
-
-            this.setState({
-                runs,
-            });
+            const runs = await LoadHoraro(event.meta.horaro);
+            setRuns(runs);
         } catch (error) {
-            this.setState({
-                error,
-            });
+            setError(error);
         } finally {
-            this.setState({
-                loading: false,
-            });
+            setLoading(false);
         }
     }
 
-    render() {
-        const {loading, runs} = this.state;
+    useEffect(() => {
+        loadEvents(context.event);
+    }, [context.event]);
 
+    if (error) {
         return (
-            <View style={[loading ? styles.loadingScreen : undefined, styles.container]}>
-                {loading ? (
-                    <ActivityIndicator size="large" color="#ccc" />
-                ) : (
-                    <EventContext.Consumer>
-                        {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
-                    </EventContext.Consumer>
-                )}
+            <View style={styles.loadingScreen}>
+                <Text style={styles.error}>Failed fetching events...</Text>
+                <Text style={styles.errorMessage}>{error.message}</Text>
             </View>
         );
     }
-}
+
+    return (
+        <View style={[loading ? styles.loadingScreen : undefined, styles.container]}>
+            {loading ? (
+                <ActivityIndicator size="large" color="#ccc" />
+            ) : (
+                <EventContext.Consumer>
+                    {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
+                </EventContext.Consumer>
+            )}
+        </View>
+    );
+};
+
+export default ScheduleScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -64,5 +59,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    error: {
+        fontSize: 20,
+        color: '#000',
+    },
+    errorMessage: {
+        marginTop: 10,
+        color: '#444',
     },
 });
