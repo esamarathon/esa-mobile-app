@@ -75,8 +75,8 @@ export function extractLinks(markdown?: string) {
     return matches;
 }
 
-export async function LoadHoraro() {
-    const response = await fetch('https://horaro.org/esa/2018-one.json?named=true');
+export async function LoadHoraro(horaroEndpoint: string) {
+    const response = await fetch(`${horaroEndpoint}.json?named=true`);
     const {schedule}: IRunsResponse = await response.json();
 
     const columns = Object.values(schedule.columns);
