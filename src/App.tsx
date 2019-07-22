@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {ActivityIndicator, Text, StyleSheet} from 'react-native';
 import {createAppContainer, NavigationContainer} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+    createNotificationListeners,
+    hasPermission,
+    getToken,
+    storeToken,
+    requestPermission,
+} from './Services/PushService';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
 import {IEvent, LoadEvents} from './Services/EventsService';
 import EventsScreen from './Screens/EventsScreen';
@@ -45,6 +52,15 @@ export default class AppContainer extends Component<{}, IState> {
     };
 
     async componentDidMount() {
+        if (!(await hasPermission())) {
+            await requestPermission();
+        }
+
+        const token = await getToken();
+        await storeToken(token);
+
+        createNotificationListeners();
+
         const preferredEventId = await AsyncStorage.getItem(AppContainer.preferredEventKey);
 
         try {

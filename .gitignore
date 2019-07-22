@@ -236,6 +236,9 @@ captures/
 
 .vscode/
 
+android/app/google-services.json
+ios/Pods
+
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
 #*.jks
