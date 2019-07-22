@@ -1,41 +1,80 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
+import React from 'react';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {EventContext} from '../App';
-import {GetBackgroundColorForEvent} from '../Themes';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const SettingsScreen: React.FunctionComponent<NavigationInjectedProps> = () => {
-    const {updateEvent, event} = useContext(EventContext);
+// This is just fake user data for now PoC purpose
+interface IState {
+    user: {
+        name?: string;
+        status?: string;
+    };
+}
 
-    const backgroundColor = GetBackgroundColorForEvent(event);
+export default class ScheduleScreen extends React.Component {
+    state: IState = {
+        user: {},
+    };
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Settings</Text>
-            <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                    <Icon style={styles.cardHeaderIcon} size={20} name="twitch" />
-                    <Text style={styles.cardHeaderText}>Twitch</Text>
+    updateUser = () => {
+        this.setState({
+            user: {
+                name: 'Edenal',
+                status: 'Organiser',
+            },
+        });
+    };
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.header}>Settings</Text>
+
+                {this.state.user.name ? (
+                    <View style={styles.card}>
+                        <View style={styles.cardHeader}>
+                            <Image
+                                source={{
+                                    uri:
+                                        'https://pbs.twimg.com/profile_images/647526574120529920/T5rm0m7W.jpg',
+                                }}
+                                style={styles.avatar}
+                            />
+                        </View>
+                        <View style={styles.userText}>
+                            <Text>{this.state.user.name}</Text>
+                            <Text>{this.state.user.status}</Text>
+                        </View>
+                    </View>
+                ) : (
+                    <View />
+                )}
+
+                <View style={styles.card}>
+                    <View style={styles.cardHeader}>
+                        <Icon style={styles.cardHeaderIcon} size={20} name="twitch" />
+                        <Text style={styles.cardHeaderText}>Twitch</Text>
+                    </View>
+                    <TouchableOpacity style={styles.button} onPress={() => this.updateUser()}>
+                        <Text style={styles.buttonText}>Login with Twitch</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={[styles.button, {backgroundColor}]} onPress={() => {}}>
-                    <Text style={styles.buttonText}>Login with Twitch</Text>
-                </TouchableOpacity>
+                <EventContext.Consumer>
+                    {({updateEvent}) => (
+                        <View style={styles.card}>
+                            <View style={styles.cardHeader}>
+                                <Text style={styles.cardHeaderText}>Event</Text>
+                            </View>
+                            <TouchableOpacity style={styles.button} onPress={() => updateEvent()}>
+                                <Text style={styles.buttonText}>Change event</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </EventContext.Consumer>
             </View>
-            <View style={styles.card}>
-                <View style={styles.cardHeader}>
-                    <Text style={styles.cardHeaderText}>Event</Text>
-                </View>
-                <TouchableOpacity style={[styles.button, {backgroundColor}]} onPress={updateEvent}>
-                    <Text style={styles.buttonText}>Change event</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-};
-
-export default SettingsScreen;
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -69,6 +108,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 20,
         paddingRight: 20,
+        backgroundColor: 'purple',
         alignSelf: 'flex-start',
         borderRadius: 3,
         elevation: 2,
@@ -89,5 +129,14 @@ const styles = StyleSheet.create({
         marginTop: 40,
         marginLeft: 20,
         fontWeight: 'bold',
+    },
+    avatar: {
+        width: 75,
+        height: 75,
+        borderRadius: 75 / 2,
+    },
+    userText: {
+        marginLeft: 20,
+        flexDirection: 'column',
     },
 });
