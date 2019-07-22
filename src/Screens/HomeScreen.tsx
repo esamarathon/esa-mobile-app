@@ -9,7 +9,7 @@ import {GetActiveTintForEvent, GetBackgroundColorForEvent} from '../Themes';
 
 export default class HomeScreen extends Component<NavigationInjectedProps> {
     handleEventClick = (item: IEvent) => {
-        this.props.navigation.navigate('Details', {
+        this.props.navigation.navigate('HomeDetails', {
             event: item,
         });
     };

@@ -12,7 +12,7 @@ import {HomeIcon, ScheduleIcon, SettingsIcon} from './Icons';
 const HomeStack = createStackNavigator(
     {
         Home: HomeScreen,
-        Details: EventDetails,
+        HomeDetails: EventDetails,
     },
     {
         headerMode: 'none',
@@ -30,7 +30,7 @@ const ScheduleStack = createStackNavigator(
 
 const SettingsStack = createStackNavigator(
     {
-        Schedule: SettingsScreen,
+        Settings: SettingsScreen,
     },
     {
         headerMode: 'none',
