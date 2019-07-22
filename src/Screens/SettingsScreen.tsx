@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {EventContext} from '../App';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {NavigationInjectedProps} from 'react-navigation';
 
 // This is just fake user data for now PoC purpose
 interface IState {
@@ -10,8 +11,7 @@ interface IState {
         status?: string;
     };
 }
-
-export default class ScheduleScreen extends React.Component {
+export default class ScheduleScreen extends Component<NavigationInjectedProps> {
     state: IState = {
         user: {},
     };
