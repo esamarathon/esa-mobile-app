@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 import Icon from 'react-native-vector-icons/Feather';
 import {IRun, extractLinks} from '../../Services/ScheduleService';
 
@@ -37,7 +37,7 @@ export default class ScheduleItem extends PureComponent<IProps> {
             run.Game ||
             'Unknown game';
 
-        const date = moment.default(run.scheduled_t * 1000);
+        const date = dayjs(run.scheduled_t * 1000);
 
         const category = run.Category ? run.Category.trim() || undefined : undefined;
 
