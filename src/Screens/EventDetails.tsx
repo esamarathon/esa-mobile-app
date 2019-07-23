@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Linking, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import {NavigationInjectedProps} from 'react-navigation';
-import SvgUri from 'react-native-svg-uri';
+import LogoBorderless from '../Assets/logo/logo-borderless.svg';
 import dayjs from 'dayjs';
 import {IEvent} from '../Services/EventsService';
 
@@ -35,13 +35,7 @@ export default class EventDetails extends Component<NavigationInjectedProps> {
             <ScrollView style={styles.fill}>
                 <View style={styles.cardContainer}>
                     <View style={styles.header}>
-                        <SvgUri
-                            width={55}
-                            height={55}
-                            source={{
-                                uri: 'https://esamarathon.com/static/img/logos/logo-borderless.svg',
-                            }}
-                        />
+                        <LogoBorderless width={55} height={55} />
                         <Text style={[styles.text, styles.headerTitle]}>{event.name}</Text>
                     </View>
                     <View style={styles.card}>

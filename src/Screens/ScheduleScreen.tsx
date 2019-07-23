@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     },
     loadingScreen: {
         flex: 1,
+        backgroundColor: '#EAEEF1',
         justifyContent: 'center',
         alignItems: 'center',
     },

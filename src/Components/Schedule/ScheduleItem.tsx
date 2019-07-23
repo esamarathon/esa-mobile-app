@@ -11,6 +11,7 @@ interface IProps {
 }
 
 export default class ScheduleItem extends PureComponent<IProps> {
+    // eslint-disable-next-line
     handleStarClick = (item: IRun) => {
         this.setState({
             starred: true,

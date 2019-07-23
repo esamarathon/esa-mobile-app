@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Text, FlatList, StyleSheet, View} from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 import LinearGradient from 'react-native-linear-gradient';
 import {IEvent} from '../Services/EventsService';
 import {EventCard} from '../Components/Event/EventCard';
 import {EventContext} from '../App';
+import LogoBorderless from '../Assets/logo/logo-borderless.svg';
 
 interface IProps {
     onPickEvent: (event: IEvent) => void;
@@ -30,13 +30,7 @@ export default class EventsScreen extends Component<IProps> {
             >
                 <View style={styles.container}>
                     <View style={styles.logoContainer}>
-                        <SvgUri
-                            width={60}
-                            height={60}
-                            source={{
-                                uri: 'https://esamarathon.com/static/img/logos/logo-borderless.svg',
-                            }}
-                        />
+                        <LogoBorderless width={60} height={60} />
                     </View>
 
                     <View style={styles.infoText}>

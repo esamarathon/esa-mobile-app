@@ -1,7 +1,12 @@
 import mocks from 'react-native-jest-mocks';
+import MockAsyncStorage from 'mock-async-storage';
+
+jest.useFakeTimers();
 
 jest.mock('react-native-vector-icons/FontAwesome', () => ({loadFont: () => null}));
 jest.mock('react-native-vector-icons/Feather', () => ({loadFont: () => null}));
+
+jest.mock('@react-native-community/async-storage', () => new MockAsyncStorage());
 
 jest.mock('NativeModules', () => ({
     UIManager: {
@@ -15,6 +20,27 @@ jest.mock('NativeModules', () => ({
         State: {},
         Directions: {},
     },
+}));
+
+jest.mock('react-native-firebase', () => ({
+    messaging: jest.fn(() => ({
+        hasPermission: jest.fn(() => Promise.resolve(true)),
+        subscribeToTopic: jest.fn(),
+        unsubscribeFromTopic: jest.fn(),
+        requestPermission: jest.fn(() => Promise.resolve(true)),
+        getToken: jest.fn(() => Promise.resolve('myMockToken')),
+        onTokenRefresh: jest.fn(() => Promise.resolve('myMockToken')),
+        onMessage: jest.fn(),
+    })),
+    notifications: jest.fn(() => ({
+        onNotification: jest.fn(),
+        getInitialNotification: jest.fn(),
+        onNotificationOpened: jest.fn(),
+        onNotificationDisplayed: jest.fn(),
+        android: {
+            createChannel: jest.fn(),
+        },
+    })),
 }));
 
 jest.mock('react-navigation', () => ({
