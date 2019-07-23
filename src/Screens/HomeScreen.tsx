@@ -49,24 +49,20 @@ export default class HomeScreen extends Component<NavigationInjectedProps> {
                                 {event.meta && (
                                     <>
                                         {event.meta.venue.city ? (
-                                            <View>
-                                                <Text style={[styles.text, styles.alignTextRight]}>
-                                                    in{' '}
-                                                    <Text style={styles.bold}>
-                                                        {`${event.meta.venue.city}, ${event.meta.venue.country}`}
-                                                    </Text>
+                                            <Text style={[styles.text, styles.alignTextRight]}>
+                                                in{' '}
+                                                <Text style={styles.bold}>
+                                                    {`${event.meta.venue.city}, ${event.meta.venue.country}`}
                                                 </Text>
-                                            </View>
+                                            </Text>
                                         ) : null}
                                         {event.meta.cause.name ? (
-                                            <View>
-                                                <Text style={[styles.text, styles.alignTextRight]}>
-                                                    for{' '}
-                                                    <Text style={styles.bold}>
-                                                        {event.meta.cause.name}
-                                                    </Text>
+                                            <Text style={[styles.text, styles.alignTextRight]}>
+                                                for{' '}
+                                                <Text style={styles.bold}>
+                                                    {event.meta.cause.name}
                                                 </Text>
-                                            </View>
+                                            </Text>
                                         ) : null}
                                     </>
                                 )}
