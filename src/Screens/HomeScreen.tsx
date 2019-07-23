@@ -24,7 +24,6 @@ export default class HomeScreen extends Component<NavigationInjectedProps> {
                             activeOpacity={0.8}
                             onPress={() => this.handleEventClick(event)}
                         >
-                            {console.log(event)}
                             <View
                                 style={[
                                     styles.containerHeader,
