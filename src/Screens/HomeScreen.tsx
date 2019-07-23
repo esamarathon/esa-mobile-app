@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     innerContainer: {
+        height: 100,
         paddingHorizontal: 24,
     },
     title: {
