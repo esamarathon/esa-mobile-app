@@ -24,6 +24,7 @@ export default class HomeScreen extends Component<NavigationInjectedProps> {
                             activeOpacity={0.8}
                             onPress={() => this.handleEventClick(event)}
                         >
+                            {console.log(event)}
                             <View
                                 style={[
                                     styles.containerHeader,
@@ -48,20 +49,24 @@ export default class HomeScreen extends Component<NavigationInjectedProps> {
                                 {event.meta && (
                                     <>
                                         {event.meta.venue.city ? (
-                                            <Text style={[styles.text, styles.alignTextRight]}>
-                                                in{' '}
-                                                <Text style={styles.bold}>
-                                                    {`${event.meta.venue.city}, ${event.meta.venue.country}`}
+                                            <View>
+                                                <Text style={[styles.text, styles.alignTextRight]}>
+                                                    in{' '}
+                                                    <Text style={styles.bold}>
+                                                        {`${event.meta.venue.city}, ${event.meta.venue.country}`}
+                                                    </Text>
                                                 </Text>
-                                            </Text>
+                                            </View>
                                         ) : null}
                                         {event.meta.cause.name ? (
-                                            <Text style={[styles.text, styles.alignTextRight]}>
-                                                for{' '}
-                                                <Text style={styles.bold}>
-                                                    {event.meta.cause.name}
+                                            <View>
+                                                <Text style={[styles.text, styles.alignTextRight]}>
+                                                    for{' '}
+                                                    <Text style={styles.bold}>
+                                                        {event.meta.cause.name}
+                                                    </Text>
                                                 </Text>
-                                            </Text>
+                                            </View>
                                         ) : null}
                                     </>
                                 )}
@@ -121,6 +126,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     innerContainer: {
+        height: 100,
         paddingHorizontal: 24,
     },
     title: {
