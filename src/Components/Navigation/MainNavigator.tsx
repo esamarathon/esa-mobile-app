@@ -5,7 +5,7 @@ import HomeScreen from '../../Screens/HomeScreen';
 import SettingsScreen from '../../Screens/SettingsScreen';
 import ScheduleScreen from '../../Screens/ScheduleScreen';
 import EventDetails from '../../Screens/EventDetails';
-import {ThemedBottomTabBar} from './ThemedTabBar';
+import ThemedBottomTabBar from './ThemedTabBar';
 import {EventContext} from '../../App';
 import {HomeIcon, ScheduleIcon, SettingsIcon} from './Icons';
 

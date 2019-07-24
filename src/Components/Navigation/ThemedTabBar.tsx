@@ -9,19 +9,15 @@ interface IProps {
     navigation: BottomTabBarProps;
 }
 
-export class ThemedBottomTabBar extends React.Component<IProps> {
-    render() {
-        const {event, navigation} = this.props;
-
-        return (
-            <BottomTabBar
-                {...navigation}
-                activeTintColor={GetBackgroundColorForEvent(event)}
-                inactiveTintColor={'#A8A8A8'}
-                style={styles.tabBar}
-            />
-        );
-    }
+export default function ThemedBottomTabBar({event, navigation}: IProps) {
+    return (
+        <BottomTabBar
+            {...navigation}
+            activeTintColor={GetBackgroundColorForEvent(event)}
+            inactiveTintColor={'#A8A8A8'}
+            style={styles.tabBar}
+        />
+    );
 }
 
 const styles = StyleSheet.create({

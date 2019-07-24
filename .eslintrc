@@ -1,14 +1,14 @@
 {
     "root": true,
     "env": {
-        "react-native/react-native": true
+        "react-native/react-native": true,
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
-    "plugins": ["@typescript-eslint", "prettier", "react", "react-native"],
+    "plugins": ["@typescript-eslint", "prettier", "react", "react-native", "react-hooks"],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
@@ -32,7 +32,9 @@
         "react-native/no-unused-styles": 0,
         "react-native/no-color-literals": 0,
         "react/prop-types": 0,
-        "react/no-unescaped-entities": 0
+        "react/no-unescaped-entities": 0,
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     },
     "settings": {
         "react": {
