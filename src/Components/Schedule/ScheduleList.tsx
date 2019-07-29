@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, SectionList, Text, View} from 'react-native';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 import ScheduleItem from './ScheduleItem';
 import {IRun} from '../../Services/ScheduleService';
 import {IEventTheme} from '../../Services/EventsService';
@@ -29,7 +29,7 @@ export default class ScheduleList extends Component<IProps, IState> {
         const {openedRun} = this.state;
 
         const filteredRuns = runs.reduce<{[x: string]: IRun[]}>((days, run) => {
-            const day = moment.default(run.scheduled_t * 1000).format('YYYY-MM-DD');
+            const day = dayjs(run.scheduled_t * 1000).format('YYYY-MM-DD');
 
             return {
                 ...days,
@@ -55,7 +55,7 @@ export default class ScheduleList extends Component<IProps, IState> {
                     )}
                     renderSectionHeader={({section: {data}}) => (
                         <Text style={[styles.sectionHeader, ThemedBackground]}>
-                            {moment.default(data[0].scheduled_t * 1000).format('ddd, MMMM Do')}
+                            {dayjs(data[0].scheduled_t * 1000).format('ddd, MMMM Do')}
                         </Text>
                     )}
                 />
