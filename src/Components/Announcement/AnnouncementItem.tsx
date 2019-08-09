@@ -1,23 +1,23 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default class AnnouncementItem extends PureComponent {
-    render() {
-        return (
-            <View style={styles.item}>
-                <View style={styles.metaText}>
-                    <Text style={styles.metaTitle}>Schedule Release</Text>
-                    <Text style={styles.itemGrow}>3 days ago</Text>
-                </View>
-                <Text style={styles.text}>
-                    You can now find the schedules for both streams on our website: website:
-                    website: https://esamarathon.com/schedule If you wish to re-watch the re-watch
-                    re-watch the live reveal, you’ll be able...
-                </Text>
+function AnnouncementItem() {
+    return (
+        <View style={styles.item}>
+            <View style={styles.metaText}>
+                <Text style={styles.metaTitle}>Schedule Release</Text>
+                <Text style={styles.itemGrow}>3 days ago</Text>
             </View>
-        );
-    }
+            <Text style={styles.text}>
+                You can now find the schedules for both streams on our website:
+                https://esamarathon.com/schedule If you wish to re-watch the live reveal, you’ll be
+                able...
+            </Text>
+        </View>
+    );
 }
+
+export default AnnouncementItem;
 
 const styles = StyleSheet.create({
     innerEventContainer: {

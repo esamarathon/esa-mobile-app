@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import AnnouncementItem from './AnnouncementItem';
 
-export default class AnnouncementList extends Component {
-    render() {
-        return (
-            <View style={styles.announcement}>
-                <Text style={styles.textTitle}>Announcements</Text>
-                <View style={styles.innerContainer}>
-                    <AnnouncementItem />
-                </View>
+function AnnouncementList() {
+    return (
+        <View style={styles.announcement}>
+            <Text style={styles.textTitle}>Announcements</Text>
+            <View style={styles.innerContainer}>
+                <AnnouncementItem />
             </View>
-        );
-    }
+        </View>
+    );
 }
+
+export default AnnouncementList;
 
 const styles = StyleSheet.create({
     innerEventContainer: {

@@ -1,59 +1,51 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Text, FlatList, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {IEvent} from '../Services/EventsService';
-import {EventCard} from '../Components/Event/EventCard';
-import {EventContext} from '../App';
+import EventCard from '../Components/Event/EventCard';
 import LogoBorderless from '../Assets/logo/logo-borderless.svg';
 
 interface IProps {
+    events: IEvent[];
     onPickEvent: (event: IEvent) => void;
 }
 
-export default class EventsScreen extends Component<IProps> {
-    _keyExtractor = (item: IEvent) => item._id.substring(0, 1);
+export default function EventsScreen({events, onPickEvent}: IProps) {
+    const noEvents = events.length === 0;
 
-    render() {
-        const {onPickEvent} = this.props;
-
-        const ListItem = (item: IEvent) => {
-            return <EventCard event={item} handleClick={onPickEvent} />;
-        };
-
-        return (
-            <LinearGradient
-                colors={['#133895', '#161E32']}
-                useAngle={true}
-                angle={315}
-                angleCenter={{x: 0.5, y: 0.5}}
-                style={styles.linearGradient}
-            >
-                <View style={styles.container}>
-                    <View style={styles.logoContainer}>
-                        <LogoBorderless width={60} height={60} />
-                    </View>
-
-                    <View style={styles.infoText}>
-                        <Text style={styles.eventTitle}>Pick your event</Text>
-                        <Text style={styles.eventDescription}>
-                            Don&apos;t worry, you can always switch between events later
-                        </Text>
-                    </View>
-
-                    <EventContext.Consumer>
-                        {({events}) => (
-                            <FlatList
-                                data={events}
-                                horizontal={true}
-                                renderItem={({item}) => ListItem(item)}
-                                keyExtractor={this._keyExtractor}
-                            />
-                        )}
-                    </EventContext.Consumer>
+    return (
+        <LinearGradient
+            colors={['#133895', '#161E32']}
+            useAngle={true}
+            angle={315}
+            angleCenter={{x: 0.5, y: 0.5}}
+            style={styles.linearGradient}
+        >
+            <View style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <LogoBorderless width={60} height={60} />
                 </View>
-            </LinearGradient>
-        );
-    }
+
+                <View style={styles.infoText}>
+                    <Text style={styles.eventTitle}>
+                        {noEvents ? 'No events coming up...' : 'Pick your event'}
+                    </Text>
+                    <Text style={styles.eventDescription}>
+                        {noEvents
+                            ? 'Please check back later.'
+                            : "Don't worry, you can always switch between events later"}
+                    </Text>
+                </View>
+
+                <FlatList
+                    data={events}
+                    horizontal={true}
+                    renderItem={({item}) => <EventCard event={item} handleClick={onPickEvent} />}
+                    keyExtractor={(item: IEvent) => item._id.substring(0, 1)}
+                />
+            </View>
+        </LinearGradient>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -76,11 +68,17 @@ const styles = StyleSheet.create({
     eventDescription: {
         color: '#ffffff',
         fontSize: 16,
+        marginTop: 2,
     },
     infoText: {
         paddingLeft: 40,
         paddingRight: 130,
         marginBottom: 50,
         color: '#ffffff',
+    },
+    noEventsText: {
+        color: 'rgba(255, 255, 255, 0.5)',
+        fontSize: 20,
+        marginLeft: 50,
     },
 });

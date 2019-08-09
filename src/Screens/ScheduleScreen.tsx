@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
+import {NavigationScreenComponent} from 'react-navigation';
 import ScheduleList from '../Components/Schedule/ScheduleList';
 import {LoadHoraro, IRun} from '../Services/ScheduleService';
 import {IEvent} from '../Services/EventsService';
 import {EventContext} from '../App';
 
-const ScheduleScreen: React.FunctionComponent<NavigationInjectedProps> = () => {
+const ScheduleScreen: NavigationScreenComponent = () => {
     const context = useContext(EventContext);
     const [runs, setRuns] = useState<IRun[]>([]);
-    const [error, setError] = useState<Error | undefined>(undefined);
+    const [error, setError] = useState<Error | undefined>();
     const [loading, setLoading] = useState(true);
 
     async function loadEvents(event: IEvent) {
@@ -42,11 +42,15 @@ const ScheduleScreen: React.FunctionComponent<NavigationInjectedProps> = () => {
                 <ActivityIndicator size="large" color="#ccc" />
             ) : (
                 <EventContext.Consumer>
-                    {({event}) => <ScheduleList runs={runs} theme={event.meta.theme} />}
+                    {({event}) => <ScheduleList runs={runs} event={event} />}
                 </EventContext.Consumer>
             )}
         </View>
     );
+};
+
+ScheduleScreen.navigationOptions = {
+    title: 'Schedule',
 };
 
 export default ScheduleScreen;

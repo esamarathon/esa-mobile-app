@@ -1,5 +1,5 @@
 import firebase from 'react-native-firebase';
-import {Alert} from 'react-native';
+import {showAlert} from './AlertService';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export async function createNotificationListeners() {
@@ -20,6 +20,14 @@ export async function createNotificationListeners() {
     });
 
     /*
+     * Triggered for data only payload in foreground
+     * */
+    firebase.messaging().onMessage((message) => {
+        // process data message
+        console.log(JSON.stringify(message));
+    });
+
+    /*
      * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
      * */
     const notificationOpen = await firebase.notifications().getInitialNotification();
@@ -27,20 +35,6 @@ export async function createNotificationListeners() {
         const {title, body} = notificationOpen.notification;
         showAlert(title, body);
     }
-
-    /*
-     * Triggered for data only payload in foreground
-     * */
-    firebase.messaging().onMessage((message) => {
-        //process data message
-        console.log(JSON.stringify(message));
-    });
-}
-
-function showAlert(title: string, body: string) {
-    Alert.alert(title, body, [{text: 'OK', onPress: () => console.log('OK Pressed')}], {
-        cancelable: false,
-    });
 }
 
 export async function hasPermission() {
@@ -49,14 +43,15 @@ export async function hasPermission() {
 
 export async function getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
-    if (!fcmToken) {
-        fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+        return fcmToken;
     }
-    return fcmToken;
+
+    return await firebase.messaging().getToken();
 }
 
-export async function storeToken(token: string) {
-    await AsyncStorage.setItem('fcmToken', token);
+export function storeToken(token: string) {
+    return AsyncStorage.setItem('fcmToken', token);
 }
 
 export async function requestPermission() {

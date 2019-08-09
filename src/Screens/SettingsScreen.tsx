@@ -5,15 +5,18 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {NavigationInjectedProps} from 'react-navigation';
 
 // This is just fake user data for now PoC purpose
-interface IState {
-    user: {
-        name?: string;
-        status?: string;
-    };
+interface IUser {
+    name: string;
+    status: string;
 }
+
+interface IState {
+    user: IUser | null;
+}
+
 export default class ScheduleScreen extends Component<NavigationInjectedProps> {
     state: IState = {
-        user: {},
+        user: null,
     };
 
     updateUser = () => {
@@ -30,7 +33,7 @@ export default class ScheduleScreen extends Component<NavigationInjectedProps> {
             <View style={styles.container}>
                 <Text style={styles.header}>Settings</Text>
 
-                {this.state.user.name ? (
+                {this.state.user ? (
                     <View style={styles.card}>
                         <View style={styles.cardHeader}>
                             <Image
@@ -46,9 +49,7 @@ export default class ScheduleScreen extends Component<NavigationInjectedProps> {
                             <Text>{this.state.user.status}</Text>
                         </View>
                     </View>
-                ) : (
-                    <View />
-                )}
+                ) : null}
 
                 <View style={styles.card}>
                     <View style={styles.cardHeader}>
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EAEEF1',
-        padding: 10,
     },
     card: {
         marginTop: 20,
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 40,
         marginLeft: 20,
+        paddingBottom: 10,
         fontWeight: 'bold',
     },
     avatar: {

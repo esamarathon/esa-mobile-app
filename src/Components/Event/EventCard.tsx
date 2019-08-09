@@ -10,52 +10,48 @@ interface IProps {
     handleClick: (item: IEvent) => void;
 }
 
-export class EventCard extends React.Component<IProps> {
-    render() {
-        const {event, handleClick} = this.props;
-
-        return (
-            <TouchableOpacity
-                style={styles.card}
-                activeOpacity={0.8}
-                onPress={() => handleClick(event)}
-            >
-                <Svg style={styles.graphicSvg} viewBox="0 0 194 92" fill="none">
-                    <Path
-                        d="M68.9998 92H193.999V16.5393C193.999 4.13481 183.999 0.34456 179 0H17.5C7.77911 0 -1.17885e-05 8.50009 0 16.5393V35.1461C1.17047e-05 80.2176 46.1665 91.8277 68.9998 92Z"
-                        fill={GetBackgroundColorForEvent(event)}
-                    />
-                    <Path
-                        d="M103.737 70.9817H194V14C194 8 187 0 179.295 0H54V27.1166C54 61.8908 87.2783 70.8487 103.737 70.9817Z"
-                        fill={GetActiveTintForEvent(event)}
-                    />
-                </Svg>
-                <Text style={styles.title}>{event.name}</Text>
-                <View>
+export default function EventCard({event, handleClick}: IProps) {
+    return (
+        <TouchableOpacity
+            style={styles.card}
+            activeOpacity={0.8}
+            onPress={() => handleClick(event)}
+        >
+            <Svg style={styles.graphicSvg} viewBox="0 0 194 92" fill="none">
+                <Path
+                    d="M68.9998 92H193.999V16.5393C193.999 4.13481 183.999 0.34456 179 0H17.5C7.77911 0 -1.17885e-05 8.50009 0 16.5393V35.1461C1.17047e-05 80.2176 46.1665 91.8277 68.9998 92Z"
+                    fill={GetBackgroundColorForEvent(event)}
+                />
+                <Path
+                    d="M103.737 70.9817H194V14C194 8 187 0 179.295 0H54V27.1166C54 61.8908 87.2783 70.8487 103.737 70.9817Z"
+                    fill={GetActiveTintForEvent(event)}
+                />
+            </Svg>
+            <Text style={styles.title}>{event.name}</Text>
+            <View>
+                <View style={styles.meta}>
+                    <Text>
+                        {dayjs(event.startDate).format('D')} -{' '}
+                        {dayjs(event.endDate).format('D MMMM')}
+                    </Text>
+                </View>
+                {event.meta.venue.country ? (
                     <View style={styles.meta}>
-                        <Text>
-                            {dayjs(event.startDate).format('D')} -{' '}
-                            {dayjs(event.endDate).format('D MMMM')}
+                        <Text style={styles.metaText}>in</Text>
+                        <Text style={styles.bold}>
+                            {event.meta.venue.city}, {event.meta.venue.country}
                         </Text>
                     </View>
-                    {event.meta.venue.country ? (
-                        <View style={styles.meta}>
-                            <Text style={styles.metaText}>in</Text>
-                            <Text style={styles.bold}>
-                                {event.meta.venue.city}, {event.meta.venue.country}
-                            </Text>
-                        </View>
-                    ) : null}
-                    {event.meta && event.meta.cause.name ? (
-                        <View style={styles.meta}>
-                            <Text>for</Text>
-                            <Text style={styles.bold}>{event.meta.cause.name}</Text>
-                        </View>
-                    ) : null}
-                </View>
-            </TouchableOpacity>
-        );
-    }
+                ) : null}
+                {event.meta && event.meta.cause.name ? (
+                    <View style={styles.meta}>
+                        <Text>for</Text>
+                        <Text style={styles.bold}>{event.meta.cause.name}</Text>
+                    </View>
+                ) : null}
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 const styles = StyleSheet.create({

@@ -1,81 +1,74 @@
-import React, {Component} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {NavigationInjectedProps} from 'react-navigation';
+import {NavigationScreenComponent} from 'react-navigation';
 import {EventContext} from '../App';
 import dayjs from 'dayjs';
 import AnnouncementList from '../Components/Announcement/AnnouncementList';
 import {IEvent} from '../Services/EventsService';
 import {GetActiveTintForEvent, GetBackgroundColorForEvent} from '../Themes';
 
-export default class HomeScreen extends Component<NavigationInjectedProps> {
-    handleEventClick = (item: IEvent) => {
-        this.props.navigation.navigate('HomeDetails', {
+const HomeScreen: NavigationScreenComponent = ({navigation}) => {
+    const {event} = useContext(EventContext);
+
+    function handleEventClick(item: IEvent) {
+        navigation.navigate('HomeDetails', {
             event: item,
         });
-    };
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <EventContext.Consumer>
-                    {({event}) => (
-                        <TouchableOpacity
-                            style={styles.eventContainer}
-                            activeOpacity={0.8}
-                            onPress={() => this.handleEventClick(event)}
-                        >
-                            <View
-                                style={[
-                                    styles.containerHeader,
-                                    {backgroundColor: GetBackgroundColorForEvent(event)},
-                                ]}
-                            >
-                                <View
-                                    style={[
-                                        styles.headerSpecial,
-                                        {backgroundColor: GetActiveTintForEvent(event)},
-                                    ]}
-                                />
-                            </View>
-                            <View style={styles.innerContainer}>
-                                <Text style={[styles.title, styles.alignTextRight]}>
-                                    {event.name}
-                                </Text>
-                                <Text style={[styles.date, styles.alignTextRight]}>
-                                    {dayjs(event.startDate).format('D')} -
-                                    {dayjs(event.endDate).format('D MMMM')}
-                                </Text>
-                                {event.meta && (
-                                    <>
-                                        {event.meta.venue.city ? (
-                                            <Text style={[styles.text, styles.alignTextRight]}>
-                                                in{' '}
-                                                <Text style={styles.bold}>
-                                                    {`${event.meta.venue.city}, ${event.meta.venue.country}`}
-                                                </Text>
-                                            </Text>
-                                        ) : null}
-                                        {event.meta.cause.name ? (
-                                            <Text style={[styles.text, styles.alignTextRight]}>
-                                                for{' '}
-                                                <Text style={styles.bold}>
-                                                    {event.meta.cause.name}
-                                                </Text>
-                                            </Text>
-                                        ) : null}
-                                    </>
-                                )}
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                </EventContext.Consumer>
-                <View style={styles.innerContainer}>
-                    <AnnouncementList />
-                </View>
-            </View>
-        );
     }
-}
+
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.eventContainer}
+                activeOpacity={0.8}
+                onPress={() => handleEventClick(event)}
+            >
+                <View
+                    style={[
+                        styles.containerHeader,
+                        {backgroundColor: GetBackgroundColorForEvent(event)},
+                    ]}
+                >
+                    <View
+                        style={[
+                            styles.headerSpecial,
+                            {backgroundColor: GetActiveTintForEvent(event)},
+                        ]}
+                    />
+                </View>
+                <View style={styles.innerContainer}>
+                    <Text style={[styles.title, styles.alignTextRight]}>{event.name}</Text>
+                    <Text style={[styles.date, styles.alignTextRight]}>
+                        {dayjs(event.startDate).format('D')} -
+                        {dayjs(event.endDate).format('D MMMM')}
+                    </Text>
+                    {event.meta.venue.city ? (
+                        <Text style={[styles.text, styles.alignTextRight]}>
+                            in{' '}
+                            <Text style={styles.bold}>
+                                {`${event.meta.venue.city}, ${event.meta.venue.country}`}
+                            </Text>
+                        </Text>
+                    ) : null}
+                    {event.meta.cause.name ? (
+                        <Text style={[styles.text, styles.alignTextRight]}>
+                            for <Text style={styles.bold}>{event.meta.cause.name}</Text>
+                        </Text>
+                    ) : null}
+                </View>
+            </TouchableOpacity>
+            <View style={styles.innerContainer}>
+                <AnnouncementList />
+            </View>
+        </View>
+    );
+};
+
+HomeScreen.navigationOptions = {
+    title: 'Home',
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
     container: {

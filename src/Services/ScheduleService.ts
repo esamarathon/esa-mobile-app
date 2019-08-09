@@ -76,17 +76,15 @@ export function extractLinks(markdown?: string) {
 }
 
 export async function LoadHoraro(horaroEndpoint: string) {
-    const response = await fetch(`${horaroEndpoint}.json?named=true`);
+    const response = await fetch(`${horaroEndpoint}.json`);
     const {schedule}: IRunsResponse = await response.json();
-
-    const columns = Object.values(schedule.columns);
 
     return schedule.items.map(({data, ...rest}) => {
         return data.reduce<IRun>(
-            (total, next, index) => ({
-                ...total,
-                [columns[index]]: next,
-            }),
+            (total, next, index) =>
+                Object.assign(total, {
+                    [schedule.columns[index]]: next,
+                }),
             {...rest},
         );
     });

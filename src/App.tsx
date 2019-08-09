@@ -1,25 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {ActivityIndicator, Text, StyleSheet} from 'react-native';
 import {createAppContainer, NavigationContainer} from 'react-navigation';
-import AsyncStorage from '@react-native-community/async-storage';
-import {
-    createNotificationListeners,
-    hasPermission,
-    getToken,
-    storeToken,
-    requestPermission,
-} from './Services/PushService';
 import {TabNavigator} from './Components/Navigation/MainNavigator';
-import {IEvent, LoadEvents} from './Services/EventsService';
 import EventsScreen from './Screens/EventsScreen';
-
-interface IState {
-    events: IEvent[];
-    preferredEvent: IEvent | undefined;
-    showEventPicker: boolean;
-    loading: boolean;
-    error: boolean;
-}
+import {useEvents} from './Hooks/useEvents';
+import {useFirebase} from './Hooks/useFirebase';
+import {IEvent} from './Services/EventsService';
 
 interface IContext {
     event: IEvent;
@@ -31,91 +17,33 @@ export const EventContext = React.createContext<IContext>({} as IContext);
 
 const Navigation: NavigationContainer = createAppContainer(TabNavigator);
 
-export default class AppContainer extends Component<{}, IState> {
-    static preferredEventKey = '@ESA:preferredEventId';
+export default function AppContainer() {
+    const {loading, error, preferredEvent, updateEvent, events} = useEvents();
+    useFirebase();
 
-    state: IState = {
-        events: [],
-        preferredEvent: undefined,
-        showEventPicker: false,
-        loading: true,
-        error: false,
-    };
+    if (loading) {
+        return <ActivityIndicator size="large" color="#ccc" style={styles.loadingView} />;
+    }
 
-    updateEvent = async (event: IEvent) => {
-        this.setState({
-            preferredEvent: event,
-            showEventPicker: false,
-        });
+    if (error) {
+        return <Text>Something went wrong...</Text>;
+    }
 
-        await AsyncStorage.setItem(AppContainer.preferredEventKey, event._id);
-    };
+    if (!preferredEvent) {
+        return <EventsScreen events={events} onPickEvent={updateEvent} />;
+    }
 
-    async componentDidMount() {
-        if (!(await hasPermission())) {
-            await requestPermission();
-        }
-
-        const token = await getToken();
-        await storeToken(token);
-
-        createNotificationListeners();
-
-        const preferredEventId = await AsyncStorage.getItem(AppContainer.preferredEventKey);
-
-        try {
-            const events = await LoadEvents();
-
-            const preferredEvent = events.find(
-                (event) => preferredEventId && event._id === preferredEventId,
-            );
-
-            this.setState({
+    return (
+        <EventContext.Provider
+            value={{
                 events: events,
-                preferredEvent: preferredEvent,
-                showEventPicker: preferredEvent === undefined,
-                loading: false,
-            });
-        } catch (error) {
-            this.setState({
-                events: [],
-                error: true,
-                loading: false,
-            });
-        }
-    }
-
-    render() {
-        const {preferredEvent, events, showEventPicker, loading, error} = this.state;
-
-        if (loading) {
-            return <ActivityIndicator size="large" color="#ccc" style={styles.loadingView} />;
-        }
-
-        if (error) {
-            return <Text>Something went wrong</Text>;
-        }
-
-        return (
-            <EventContext.Provider
-                value={{
-                    events: events,
-                    event: preferredEvent as IEvent,
-                    updateEvent: () => {
-                        this.setState({
-                            showEventPicker: true,
-                        });
-                    },
-                }}
-            >
-                {showEventPicker ? (
-                    <EventsScreen onPickEvent={this.updateEvent} />
-                ) : (
-                    <Navigation screenProps={{theme: preferredEvent as IEvent}} />
-                )}
-            </EventContext.Provider>
-        );
-    }
+                event: preferredEvent,
+                updateEvent: () => updateEvent(undefined),
+            }}
+        >
+            <Navigation screenProps={{theme: preferredEvent}} />
+        </EventContext.Provider>
+    );
 }
 
 const styles = StyleSheet.create({
