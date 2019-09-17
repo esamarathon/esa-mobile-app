@@ -1,13 +1,16 @@
-import React from "react";
-import {Button, Image, StyleSheet, View} from "react-native";
+import React from 'react';
+import {Button, Image, StyleSheet, View} from 'react-native';
+import {NavigationInjectedProps} from 'react-navigation';
 
-export default class ScheduleScreen extends React.Component {
+export default class ScheduleScreen extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
         drawerLabel: 'Schedule',
-        drawerIcon: ({ tintColor }) => (
+        drawerIcon: () => (
             <Image
-                source={{uri: "https://cdn3.iconfinder.com/data/icons/menu-icons-1/100/menu-512.png"}}
-                style={[styles.icon, { tintColor: tintColor }]}
+                source={{
+                    uri: 'https://cdn3.iconfinder.com/data/icons/menu-icons-1/100/menu-512.png',
+                }}
+                style={[styles.icon]}
             />
         ),
     };
@@ -15,10 +18,7 @@ export default class ScheduleScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Button
-                    onPress={() => this.props.navigation.goBack()}
-                    title="Go back home"
-                />
+                <Button onPress={() => this.props.navigation.goBack()} title="Go back home" />
             </View>
         );
     }
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'tomato',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     icon: {
         width: 24,

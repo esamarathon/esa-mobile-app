@@ -4,7 +4,22 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --ext .tsx,.ts,.jsx,.js",
+    "pre-commit": "lint-staged",
+    "ts-compile-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "lint-staged": {
+    "*.{tsx,ts,jsx,js}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run ts-compile-check && npm run pre-commit"
+    }
   },
   "dependencies": {
     "react": "16.8.6",
@@ -23,9 +38,20 @@
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.60.1",
     "@types/react-test-renderer": "^16.8.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
     "babel-jest": "^24.1.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "eslint-plugin-react-native": "^3.7.0",
+    "husky": "^3.0.5",
     "jest": "^24.1.0",
+    "lint-staged": "^9.2.5",
     "metro-react-native-babel-preset": "^0.54.1",
+    "prettier": "^1.18.2",
     "react-test-renderer": "16.8.6",
     "typescript": "^3.5.3"
   },
