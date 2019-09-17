@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "types": [
+
+    ],
+    "strict": true,
+    "target": "es2017",
+    "moduleResolution": "node",
+    "jsx": "react-native",
+    "noEmit": false,
+    "outDir": "outputs",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": true,
+    "allowJs": true,
+    "traceResolution": false,
+    "module": "esnext",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "rootDir": ".",
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "allowUnreachableCode": false,
+    "baseUrl": ".",
+    "checkJs": false
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "android",
+    "ios",
+    "__tests__",
+    "__mocks__",
+    "build"
+  ]
+}
