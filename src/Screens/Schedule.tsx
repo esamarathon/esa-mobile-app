@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Image, StyleSheet, View} from 'react-native';
 import {NavigationInjectedProps} from 'react-navigation';
 
-export default class ScheduleScreen extends React.Component<NavigationInjectedProps> {
+export class ScheduleScreen extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
         drawerLabel: 'Schedule',
         drawerIcon: () => (
