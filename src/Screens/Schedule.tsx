@@ -1,18 +1,11 @@
 import React from 'react';
 import {Button, Image, StyleSheet, View} from 'react-native';
 import {NavigationInjectedProps} from 'react-navigation';
+import {SidebarItem} from '../Components/Sidebar/SidebarItem';
 
-export class ScheduleScreen extends React.Component<NavigationInjectedProps> {
+export default class ScheduleScreen extends React.Component<NavigationInjectedProps> {
     static navigationOptions = {
-        drawerLabel: 'Schedule',
-        drawerIcon: () => (
-            <Image
-                source={{
-                    uri: 'https://cdn3.iconfinder.com/data/icons/menu-icons-1/100/menu-512.png',
-                }}
-                style={[styles.icon]}
-            />
-        ),
+        drawerLabel: () => <SidebarItem name="Schedule" />,
     };
 
     render() {
