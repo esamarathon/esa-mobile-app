@@ -1,9 +1,12 @@
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
-import {ScheduleScreen} from './Screens/Schedule';
-import {HomeScreen} from './Screens/Home';
+import {SidebarContent} from './Components/Sidebar/Sidebar';
 
-const DrawerNavigator = createDrawerNavigator(
+// Screens
+import HomeScreen from './Screens/Home';
+import ScheduleScreen from './Screens/Schedule';
+
+const MainNavigation = createDrawerNavigator(
     {
         Home: {
             screen: HomeScreen,
@@ -19,7 +22,8 @@ const DrawerNavigator = createDrawerNavigator(
             inactiveTintColor: '#888',
         },
         drawerType: 'back',
+        contentComponent: SidebarContent,
     },
 );
 
-export const App = createAppContainer(DrawerNavigator);
+export const App = createAppContainer(MainNavigation);

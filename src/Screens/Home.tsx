@@ -7,7 +7,7 @@ import {MenuBar} from '../Components/MenuBar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SeeMoreButton} from '../Components/Home/SeeMoreButton';
 
-export function HomeScreen({navigation}: NavigationInjectedProps) {
+export default function HomeScreen({navigation}: NavigationInjectedProps) {
     const startDate = dayjs(new Date());
     const endDate = dayjs(new Date());
     const sameMonth = startDate.month === endDate.month;
