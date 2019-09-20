@@ -1,16 +1,25 @@
-import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import {createDrawerNavigator} from "react-navigation-drawer";
-import ScheduleScreen from "./Screens/Schedule";
-import HomeScreen from "./Screens/Home";
+import {createAppContainer} from 'react-navigation';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+import {ScheduleScreen} from './Screens/Schedule';
+import {HomeScreen} from './Screens/Home';
 
-const MyDrawerNavigator = createDrawerNavigator({
-    Home: {
-        screen: HomeScreen,
+const DrawerNavigator = createDrawerNavigator(
+    {
+        Home: {
+            screen: HomeScreen,
+        },
+        Schedule: {
+            screen: ScheduleScreen,
+        },
     },
-    Schedule: {
-        screen: ScheduleScreen,
+    {
+        initialRouteName: 'Home',
+        contentOptions: {
+            activeTintColor: '#000',
+            inactiveTintColor: '#888',
+        },
+        drawerType: 'back',
     },
-});
+);
 
-export const App = createAppContainer(MyDrawerNavigator);
+export const App = createAppContainer(DrawerNavigator);

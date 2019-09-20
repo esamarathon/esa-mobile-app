@@ -8,13 +8,16 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "prettier", "react", "react-native", "react-hooks"],
+  "plugins": ["@typescript-eslint", "prettier", "react", "react-native", "react-hooks", "import"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
-    "plugin:react-native/all"
+    "plugin:react-native/all",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "rules": {
     "no-console": 0,
@@ -28,6 +31,8 @@
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/indent": 0,
     "@typescript-eslint/no-object-literal-type-assertion": 0,
+    "import/no-default-export": "warn",
+    "import/named": 0,
     "react-native/sort-styles": 0,
     "react-native/no-unused-styles": 0,
     "react-native/no-color-literals": 0,
