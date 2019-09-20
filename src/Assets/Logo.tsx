@@ -5,7 +5,7 @@ interface IProps {
     size?: number;
 }
 
-export function Logo({size = 50}: IProps) {
+export default function Logo({size = 50}: IProps) {
     return (
         <Svg width={size} height={(size * 197) / 181} viewBox="0 0 181 197">
             <G fill="none" fill-rule="evenodd">

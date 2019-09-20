@@ -1,20 +1,23 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {NavigationInjectedProps} from 'react-navigation';
+import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
-import {Logo} from '../Assets/Logo';
-import {MenuBar} from '../Components/MenuBar';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {SeeMoreButton} from '../Components/Home/SeeMoreButton';
-import {SidebarItem} from '../Components/Sidebar/SidebarItem';
+import Logo from '../Assets/Logo';
+import SeeMoreButton from '../Components/Home/SeeMoreButton';
+import SidebarItem from '../Components/Sidebar/SidebarItem';
+import MenuBar from '../Components/MenuBar';
+import {EventContext} from '../App';
 
 export default function HomeScreen({navigation}: NavigationInjectedProps) {
-    const startDate = dayjs(new Date());
-    const endDate = dayjs(new Date());
+    const {event} = useContext(EventContext);
+
+    const startDate = dayjs(event.startDate);
+    const endDate = dayjs(event.endDate);
     const sameMonth = startDate.month === endDate.month;
 
     return (
-        <SafeAreaView style={styles.container}>
+        <>
             <MenuBar navigation={navigation} />
             <View style={styles.eventDetails}>
                 <View style={styles.eventDetailsLogoContainer}>
@@ -32,7 +35,7 @@ export default function HomeScreen({navigation}: NavigationInjectedProps) {
             </View>
             <View style={styles.block}>
                 <Text style={styles.blockHeader}>Announcements</Text>
-                <View style={styles.announcementsWrapper}>
+                <View>
                     <TouchableOpacity style={[styles.announcement, styles.card]}>
                         <View style={styles.cardHeader}>
                             <Text style={styles.cardTitle}>Main title</Text>
@@ -56,7 +59,7 @@ export default function HomeScreen({navigation}: NavigationInjectedProps) {
             </View>
             <View style={styles.block}>
                 <Text style={styles.blockHeader}>Upcoming Schedule Events</Text>
-                <View style={styles.scheduleWrapper}>
+                <ScrollView horizontal style={styles.scheduleWrapper}>
                     <TouchableOpacity style={[styles.scheduleItem, styles.card]}>
                         <Text style={styles.cardTitle}>Main title</Text>
                         <Text style={styles.cardTime}>8/2 - 14:30</Text>
@@ -67,24 +70,17 @@ export default function HomeScreen({navigation}: NavigationInjectedProps) {
                         <Text style={styles.cardTime}>8/2 - 14:30</Text>
                         <Text style={styles.cardContent}>More information etc...</Text>
                     </TouchableOpacity>
-                </View>
+                </ScrollView>
                 <SeeMoreButton />
             </View>
-        </SafeAreaView>
+        </>
     );
 }
 
-HomeScreen.navigationOptions = {
-    drawerLabel: () => <SidebarItem name="Home" />,
-};
+HomeScreen.navigationOptions = {};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
     eventDetails: {
-        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -140,7 +136,6 @@ const styles = StyleSheet.create({
         color: '#881EE8',
         opacity: 0.4,
     },
-    announcementsWrapper: {},
     announcement: {
         padding: 10,
         marginHorizontal: 20,
@@ -149,7 +144,8 @@ const styles = StyleSheet.create({
     scheduleItem: {
         padding: 10,
         marginLeft: 10,
-        minWidth: '50%',
+        minWidth: '60%',
+        minHeight: 100,
     },
     scheduleWrapper: {
         flexDirection: 'row',

@@ -22,8 +22,11 @@
     }
   },
   "dependencies": {
-    "react": "16.9.0",
-    "react-native": "0.60.5",
+    "@react-native-community/async-storage": "^1.6.1",
+    "@react-native-firebase/app": "^0.5.2",
+    "@react-native-firebase/messaging": "^0.5.2",
+    "react": "^16.9.0",
+    "react-native": "^0.60.5",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-reanimated": "^1.2.0",
     "react-native-svg": "^9.9.4",

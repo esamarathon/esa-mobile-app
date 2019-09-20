@@ -1,12 +1,30 @@
 import React from 'react';
-import {Svg, Rect, Path} from 'react-native-svg';
+import {Svg, Rect, Path, Line} from 'react-native-svg';
 
 interface IProps {
     size?: number;
     fill?: string;
 }
 
-export function MenuButton({size = 24, fill = '#000'}: IProps) {
+export function CloseIcon({size = 24, fill = 'currentColor'}: IProps) {
+    return (
+        <Svg
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={fill}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <Line x1="18" y1="6" x2="6" y2="18" />
+            <Line x1="6" y1="6" x2="18" y2="18" />
+        </Svg>
+    );
+}
+
+export function MenuIcon({size = 24, fill = 'currentColor'}: IProps) {
     return (
         <Svg width={(size * 8) / 7} height={size} viewBox="0 0 8 7" fill="none">
             <Rect width="8" height="1" fill={fill} />
@@ -16,7 +34,7 @@ export function MenuButton({size = 24, fill = '#000'}: IProps) {
     );
 }
 
-export function NotificationBell({size = 24, fill = '#000'}: IProps) {
+export function NotificationBellIcon({size = 24, fill = 'currentColor'}: IProps) {
     return (
         <Svg width={(size * 36) / 39} height={size} viewBox="0 0 36 39" fill="none">
             <Path

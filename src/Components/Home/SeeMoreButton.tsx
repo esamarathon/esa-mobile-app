@@ -5,7 +5,7 @@ interface IProps {
     onPress?: (event: GestureResponderEvent) => void;
 }
 
-export function SeeMoreButton({onPress}: IProps) {
+export default function SeeMoreButton({onPress}: IProps) {
     return (
         <TouchableOpacity style={styles.seeMoreButton} onPress={onPress}>
             <Text style={styles.seeMoreButtonText}>See more...</Text>

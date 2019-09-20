@@ -5,17 +5,18 @@ interface IProps {
     name: string;
 }
 
-export const SidebarItem = (props: IProps) => (
-    <View style={styles.container}>
-        <Text style={styles.text}>{props.name}</Text>
-    </View>
-);
+export default function SidebarItem(props: IProps) {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>{props.name}</Text>
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#EFE4FB',
     },
     text: {
         color: '#8424E2',
