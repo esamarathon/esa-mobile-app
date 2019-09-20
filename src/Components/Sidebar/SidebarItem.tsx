@@ -1,7 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-export const SidebarItem = (props: any) => (
+interface IProps {
+    name: string;
+}
+
+export const SidebarItem = (props: IProps) => (
     <View style={styles.container}>
         <Text style={styles.text}>{props.name}</Text>
     </View>

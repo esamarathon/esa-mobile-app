@@ -1,12 +1,14 @@
 import React from 'react';
 import {ScrollView, View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-import {DrawerNavigatorItems} from 'react-navigation-drawer';
+import {NavigationScreenProp, NavigationRoute} from 'react-navigation';
+import {DrawerNavigatorItems, DrawerContentComponentProps} from 'react-navigation-drawer';
 
 import {Logo} from '../../Assets/Logo';
 
-// @TODO Fix the prop type, no clue how, can't find a fitting one...
-export const SidebarContent = (props: any) => (
+type IProps = DrawerContentComponentProps & {navigation: NavigationScreenProp<NavigationRoute>}
+
+export const SidebarContent = (props: IProps) => (
     <ScrollView style={styles.container}>
         <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
             <View style={styles.container}>
