@@ -3,13 +3,13 @@ import {ScrollView, View, StyleSheet, Text, TouchableOpacity} from 'react-native
 import SafeAreaView from 'react-native-safe-area-view';
 import {DrawerNavigatorItems} from 'react-navigation-drawer';
 
-import EsaSvg from '../../Assets/Logos/esa';
+import {Logo} from '../../Assets/Logo';
 
 // @TODO Fix the prop type, no clue how, can't find a fitting one...
 export const SidebarContent = (props: any) => (
     <ScrollView style={styles.container}>
         <SafeAreaView forceInset={{top: 'always', horizontal: 'never'}}>
-            <View>
+            <View style={styles.container}>
                 <View style={styles.menu}>
                     <View style={styles.topContainer}>
                         <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
@@ -18,14 +18,16 @@ export const SidebarContent = (props: any) => (
                     </View>
                     <View style={styles.hero}>
                         <Text style={styles.text}>ESA Summer Marathon</Text>
-                        <EsaSvg width={90} height={90} />
+                        <Logo size={90} />
                     </View>
                     <DrawerNavigatorItems {...props} />
                 </View>
                 <View style={styles.meta}>
-                    <Text>15-22 Feb</Text>
-                    <Text>Quality Hotel View</Text>
-                    <Text>Malmö</Text>
+                    <View style={styles.innerMeta}>
+                        <Text style={styles.metaText}>15-22 Feb</Text>
+                        <Text style={styles.metaText}>Quality Hotel View</Text>
+                        <Text style={styles.metaText}>Malmö</Text>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>
@@ -36,15 +38,25 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EFE4FB',
-        position: 'relative',
     },
     menu: {
         flex: 1,
     },
     meta: {
         flex: 1,
-        position: 'absolute',
-        bottom: 12,
+        alignItems: 'center',
+        marginTop: 120,
+    },
+    innerMeta: {
+        borderTopColor: '#7C2DDF',
+        borderTopWidth: 2,
+        width: 200,
+    },
+    metaText: {
+        color: '#7C2DDF',
+        textAlign: 'center',
+        paddingVertical: 8,
+        fontSize: 16,
     },
     topContainer: {
         paddingRight: 12,

@@ -1,11 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
 import {NavigationInjectedProps} from 'react-navigation';
 import dayjs from 'dayjs';
 import {Logo} from '../Assets/Logo';
 import {MenuBar} from '../Components/MenuBar';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SeeMoreButton} from '../Components/Home/SeeMoreButton';
+import {SidebarItem} from '../Components/Sidebar/SidebarItem';
 
 export default function HomeScreen({navigation}: NavigationInjectedProps) {
     const startDate = dayjs(new Date());
@@ -13,7 +14,7 @@ export default function HomeScreen({navigation}: NavigationInjectedProps) {
     const sameMonth = startDate.month === endDate.month;
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <MenuBar navigation={navigation} />
             <View style={styles.eventDetails}>
                 <View style={styles.eventDetailsLogoContainer}>
@@ -69,20 +70,12 @@ export default function HomeScreen({navigation}: NavigationInjectedProps) {
                 </View>
                 <SeeMoreButton />
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
 HomeScreen.navigationOptions = {
-    drawerLabel: 'Home',
-    drawerIcon: () => (
-        <Image
-            source={{
-                uri: 'https://cdn3.iconfinder.com/data/icons/menu-icons-1/100/menu-512.png',
-            }}
-            style={[styles.icon]}
-        />
-    ),
+    drawerLabel: () => <SidebarItem name="Home" />,
 };
 
 const styles = StyleSheet.create({
