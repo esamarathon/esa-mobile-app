@@ -25,6 +25,8 @@ export function useFirebase() {
 
                 await createNotificationListeners();
             } catch (error) {
+                console.error(error);
+
                 setError(error);
             } finally {
                 setLoading(false);
