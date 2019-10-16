@@ -8,17 +8,17 @@ import {
   IonMenu,
   IonMenuToggle,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/react';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AppPage } from '../declarations';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {AppPage} from '../declarations';
 
 interface MenuProps extends RouteComponentProps {
   appPages: AppPage[];
 }
 
-const Menu: React.FunctionComponent<MenuProps> = ({ appPages }) => (
+const Menu: React.FC<MenuProps> = ({appPages}) => (
   <IonMenu contentId="main" type="overlay">
     <IonHeader>
       <IonToolbar>
@@ -27,16 +27,14 @@ const Menu: React.FunctionComponent<MenuProps> = ({ appPages }) => (
     </IonHeader>
     <IonContent>
       <IonList>
-        {appPages.map((appPage, index) => {
-          return (
-            <IonMenuToggle key={index} autoHide={false}>
-              <IonItem routerLink={appPage.url} routerDirection="none">
-                <IonIcon slot="start" icon={appPage.icon} />
-                <IonLabel>{appPage.title}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
-          );
-        })}
+        {appPages.map(({url, icon, title}) => (
+          <IonMenuToggle key={url} autoHide={false}>
+            <IonItem routerLink={url} routerDirection="none">
+              <IonIcon slot="start" icon={icon} />
+              <IonLabel>{title}</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+        ))}
       </IonList>
     </IonContent>
   </IonMenu>
