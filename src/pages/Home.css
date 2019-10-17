@@ -16,6 +16,10 @@
   margin: 0;
 }
 
+.hero__icon {
+  color: var(--ion-color-secondary)
+}
+
 .hero__expander {
   position: absolute;
   transform: translateX(-50%);

@@ -12,14 +12,15 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonIcon
-  } from '@ionic/react';
+  IonIcon,
+} from '@ionic/react';
 import React from 'react';
+import {notificationsOutline} from 'ionicons/icons';
 import './Home.css';
-import Logo from "../assets/Logo";
+import Logo from '../assets/Logo';
 
 function expandHeader(): any {
-  console.log("Hello world");
+  console.log('Hello world');
 }
 
 const HomePage: React.FC = () => {
@@ -32,13 +33,13 @@ const HomePage: React.FC = () => {
           </IonButtons>
           <IonTitle>ESA Summer Marathon</IonTitle>
           <IonButtons slot="end">
-            <IonIcon name="notifications-outline"></IonIcon>
+            <IonIcon size="large" className="hero__icon" icon={notificationsOutline} />
           </IonButtons>
         </IonToolbar>
         <IonGrid>
           <IonRow>
             <IonCol size="3" className="ion-align-self-start ion-text-center">
-              <Logo height={"50"} width={"50"} />
+              <Logo height={'50'} width={'50'} />
             </IonCol>
             <IonCol size="9">
               <h2 className="hero__title">Swedish Alzheimer’s Foundation</h2>
@@ -47,7 +48,7 @@ const HomePage: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <button className="hero__expander" onClick={expandHeader}></button>
+        <button className="hero__expander" onClick={expandHeader} />
       </IonHeader>
 
       <IonContent>
@@ -56,7 +57,9 @@ const HomePage: React.FC = () => {
             <h2>Announcements</h2>
           </div>
           <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            <a className="home-link" href="https://google.com">Read More</a>
+            <a className="home-link" href="https://google.com">
+              Read More
+            </a>
           </div>
         </div>
         <IonCard className="home-card">
@@ -68,9 +71,14 @@ const HomePage: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                  <p className="home-card__paragraph">
+                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
+                  </p>
                 </IonCol>
-                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                <IonCol
+                  size="2"
+                  className="home-flex ion-align-items-center ion-justify-content-end"
+                >
                   <p> > </p>
                 </IonCol>
               </IonRow>
@@ -87,9 +95,14 @@ const HomePage: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                  <p className="home-card__paragraph">
+                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
+                  </p>
                 </IonCol>
-                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                <IonCol
+                  size="2"
+                  className="home-flex ion-align-items-center ion-justify-content-end"
+                >
                   <p> > </p>
                 </IonCol>
               </IonRow>
@@ -106,9 +119,14 @@ const HomePage: React.FC = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                  <p className="home-card__paragraph">
+                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
+                  </p>
                 </IonCol>
-                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                <IonCol
+                  size="2"
+                  className="home-flex ion-align-items-center ion-justify-content-end"
+                >
                   <p> > </p>
                 </IonCol>
               </IonRow>
