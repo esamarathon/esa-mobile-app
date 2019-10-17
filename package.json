@@ -1,32 +1,17 @@
 {
-  "name": "react-esa-app",
-  "version": "0.0.1",
+  "name": "esa-app",
+  "description": "The Official ESA App",
+  "version": "0.0.3",
   "private": true,
-  "dependencies": {
-    "@ionic/react": "^4.11.0",
-    "@ionic/react-router": "^4.11.0",
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.12",
-    "@types/react": "^16.9.5",
-    "@types/react-dom": "^16.9.1",
-    "@types/react-router": "^5.1.1",
-    "@types/react-router-dom": "^5.1.0",
-    "ionicons": "^4.6.3",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-router": "^5.1.0",
-    "react-router-dom": "^5.1.0",
-    "react-scripts": "3.2.0",
-    "typescript": "3.6.3"
-  },
+  "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .tsx,.ts,.jsx,.js",
+    "pre-commit": "lint-staged",
+    "ts-compile-check": "tsc -p tsconfig.json --noEmit"
   },
   "browserslist": {
     "production": [
@@ -40,5 +25,44 @@
       "last 1 safari version"
     ]
   },
-  "description": "An Ionic project"
+  "lint-staged": {
+    "*.{tsx,ts,jsx,js}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run ts-compile-check && npm run pre-commit"
+    }
+  },
+  "dependencies": {
+    "@ionic/react": "^4.11.0",
+    "@ionic/react-router": "^4.11.0",
+    "ionicons": "^4.6.3",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-router": "^5.1.0",
+    "react-router-dom": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "@types/react-router": "^5.1.1",
+    "@types/react-router-dom": "^5.1.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.19.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.1.2",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "react-scripts": "3.2.0",
+    "typescript": "3.6.3"
+  }
 }
