@@ -3,71 +3,118 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
   IonMenuButton,
   IonPage,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonIcon
   } from '@ionic/react';
-import { book, build, colorFill, grid } from 'ionicons/icons';
 import React from 'react';
 import './Home.css';
+import Logo from "../assets/Logo";
+
+function expandHeader(): any {
+  console.log("Hello world");
+}
 
 const HomePage: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
+      <IonHeader className="hero__header">
+        <IonToolbar className="hero__toolbar">
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Home</IonTitle>
+          <IonTitle>ESA Summer Marathon</IonTitle>
+          <IonButtons slot="end">
+            <IonIcon name="notifications-outline"></IonIcon>
+          </IonButtons>
         </IonToolbar>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="3" className="ion-align-self-start ion-text-center">
+              <Logo height={"50"} width={"50"} />
+            </IonCol>
+            <IonCol size="9">
+              <h2 className="hero__title">Swedish Alzheimer’s Foundation</h2>
+              <p className="hero__paragraph">Quality Hotel View</p>
+              <p className="hero__paragraph">Malmö, SE</p>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+        <button className="hero__expander" onClick={expandHeader}></button>
       </IonHeader>
+
       <IonContent>
-        <IonCard className="welcome-card">
-          <img src="/assets/shapes.svg" alt=""/>
+        <div className="home-margin home-flex ion-align-items-center ion-justify-content-between">
+          <div>
+            <h2>Announcements</h2>
+          </div>
+          <div className="home-flex ion-align-self-stretch ion-align-items-center">
+            <a className="home-link" href="https://google.com">Read More</a>
+          </div>
+        </div>
+        <IonCard className="home-card">
           <IonCardHeader>
-            <IonCardSubtitle>Get Started</IonCardSubtitle>
-            <IonCardTitle>Welcome to Ionic</IonCardTitle>
+            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
+            <p className="home-card__date">8/2 - 14:30</p>
           </IonCardHeader>
           <IonCardContent>
-            <p>
-              Now that your app has been created, you'll want to start building out features and
-              components. Check out some of the resources below for next steps.
-            </p>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                </IonCol>
+                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                  <p> > </p>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonCardContent>
         </IonCard>
 
-        <IonList lines="none">
-          <IonListHeader>
-            <IonLabel>Resources</IonLabel>
-          </IonListHeader>
-          <IonItem href="https://ionicframework.com/docs/" target="_blank">
-            <IonIcon slot="start" color="medium" icon={book} />
-            <IonLabel>Ionic Documentation</IonLabel>
-          </IonItem>
-          <IonItem href="https://ionicframework.com/docs/building/scaffolding" target="_blank">
-            <IonIcon slot="start" color="medium" icon={build} />
-            <IonLabel>Scaffold Out Your App</IonLabel>
-          </IonItem>
-          <IonItem href="https://ionicframework.com/docs/layout/structure" target="_blank">
-            <IonIcon slot="start" color="medium" icon={grid} />
-            <IonLabel>Change Your App Layout</IonLabel>
-          </IonItem>
-          <IonItem href="https://ionicframework.com/docs/theming/basics" target="_blank">
-            <IonIcon slot="start" color="medium" icon={colorFill} />
-            <IonLabel>Theme Your App</IonLabel>
-          </IonItem>
-        </IonList>
+        <IonCard className="home-card">
+          <IonCardHeader>
+            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
+            <p className="home-card__date">8/2 - 14:30</p>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                </IonCol>
+                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                  <p> > </p>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
+
+        <IonCard className="home-card">
+          <IonCardHeader>
+            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
+            <p className="home-card__date">8/2 - 14:30</p>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <p className="home-card__paragraph">ESA Winter 2020 has moved!. It will be held, just like summer, in the...</p>
+                </IonCol>
+                <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+                  <p> > </p>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
       </IonContent>
     </IonPage>
   );
