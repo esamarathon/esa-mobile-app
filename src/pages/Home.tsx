@@ -1,8 +1,10 @@
+import React from 'react';
 import {
   IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
+  IonMenuButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -11,14 +13,10 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonIcon,
 } from '@ionic/react';
-import React from 'react';
-import {notificationsOutline} from 'ionicons/icons';
-import './Home.css';
 import Logo from '../assets/Logo';
-import ChevronRight from '../assets/ChevronRight';
-import MenuBurger from '../assets/MenuBurger';
+import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
+import './Home.css';
 
 interface IState {
   isHeaderOpen: boolean;
@@ -56,17 +54,19 @@ class HomePage extends React.Component<IProp, IState> {
         <IonHeader className={this.getHeaderClasses()}>
           <IonToolbar className="hero__toolbar">
             <IonButtons slot="start">
-              <MenuBurger />
+              <IonMenuButton>
+                <MenuIcon />
+              </IonMenuButton>
             </IonButtons>
             <IonTitle>ESA Summer Marathon</IonTitle>
             <IonButtons slot="end">
-              <IonIcon size="large" className="hero__icon" icon={notificationsOutline} />
+              <NotificationIcon className="hero__icon" />
             </IonButtons>
           </IonToolbar>
           <IonGrid>
             <IonRow>
               <IonCol size="3" className="ion-align-self-start ion-text-center">
-                <Logo height={'50'} width={'50'} />
+                <Logo height="50" width="50" />
               </IonCol>
               <IonCol size="9">
                 <h2 className="hero__title">Swedish Alzheimer’s Foundation</h2>
