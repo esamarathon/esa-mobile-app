@@ -5,7 +5,6 @@ import {
   IonCardHeader,
   IonContent,
   IonHeader,
-  IonMenuButton,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -19,10 +18,17 @@ import {notificationsOutline} from 'ionicons/icons';
 import './Home.css';
 import Logo from '../assets/Logo';
 import ChevronRight from '../assets/ChevronRight';
+import MenuBurger from '../assets/MenuBurger';
+
+interface IState {
+  isHeaderOpen: boolean;
+}
+
+interface IProp {}
 
 // @TODO Fix any
-class HomePage extends React.Component<any, any> {
-  constructor(props: any) {
+class HomePage extends React.Component<IProp, IState> {
+  constructor(props: IProp) {
     super(props);
 
     this.state = {
@@ -50,7 +56,7 @@ class HomePage extends React.Component<any, any> {
         <IonHeader className={this.getHeaderClasses()}>
           <IonToolbar className="hero__toolbar">
             <IonButtons slot="start">
-              <IonMenuButton />
+              <MenuBurger />
             </IonButtons>
             <IonTitle>ESA Summer Marathon</IonTitle>
             <IonButtons slot="end">
