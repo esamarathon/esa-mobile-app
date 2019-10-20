@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {IonPage, IonGrid, IonRow, IonCol} from '@ionic/react';
+import {EventContext} from '../App';
 import Logo from '../assets/Logo';
 import './EventPicker.css';
 
 function EventPicker() {
+  const eventContext = useContext(EventContext);
+
   return (
     <IonPage>
       <IonGrid>
