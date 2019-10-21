@@ -21,12 +21,21 @@ function EventPicker() {
           </IonCol>
         </IonRow>
         <IonRow className="picker__events">
-          <IonRow className="picker__event">
-            <span>ESA Summer 2020</span>
-          </IonRow>
-          <IonRow className="picker__event">
-            <span>ESA Winter 2020</span>
-          </IonRow>
+          {eventContext.events ? (
+            eventContext.events.map((event) => {
+              return (
+                <IonRow
+                  key={event._id}
+                  className="picker__event"
+                  onClick={() => eventContext.updateEvent(event)}
+                >
+                  <span>{event.name}</span>
+                </IonRow>
+              );
+            })
+          ) : (
+            <p>No Events</p>
+          )}
         </IonRow>
       </IonGrid>
     </IonPage>

@@ -45,7 +45,7 @@ const appPages: AppPage[] = [
 interface IContext {
   event: IEvent;
   events: IEvent[];
-  updateEvent: () => void;
+  updateEvent: (item: IEvent) => void;
 }
 
 export const EventContext = React.createContext<IContext>({} as IContext);
@@ -55,6 +55,12 @@ function App() {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
+
+  async function updateEvent(event: IEvent | undefined) {
+    setPreferredEvent(event);
+
+    localStorage.setItem('PREFERRED_EVENT_ID_KEY', event ? event._id : 'undefined');
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -100,7 +106,7 @@ function App() {
       value={{
         events: events,
         event: preferredEvent,
-        updateEvent: () => setPreferredEvent(undefined),
+        updateEvent: (item: any) => updateEvent(item),
       }}
     >
       <IonApp>
