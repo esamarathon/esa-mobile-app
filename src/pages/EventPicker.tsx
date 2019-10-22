@@ -1,12 +1,15 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {IonPage, IonGrid, IonRow, IonCol} from '@ionic/react';
-import {EventContext} from '../App';
 import Logo from '../assets/Logo';
 import './EventPicker.css';
+import {IEvent} from '../services/EventService';
 
-function EventPicker() {
-  const eventContext = useContext(EventContext);
+interface IProps {
+  events: IEvent[];
+  onPickEvent: (event: IEvent) => void;
+}
 
+function EventPicker({events, onPickEvent}: IProps) {
   return (
     <IonPage>
       <IonGrid>
@@ -21,13 +24,13 @@ function EventPicker() {
           </IonCol>
         </IonRow>
         <IonRow className="picker__events">
-          {eventContext.events ? (
-            eventContext.events.map((event) => {
+          {events ? (
+            events.map((event) => {
               return (
                 <IonRow
                   key={event._id}
                   className="picker__event"
-                  onClick={() => eventContext.updateEvent(event)}
+                  onClick={() => onPickEvent(event)}
                 >
                   <span>{event.name}</span>
                 </IonRow>
