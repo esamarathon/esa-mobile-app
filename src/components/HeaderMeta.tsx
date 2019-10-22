@@ -1,6 +1,8 @@
 import {IonCol, IonGrid, IonRow} from '@ionic/react';
 import Logo from '../assets/Logo';
 import React from 'react';
+import HeaderMetaRow from './HeaderMetaRow';
+import HeaderMetaList, {HeaderLinks} from './HeaderMetaList';
 
 interface IProps {
   isExpanded: boolean;
@@ -10,7 +12,22 @@ function HeaderMeta({isExpanded}: IProps) {
   return (
     <IonGrid>
       {isExpanded ? (
-        <p>expanded</p>
+        <React.Fragment>
+          <IonRow>
+            <IonCol size="12" className="ion-align-self-start ion-text-center">
+              <Logo height="50" width="50" />
+            </IonCol>
+          </IonRow>
+          <HeaderMetaRow title="Date" content="15 - 22 February 2020 (Sat - Sat)" />
+          <HeaderMetaRow title="Cause" content="Swedish Alzheimer’s Foundation" />
+          <HeaderMetaRow title="Location" content="Quality Hotel View in Malmö, Sweden" />
+          <HeaderMetaRow title="Stream" content="Twitch.tv/esamarathon" />
+          <HeaderMetaList>
+            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
+            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
+            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
+          </HeaderMetaList>
+        </React.Fragment>
       ) : (
         <IonRow>
           <IonCol size="3" className="ion-align-self-start ion-text-center">
