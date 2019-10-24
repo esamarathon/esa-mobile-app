@@ -1,12 +1,29 @@
 import {IonCol, IonGrid, IonRow} from '@ionic/react';
 import Logo from '../assets/Logo';
 import React from 'react';
+import styled from 'styled-components';
 import HeaderMetaRow from './HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from './HeaderMetaList';
 
 interface IProps {
   isExpanded: boolean;
 }
+
+const Title = styled.h2`
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ion-color-secondary);
+  margin: 0;
+`;
+
+const Paragraph = styled.p`
+  font-size: 14px;
+  margin: 0;
+`;
+
+const StyledLogo = styled(Logo)`
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+`;
 
 function HeaderMeta({isExpanded}: IProps) {
   return (
@@ -15,7 +32,7 @@ function HeaderMeta({isExpanded}: IProps) {
         <React.Fragment>
           <IonRow>
             <IonCol size="12" className="ion-align-self-start ion-text-center">
-              <Logo height="50" width="50" />
+              <StyledLogo height="50" width="50" />
             </IonCol>
           </IonRow>
           <HeaderMetaRow title="Date" content="15 - 22 February 2020 (Sat - Sat)" />
@@ -23,20 +40,20 @@ function HeaderMeta({isExpanded}: IProps) {
           <HeaderMetaRow title="Location" content="Quality Hotel View in Malmö, Sweden" />
           <HeaderMetaRow title="Stream" content="Twitch.tv/esamarathon" />
           <HeaderMetaList>
-            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
-            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
-            <HeaderLinks href="https://google.com">yeet</HeaderLinks>
+            <HeaderLinks href="https://google.com">Master Post</HeaderLinks>
+            <HeaderLinks href="https://google.com">Code of Conduct</HeaderLinks>
+            <HeaderLinks href="https://google.com">Attendee Guide</HeaderLinks>
           </HeaderMetaList>
         </React.Fragment>
       ) : (
         <IonRow>
           <IonCol size="3" className="ion-align-self-start ion-text-center">
-            <Logo height="50" width="50" />
+            <StyledLogo height="50" width="50" />
           </IonCol>
           <IonCol size="9">
-            <h2 className="hero__title">Swedish Alzheimer’s Foundation</h2>
-            <p className="hero__paragraph">Quality Hotel View</p>
-            <p className="hero__paragraph">Malmö, SE</p>
+            <Title>Swedish Alzheimer’s Foundation</Title>
+            <Paragraph>Quality Hotel View</Paragraph>
+            <Paragraph>Malmö, SE</Paragraph>
           </IonCol>
         </IonRow>
       )}

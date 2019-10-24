@@ -17,12 +17,14 @@ const Title = styled.p`
   margin: 0;
   font-size: 14px;
   line-height: 21px;
+  text-transform: uppercase;
 `;
 
 const Meta = styled.p`
   font-size: 12px;
   line-height: 16px;
   font-weight: 600;
+  text-transform: capitalize;
 `;
 
 function HeaderMetaRow({title, content}: IProps) {

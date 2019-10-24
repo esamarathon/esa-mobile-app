@@ -9,6 +9,8 @@ import {useEvents} from './hooks/useEvents';
 import Menu from './components/Menu';
 import Home from './pages/Home';
 import EventPicker from './pages/EventPicker';
+import AnnouncementsPage from './pages/Announcements';
+import SchedulePage from './pages/Schedule';
 import {home, list} from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
@@ -81,6 +83,8 @@ function App() {
             <IonRouterOutlet id="main">
               <Route path="/home" component={Home} exact={true} />
               <Route path="/event-picker" component={EventPicker} exact={true} />
+              <Route path="/announcements" component={AnnouncementsPage} exact={true} />
+              <Route path="/schedule" component={SchedulePage} exact={true} />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>

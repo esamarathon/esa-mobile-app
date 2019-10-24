@@ -8,7 +8,6 @@ interface IProps {
 
 const StyledRow = styled(IonRow)`
   flex-direction: column;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 4px;
 `;
 
@@ -16,11 +15,13 @@ const Title = styled.p`
   margin: 0;
   font-size: 14px;
   line-height: 21px;
+  text-transform: uppercase;
 `;
 
 export const HeaderLinks = styled.a`
   color: var(--ion-color-secondary);
   text-decoration: none;
+  text-transform: capitalize;
 `;
 
 function HeaderMetaList({children}: IProps) {
