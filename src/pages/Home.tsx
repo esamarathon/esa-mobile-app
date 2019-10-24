@@ -9,6 +9,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import styled, {keyframes} from 'styled-components';
+import {Link} from 'react-router-dom';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
 import HeaderMeta from '../components/HeaderMeta';
 import HomeCard from '../components/HomeCard';
@@ -25,7 +26,7 @@ const Title = styled.h2`
   text-transform: uppercase;
 `;
 
-const Link = styled.a`
+const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   color: rgba(136, 26, 232, 0.5);
@@ -142,9 +143,9 @@ function HomePage() {
             <Title>Announcements</Title>
           </div>
           <FlexContainer margin={false} className="ion-align-self-stretch ion-align-items-center">
-            <Link href="/announcements">
+            <StyledLink to="/announcements">
               More <ChevronRight />
-            </Link>
+            </StyledLink>
           </FlexContainer>
         </FlexContainer>
         <HomeCard
@@ -170,9 +171,9 @@ function HomePage() {
             <Title>Scheduled Events</Title>
           </div>
           <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            <Link href="/schedule">
+            <StyledLink to="schedule">
               More <ChevronRight />
-            </Link>
+            </StyledLink>
           </div>
         </FlexContainer>
 
