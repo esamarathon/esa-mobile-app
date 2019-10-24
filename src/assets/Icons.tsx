@@ -8,7 +8,7 @@ export function ChevronRight() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" fill="none" viewBox="0 0 8 12">
       <path
-        fill="#881AE8"
+        fill="currentColor"
         fillRule="evenodd"
         d="M.6 1.4L2 0l6 6-6 6-1.4-1.4L5.2 6 .6 1.4z"
         clipRule="evenodd"
@@ -31,16 +31,9 @@ export function MenuIcon() {
   );
 }
 
-export function NotificationIcon({className}: IProps) {
+export function NotificationIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

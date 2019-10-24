@@ -32,7 +32,9 @@ const StyledLink = styled(Link)`
   color: rgba(136, 26, 232, 0.5);
   text-decoration: none;
   font-size: 14px;
+
   svg {
+    color: #881ae8;
     margin-left: 4px;
   }
 `;
@@ -43,6 +45,7 @@ const StyledToolbar = styled(IonToolbar)`
   --border-width: 0 !important;
 
   margin: 0;
+
   .button {
     color: var(--icon-color-contrast);
     margin-left: 10px;
