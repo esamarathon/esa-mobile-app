@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   IonButtons,
   IonMenuButton,
@@ -16,10 +16,7 @@ import {FlexContainer} from '../theme/common';
 
 // @TODO Remove this when the schedule list is sorted
 import './Home.css';
-
-interface HeaderProps {
-  expanded: boolean;
-}
+import {EventContext} from '../App';
 
 const Title = styled.h2`
   font-size: 14px;
@@ -90,6 +87,10 @@ const forwardHeight = keyframes`
   }
 `;
 
+interface HeaderProps {
+  expanded: boolean;
+}
+
 const StyledHeader = styled(IonHeader)<HeaderProps>`
   position: relative;
   height: 150px;
@@ -106,11 +107,12 @@ const StyledHeader = styled(IonHeader)<HeaderProps>`
 
   animation-fill-mode: forwards;
   animation-duration: 1s;
-  animation-name: ${(props) => (props.expanded ? reverseHeight : forwardHeight)};
+  animation-name: ${(props) => (props.expanded ? forwardHeight : reverseHeight)};
 `;
 
 function HomePage() {
   const [isHeaderOpen, setHeaderOpen] = useState(false);
+  const {event} = useContext(EventContext);
 
   function expandHeader() {
     setHeaderOpen((open) => !open);
@@ -118,19 +120,19 @@ function HomePage() {
 
   return (
     <IonPage>
-      <StyledHeader expanded>
+      <StyledHeader expanded={isHeaderOpen}>
         <StyledToolbar>
           <IonButtons slot="start">
             <IonMenuButton>
               <MenuIcon />
             </IonMenuButton>
           </IonButtons>
-          <IonTitle>ESA Summer Marathon</IonTitle>
+          <IonTitle>{event.name}</IonTitle>
           <IonButtons slot="end">
             <StyledIcon />
           </IonButtons>
         </StyledToolbar>
-        <HeaderMeta isExpanded={isHeaderOpen} />
+        <HeaderMeta event={event} isExpanded={isHeaderOpen} />
         <StyledExpander onClick={expandHeader} />
       </StyledHeader>
 
