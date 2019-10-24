@@ -1,6 +1,7 @@
 import {IonRow} from '@ionic/react';
 import React from 'react';
 import styled from 'styled-components';
+import {Title, Meta} from './HeaderMetaRow';
 
 interface IProps {
   children: any[];
@@ -11,17 +12,10 @@ const StyledRow = styled(IonRow)`
   margin-bottom: 4px;
 `;
 
-const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
-  line-height: 21px;
-  text-transform: uppercase;
-`;
-
-export const HeaderLinks = styled.a`
+export const HeaderLinks = styled(Meta.withComponent('a'))`
   color: var(--ion-color-secondary);
   text-decoration: none;
-  text-transform: capitalize;
+  margin-bottom: 0 !important;
 `;
 
 function HeaderMetaList({children}: IProps) {

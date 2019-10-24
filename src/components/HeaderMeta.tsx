@@ -43,7 +43,7 @@ function HeaderMeta({event, isExpanded}: IProps) {
             title="Location"
             content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
           />
-          <HeaderMetaRow title="Stream" content={`Twitch.tv/${event.meta.twitchChannel}`} />
+          <HeaderMetaRow title="Stream" content={`twitch.tv/${event.meta.twitchChannel}`} />
           <HeaderMetaList>
             <HeaderLinks href="https://google.com">Master Post</HeaderLinks>
             <HeaderLinks href="https://google.com">Code of Conduct</HeaderLinks>

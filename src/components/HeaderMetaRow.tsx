@@ -10,21 +10,23 @@ interface IProps {
 const StyledRow = styled(IonRow)`
   flex-direction: column;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 4px;
 `;
 
-const Title = styled.p`
+export const Title = styled.p`
   margin: 0;
+  margin-top: 10px;
   font-size: 14px;
   line-height: 21px;
   text-transform: uppercase;
+  font-family: 'Titillium Web', sans-serif;
 `;
 
-const Meta = styled.p`
+export const Meta = styled.p`
   font-size: 12px;
   line-height: 16px;
   font-weight: 600;
   text-transform: capitalize;
+  margin: 5px 0 10px !important;
 `;
 
 function HeaderMetaRow({title, content}: IProps) {
