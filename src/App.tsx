@@ -1,13 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import {AppPage} from './declarations';
-import {LoadEvents, IEvent} from './services/EventService';
+import {IEvent} from './services/EventService';
+import {useEvents} from './hooks/useEvents';
 
 import Menu from './components/Menu';
 import Home from './pages/Home';
 import EventPicker from './pages/EventPicker';
+import AnnouncementsPage from './pages/Announcements';
+import SchedulePage from './pages/Schedule';
 import {home, list} from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
@@ -45,49 +48,13 @@ const appPages: AppPage[] = [
 interface IContext {
   event: IEvent;
   events: IEvent[];
-  updateEvent: (item: IEvent) => void;
+  updateEvent: () => void;
 }
 
 export const EventContext = React.createContext<IContext>({} as IContext);
 
 function App() {
-  const [preferredEvent, setPreferredEvent] = useState<IEvent>();
-  const [events, setEvents] = useState<IEvent[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>();
-
-  async function updateEvent(event: IEvent | undefined) {
-    setPreferredEvent(event);
-
-    localStorage.setItem('PREFERRED_EVENT_ID_KEY', event ? event._id : 'undefined');
-  }
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchEvents() {
-      try {
-        setLoading(true);
-
-        const events = await LoadEvents();
-
-        if (!cancelled) {
-          setEvents(events);
-          setPreferredEvent(events[0]);
-        }
-      } catch (error) {
-        setError(error);
-      }
-
-      setLoading(false);
-    }
-
-    fetchEvents();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const {loading, error, preferredEvent, updateEvent, events} = useEvents();
 
   if (loading) {
     return <p>Loading...</p>;
@@ -98,7 +65,7 @@ function App() {
   }
 
   if (!preferredEvent) {
-    return <EventPicker />;
+    return <EventPicker events={events} onPickEvent={updateEvent} />;
   }
 
   return (
@@ -106,7 +73,7 @@ function App() {
       value={{
         events: events,
         event: preferredEvent,
-        updateEvent: (item: any) => updateEvent(item),
+        updateEvent: () => updateEvent(undefined),
       }}
     >
       <IonApp>
@@ -116,6 +83,8 @@ function App() {
             <IonRouterOutlet id="main">
               <Route path="/home" component={Home} exact={true} />
               <Route path="/event-picker" component={EventPicker} exact={true} />
+              <Route path="/announcements" component={AnnouncementsPage} exact={true} />
+              <Route path="/schedule" component={SchedulePage} exact={true} />
               <Route exact path="/" render={() => <Redirect to="/home" />} />
             </IonRouterOutlet>
           </IonSplitPane>

@@ -1,161 +1,183 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
   IonMenuButton,
   IonContent,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
-  IonGrid,
-  IonRow,
-  IonCol,
 } from '@ionic/react';
-import Logo from '../assets/Logo';
+import styled, {keyframes} from 'styled-components';
+import {Link} from 'react-router-dom';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
+import HeaderMeta from '../components/HeaderMeta';
+import HomeCard from '../components/HomeCard';
+import {FlexContainer} from '../theme/common';
+
+// @TODO Remove this when the schedule list is sorted
 import './Home.css';
+import {EventContext} from '../App';
+
+const Title = styled.h2`
+  font-size: 14px;
+  margin: 9px 0 2px;
+  color: #979797;
+  text-transform: uppercase;
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  color: rgba(136, 26, 232, 0.5);
+  text-decoration: none;
+  font-size: 14px;
+  svg {
+    margin-left: 4px;
+  }
+`;
+
+const StyledToolbar = styled(IonToolbar)`
+  --background: transparent;
+  --color: rgba(255, 255, 255, 0.9);
+  --border-width: 0 !important;
+
+  margin: 0;
+  .button {
+    color: var(--icon-color-contrast);
+    margin-left: 10px;
+  }
+`;
+
+const StyledIcon = styled(NotificationIcon)`
+  margin-right: 10px;
+  color: var(--ion-color-secondary);
+`;
+
+const StyledExpander = styled.button`
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  bottom: 6px;
+  width: 30px;
+  height: 2px;
+  background: var(--ion-color-light);
+`;
+
+const reverseHeight = keyframes`
+  0% {
+    height: 100vh;
+  }
+
+  1% {
+    height: 700px;
+  }
+
+  100% {
+    height: 150px;
+  }
+`;
+
+const forwardHeight = keyframes`
+  99% {
+    height: 700px;
+  }
+
+  100% {
+    height: 100vh;
+  }
+`;
+
+interface HeaderProps {
+  expanded: boolean;
+}
+
+const StyledHeader = styled(IonHeader)<HeaderProps>`
+  position: relative;
+  height: 150px;
+  background: linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #eeeeee;
+  box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  color: #fff;
+  padding-bottom: 32px;
+
+  &:after {
+    content: none;
+  }
+
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+  animation-name: ${(props) => (props.expanded ? forwardHeight : reverseHeight)};
+`;
 
 function HomePage() {
   const [isHeaderOpen, setHeaderOpen] = useState(false);
+  const {event} = useContext(EventContext);
 
   function expandHeader() {
     setHeaderOpen((open) => !open);
   }
 
-  function getHeaderClasses() {
-    if (isHeaderOpen) {
-      return 'hero__header hero__header--expanded';
-    } else {
-      return 'hero__header hero__header--collapsed';
-    }
-  }
-
   return (
     <IonPage>
-      <IonHeader className={getHeaderClasses()}>
-        <IonToolbar className="hero__toolbar">
+      <StyledHeader expanded={isHeaderOpen}>
+        <StyledToolbar>
           <IonButtons slot="start">
             <IonMenuButton>
               <MenuIcon />
             </IonMenuButton>
           </IonButtons>
-          <IonTitle>ESA Summer Marathon</IonTitle>
+          <IonTitle>{event.name}</IonTitle>
           <IonButtons slot="end">
-            <NotificationIcon className="hero__icon" />
+            <StyledIcon />
           </IonButtons>
-        </IonToolbar>
-        <IonGrid>
-          <IonRow>
-            <IonCol size="3" className="ion-align-self-start ion-text-center">
-              <Logo height="50" width="50" />
-            </IonCol>
-            <IonCol size="9">
-              <h2 className="hero__title">Swedish Alzheimer’s Foundation</h2>
-              <p className="hero__paragraph">Quality Hotel View</p>
-              <p className="hero__paragraph">Malmö, SE</p>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-        <button className="hero__expander" onClick={expandHeader} />
-      </IonHeader>
+        </StyledToolbar>
+        <HeaderMeta event={event} isExpanded={isHeaderOpen} />
+        <StyledExpander onClick={expandHeader} />
+      </StyledHeader>
 
       <IonContent>
-        <div className="home-margin home-flex ion-align-items-center ion-justify-content-between">
+        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
           <div>
-            <h2 className="home__heading">Announcements</h2>
+            <Title>Announcements</Title>
+          </div>
+          <FlexContainer margin={false} className="ion-align-self-stretch ion-align-items-center">
+            <StyledLink to="/announcements">
+              More <ChevronRight />
+            </StyledLink>
+          </FlexContainer>
+        </FlexContainer>
+        <HomeCard
+          title="ESA WINTER 2020 - MASTER POS"
+          date="8/2 - 14:30"
+          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
+        />
+
+        <HomeCard
+          title="ESA WINTER 2020 - MASTER POS"
+          date="8/2 - 14:30"
+          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
+        />
+
+        <HomeCard
+          title="ESA WINTER 2020 - MASTER POS"
+          date="8/2 - 14:30"
+          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
+        />
+
+        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
+          <div>
+            <Title>Scheduled Events</Title>
           </div>
           <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            <a className="home-link" href="https://google.com">
+            <StyledLink to="schedule">
               More <ChevronRight />
-            </a>
+            </StyledLink>
           </div>
-        </div>
-        <IonCard className="home-card">
-          <IonCardHeader>
-            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
-            <p className="home-card__date">8/2 - 14:30</p>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <IonCol className="ion-no-padding">
-                  <p className="home-card__paragraph">
-                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
-                  </p>
-                </IonCol>
-                <IonCol
-                  size="2"
-                  className="home-flex ion-align-items-center ion-justify-content-end"
-                >
-                  <p> > </p>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
+        </FlexContainer>
 
-        <IonCard className="home-card">
-          <IonCardHeader>
-            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
-            <p className="home-card__date">8/2 - 14:30</p>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <IonCol className="ion-no-padding">
-                  <p className="home-card__paragraph">
-                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
-                  </p>
-                </IonCol>
-                <IonCol
-                  size="2"
-                  className="home-flex ion-align-items-center ion-justify-content-end"
-                >
-                  <p> > </p>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-
-        <IonCard className="home-card">
-          <IonCardHeader>
-            <p className="home-card__title">ESA WINTER 2020 - MASTER POS</p>
-            <p className="home-card__date">8/2 - 14:30</p>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <IonCol className="ion-no-padding">
-                  <p className="home-card__paragraph">
-                    ESA Winter 2020 has moved!. It will be held, just like summer, in the...
-                  </p>
-                </IonCol>
-                <IonCol
-                  size="2"
-                  className="home-flex ion-align-items-center ion-justify-content-end"
-                >
-                  <p> > </p>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-
-        <div className="home-margin home-flex ion-align-items-center ion-justify-content-between">
-          <div>
-            <h2 className="home__heading">Scheduled Events</h2>
-          </div>
-          <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            <a className="home-link" href="https://google.com">
-              More <ChevronRight />
-            </a>
-          </div>
-        </div>
-
+        {/* @TODO This will probably be redesigned anyway, no need to recode */}
         <ul className="schedule-list">
           <li className="schedule-card">
             <div className="schedule-card__header">14:00, Sep 3</div>
