@@ -2,7 +2,6 @@ import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import {AppPage} from './declarations';
 import {IEvent} from './services/EventService';
 import {useEvents} from './hooks/useEvents';
 
@@ -11,7 +10,6 @@ import Home from './pages/Home';
 import EventPicker from './pages/EventPicker';
 import AnnouncementsPage from './pages/Announcements';
 import SchedulePage from './pages/Schedule';
-import {home, list} from 'ionicons/icons';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,29 +30,16 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const appPages: AppPage[] = [
-  {
-    title: 'Home',
-    url: '/home',
-    icon: home,
-  },
-  {
-    title: 'Event Picker',
-    url: '/event-picker',
-    icon: list,
-  },
-];
-
 interface IContext {
   event: IEvent;
   events: IEvent[];
-  updateEvent: () => void;
+  updatePreferredEvent: (event?: IEvent) => void;
 }
 
 export const EventContext = React.createContext<IContext>({} as IContext);
 
 function App() {
-  const {loading, error, preferredEvent, updateEvent, events} = useEvents();
+  const {loading, error, preferredEvent, updatePreferredEvent, events} = useEvents();
 
   if (loading) {
     return <p>Loading...</p>;
@@ -65,27 +50,26 @@ function App() {
   }
 
   if (!preferredEvent) {
-    return <EventPicker events={events} onPickEvent={updateEvent} />;
+    return <EventPicker events={events} onPickEvent={updatePreferredEvent} />;
   }
 
   return (
     <EventContext.Provider
       value={{
-        events: events,
         event: preferredEvent,
-        updateEvent: () => updateEvent(undefined),
+        events,
+        updatePreferredEvent,
       }}
     >
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <Menu appPages={appPages} />
+            <Menu />
             <IonRouterOutlet id="main">
-              <Route path="/home" component={Home} exact={true} />
-              <Route path="/event-picker" component={EventPicker} exact={true} />
-              <Route path="/announcements" component={AnnouncementsPage} exact={true} />
-              <Route path="/schedule" component={SchedulePage} exact={true} />
-              <Route exact path="/" render={() => <Redirect to="/home" />} />
+              <Route path="/home" component={Home} />
+              <Route path="/announcements" component={AnnouncementsPage} />
+              <Route path="/schedule" component={SchedulePage} />
+              <Redirect from="/" to="/home" exact />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

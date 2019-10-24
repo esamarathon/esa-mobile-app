@@ -25,17 +25,11 @@ function EventPicker({events, onPickEvent}: IProps) {
         </IonRow>
         <IonRow className="picker__events">
           {events ? (
-            events.map((event) => {
-              return (
-                <IonRow
-                  key={event._id}
-                  className="picker__event"
-                  onClick={() => onPickEvent(event)}
-                >
-                  <span>{event.name}</span>
-                </IonRow>
-              );
-            })
+            events.map((event) => (
+              <IonRow key={event._id} className="picker__event" onClick={() => onPickEvent(event)}>
+                <span>{event.name}</span>
+              </IonRow>
+            ))
           ) : (
             <p>No Events</p>
           )}
