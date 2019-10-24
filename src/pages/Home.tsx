@@ -10,9 +10,12 @@ import {
 } from '@ionic/react';
 import styled, {keyframes} from 'styled-components';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
-import './Home.css';
 import HeaderMeta from '../components/HeaderMeta';
 import HomeCard from '../components/HomeCard';
+import {FlexContainer} from '../theme/common';
+
+// @TODO Remove this when the schedule list is sorted
+import './Home.css';
 
 interface HeaderProps {
   expanded: boolean;
@@ -132,17 +135,16 @@ function HomePage() {
       </StyledHeader>
 
       <IonContent>
-        <div className="home-margin home-flex ion-align-items-center ion-justify-content-between">
+        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
           <div>
             <Title>Announcements</Title>
           </div>
-          <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            {/*@TODO Fix navigation here yo*/}
+          <FlexContainer margin={false} className="ion-align-self-stretch ion-align-items-center">
             <Link href="/announcements">
               More <ChevronRight />
             </Link>
-          </div>
-        </div>
+          </FlexContainer>
+        </FlexContainer>
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
           date="8/2 - 14:30"
@@ -161,7 +163,7 @@ function HomePage() {
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
 
-        <div className="home-margin home-flex ion-align-items-center ion-justify-content-between">
+        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
           <div>
             <Title>Scheduled Events</Title>
           </div>
@@ -170,7 +172,7 @@ function HomePage() {
               More <ChevronRight />
             </Link>
           </div>
-        </div>
+        </FlexContainer>
 
         {/* @TODO This will probably be redesigned anyway, no need to recode */}
         <ul className="schedule-list">
