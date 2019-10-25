@@ -5,43 +5,59 @@ const PREFERRED_EVENT_ID_KEY = '@ESA:preferredEventId';
 
 export function useEvents() {
   const [events, setEvents] = useState<IEvent[]>([]);
-  const [preferredEvent, setPreferredEvent] = useState<IEvent | undefined>();
+  const [preferredEvent, setPreferredEvent] = useState<IEvent>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  async function updateEvent(event: IEvent | undefined) {
+  async function updatePreferredEvent(event?: IEvent) {
     setPreferredEvent(event);
 
     await localStorage.setItem(PREFERRED_EVENT_ID_KEY, event ? event._id : 'undefined');
   }
 
   useEffect(() => {
+    let cancelled = false;
+
     async function updateEvents() {
       try {
         const fetchedEvents = await LoadEvents();
+        if (cancelled) {
+          return;
+        }
+
         setEvents(fetchedEvents);
 
         const preferredEventId = await localStorage.getItem(PREFERRED_EVENT_ID_KEY);
         const preferredEvent = preferredEventId
           ? fetchedEvents.find((event) => event._id === preferredEventId)
           : undefined;
-        updateEvent(preferredEvent);
+        if (!cancelled) {
+          setPreferredEvent(preferredEvent);
+        }
       } catch (error) {
         console.error(error);
 
-        setError(error);
+        if (!cancelled) {
+          setError(error);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
     updateEvents();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return {
     events,
     preferredEvent,
-    updateEvent,
+    updatePreferredEvent,
     loading,
     error,
   };

@@ -13,15 +13,19 @@ import {Link} from 'react-router-dom';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
 import HeaderMeta from '../components/HeaderMeta';
 import HomeCard from '../components/HomeCard';
-import {FlexContainer} from '../theme/common';
+import {EventContext} from '../App';
 
 // @TODO Remove this when the schedule list is sorted
 import './Home.css';
-import {EventContext} from '../App';
+
+const MenuTitle = styled(IonTitle)`
+  font-family: 'Titillium Web', sans-serif;
+`;
 
 const Title = styled.h2`
+  font-family: 'Titillium Web', sans-serif;
   font-size: 14px;
-  margin: 9px 0 2px;
+  margin: 0;
   color: #979797;
   text-transform: uppercase;
 `;
@@ -32,7 +36,9 @@ const StyledLink = styled(Link)`
   color: rgba(136, 26, 232, 0.5);
   text-decoration: none;
   font-size: 14px;
+
   svg {
+    color: #881ae8;
     margin-left: 4px;
   }
 `;
@@ -43,6 +49,7 @@ const StyledToolbar = styled(IonToolbar)`
   --border-width: 0 !important;
 
   margin: 0;
+
   .button {
     color: var(--icon-color-contrast);
     margin-left: 10px;
@@ -50,7 +57,7 @@ const StyledToolbar = styled(IonToolbar)`
 `;
 
 const StyledIcon = styled(NotificationIcon)`
-  margin-right: 10px;
+  margin-right: 15px;
   color: var(--ion-color-secondary);
 `;
 
@@ -62,6 +69,11 @@ const StyledExpander = styled.button`
   width: 30px;
   height: 2px;
   background: var(--ion-color-light);
+`;
+
+const PageHeaderContainer = styled.div`
+  display: flex;
+  margin: 10px 20px 5px;
 `;
 
 const reverseHeight = keyframes`
@@ -128,7 +140,7 @@ function HomePage() {
               <MenuIcon />
             </IonMenuButton>
           </IonButtons>
-          <IonTitle>{event.name}</IonTitle>
+          <MenuTitle>{event.name}</MenuTitle>
           <IonButtons slot="end">
             <StyledIcon />
           </IonButtons>
@@ -138,44 +150,35 @@ function HomePage() {
       </StyledHeader>
 
       <IonContent>
-        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
-          <div>
-            <Title>Announcements</Title>
-          </div>
-          <FlexContainer margin={false} className="ion-align-self-stretch ion-align-items-center">
-            <StyledLink to="/announcements">
-              More <ChevronRight />
-            </StyledLink>
-          </FlexContainer>
-        </FlexContainer>
-        <HomeCard
-          title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
-          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
-        />
+        <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+          <Title>Announcements</Title>
+          <StyledLink to="/announcements">
+            More <ChevronRight />
+          </StyledLink>
+        </PageHeaderContainer>
 
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
           date="8/2 - 14:30"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
-
+        <HomeCard
+          title="ESA WINTER 2020 - MASTER POS"
+          date="8/2 - 14:30"
+          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
+        />
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
           date="8/2 - 14:30"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
 
-        <FlexContainer margin={true} className="ion-align-items-center ion-justify-content-between">
-          <div>
-            <Title>Scheduled Events</Title>
-          </div>
-          <div className="home-flex ion-align-self-stretch ion-align-items-center">
-            <StyledLink to="schedule">
-              More <ChevronRight />
-            </StyledLink>
-          </div>
-        </FlexContainer>
+        <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+          <Title>Scheduled Events</Title>
+          <StyledLink to="schedule">
+            More <ChevronRight />
+          </StyledLink>
+        </PageHeaderContainer>
 
         {/* @TODO This will probably be redesigned anyway, no need to recode */}
         <ul className="schedule-list">

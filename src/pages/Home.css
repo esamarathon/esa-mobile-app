@@ -31,6 +31,7 @@
 
 .schedule-card__game {
   width: 130px;
+  font-family: 'Titillium Web', sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 600;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {IonCard, IonCardContent, IonCardHeader, IonCol, IonGrid, IonRow} from '@ionic/react';
 import styled from 'styled-components';
+import {ChevronRight} from '../assets/Icons';
 
 const Card = styled(IonCard)`
   --background: #f8f8f8;
@@ -26,8 +27,10 @@ const CardContent = styled(IonCardContent)`
 
 const Title = styled.h2`
   --color: var(--ion-color-primary);
-  font-weight: 600;
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 700;
   font-size: 12px;
+  line-height: 18px;
   margin: 0;
 `;
 
@@ -37,6 +40,7 @@ const Date = styled.p`
   right: 0;
   padding: 2px 8px;
   color: #fff;
+  font-weight: bold;
   background: var(--ion-color-secondary);
   font-size: 12px;
 `;
@@ -47,8 +51,9 @@ const Paragraph = styled.p`
   margin: 0;
 `;
 
-const Chevron = styled.p`
-  margin: 0;
+const Chevron = styled(ChevronRight)`
+  float: right;
+  color: #979797;
 `;
 
 interface IProps {
@@ -71,7 +76,7 @@ function HomeCard({title, date, paragraph}: IProps) {
               <Paragraph>{paragraph}</Paragraph>
             </IonCol>
             <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
-              <Chevron> > </Chevron>
+              <Chevron />
             </IonCol>
           </IonRow>
         </IonGrid>

@@ -4,11 +4,18 @@ interface IProps {
   className?: string;
 }
 
-export function ChevronRight() {
+export function ChevronRight({className}: IProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" fill="none" viewBox="0 0 8 12">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="8"
+      height="12"
+      fill="none"
+      viewBox="0 0 8 12"
+      className={className}
+    >
       <path
-        fill="#881AE8"
+        fill="currentColor"
         fillRule="evenodd"
         d="M.6 1.4L2 0l6 6-6 6-1.4-1.4L5.2 6 .6 1.4z"
         clipRule="evenodd"
@@ -18,9 +25,16 @@ export function ChevronRight() {
   );
 }
 
-export function MenuIcon() {
+export function MenuIcon({className}: IProps) {
   return (
-    <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="18"
+      height="12"
+      viewBox="0 0 18 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -10,34 +10,63 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React from 'react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {AppPage} from '../declarations';
+import React, {useContext} from 'react';
+import {home, list} from 'ionicons/icons';
+import {EventContext} from '../App';
 
-interface MenuProps extends RouteComponentProps {
-  appPages: AppPage[];
+interface IAppPage {
+  url: string;
+  icon: object;
+  title: string;
 }
 
-const Menu: React.FC<MenuProps> = ({appPages}) => (
-  <IonMenu contentId="main" type="overlay">
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Menu</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-      <IonList>
-        {appPages.map(({url, icon, title}) => (
-          <IonMenuToggle key={url} autoHide={false}>
-            <IonItem routerLink={url} routerDirection="none">
-              <IonIcon slot="start" icon={icon} />
-              <IonLabel>{title}</IonLabel>
-            </IonItem>
-          </IonMenuToggle>
-        ))}
-      </IonList>
-    </IonContent>
-  </IonMenu>
-);
+interface IAppAction {
+  action: () => void;
+  icon: object;
+  title: string;
+}
 
-export default withRouter(Menu);
+function Menu() {
+  const {updatePreferredEvent} = useContext(EventContext);
+
+  const appPages: (IAppPage | IAppAction)[] = [
+    {
+      title: 'Home',
+      url: '/home',
+      icon: home,
+    },
+    {
+      title: 'Event Picker',
+      action: () => updatePreferredEvent(undefined),
+      icon: list,
+    },
+  ];
+
+  return (
+    <IonMenu contentId="main" type="overlay">
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList>
+          {appPages.map(({title, icon, ...page}) => {
+            const itemProps = 'url' in page ? {routerLink: page.url} : {onClick: page.action};
+
+            return (
+              <IonMenuToggle key={title} autoHide={false}>
+                <IonItem {...itemProps} button routerDirection="none">
+                  <IonIcon slot="start" icon={icon} />
+                  <IonLabel>{title}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            );
+          })}
+        </IonList>
+      </IonContent>
+    </IonMenu>
+  );
+}
+
+export default Menu;
