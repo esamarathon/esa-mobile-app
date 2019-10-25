@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import EventPicker from './pages/EventPicker';
 import AnnouncementsPage from './pages/Announcements';
 import SchedulePage from './pages/Schedule';
+import {Loading} from './pages/Loading';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -42,7 +43,7 @@ function App() {
   const {loading, error, preferredEvent, updatePreferredEvent, events} = useEvents();
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
