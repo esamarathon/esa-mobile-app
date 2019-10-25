@@ -12,14 +12,16 @@ import styled, {keyframes} from 'styled-components';
 import {Link} from 'react-router-dom';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
 import HeaderMeta from '../components/HeaderMeta';
-import HomeCard from '../components/HomeCard';
+import AnnouncementCard from '../components/AnnouncementCard';
+import ScheduleCard from '../components/ScheduleCard';
 import {EventContext} from '../App';
-
-// @TODO Remove this when the schedule list is sorted
-import './Home.css';
 
 const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
+`;
+
+const Content = styled(IonContent)`
+  background-color: var(--ion-background);
 `;
 
 const Title = styled.h2`
@@ -38,7 +40,7 @@ const StyledLink = styled(Link)`
   font-size: 14px;
 
   svg {
-    color: #881ae8;
+    color: var(--ion-color-primary);
     margin-left: 4px;
   }
 `;
@@ -69,6 +71,13 @@ const StyledExpander = styled.button`
   width: 30px;
   height: 2px;
   background: var(--ion-color-light);
+`;
+
+const ScheduleList = styled.ul`
+  display: flex;
+  margin: 0;
+  padding: 0 20px 15px;
+  overflow-x: scroll;
 `;
 
 const PageHeaderContainer = styled.div`
@@ -125,7 +134,7 @@ const StyledHeader = styled(IonHeader)<HeaderProps>`
 
 function HomePage() {
   const [isHeaderOpen, setHeaderOpen] = useState(false);
-  const {event} = useContext(EventContext);
+  const {event, runs} = useContext(EventContext);
 
   function expandHeader() {
     setHeaderOpen((open) => !open);
@@ -149,7 +158,7 @@ function HomePage() {
         <StyledExpander onClick={expandHeader} />
       </StyledHeader>
 
-      <IonContent>
+      <Content>
         <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
           <Title>Announcements</Title>
           <StyledLink to="/announcements">
@@ -157,19 +166,19 @@ function HomePage() {
           </StyledLink>
         </PageHeaderContainer>
 
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2019-10-25T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2019-08-21T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2018-05-04T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
 
@@ -180,41 +189,12 @@ function HomePage() {
           </StyledLink>
         </PageHeaderContainer>
 
-        {/* @TODO This will probably be redesigned anyway, no need to recode */}
-        <ul className="schedule-list">
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-        </ul>
-      </IonContent>
+        <ScheduleList>
+          {runs.map((run) => (
+            <ScheduleCard key={run.scheduled_t + (run['Player(s)'] || '')} run={run} />
+          ))}
+        </ScheduleList>
+      </Content>
     </IonPage>
   );
 }

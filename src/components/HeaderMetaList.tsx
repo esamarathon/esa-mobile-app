@@ -3,10 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {Title, Meta} from './HeaderMetaRow';
 
-interface IProps {
-  children: any[];
-}
-
 const StyledRow = styled(IonRow)`
   flex-direction: column;
   margin-bottom: 4px;
@@ -17,6 +13,10 @@ export const HeaderLinks = styled(Meta.withComponent('a'))`
   text-decoration: none;
   margin-bottom: 0 !important;
 `;
+
+interface IProps {
+  children: React.ReactNode;
+}
 
 function HeaderMetaList({children}: IProps) {
   return (

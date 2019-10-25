@@ -26,7 +26,7 @@ interface IAppAction {
   title: string;
 }
 
-function Menu() {
+function MenuBar() {
   const {updatePreferredEvent} = useContext(EventContext);
 
   const appPages: (IAppPage | IAppAction)[] = [
@@ -69,4 +69,4 @@ function Menu() {
   );
 }
 
-export default Menu;
+export default MenuBar;

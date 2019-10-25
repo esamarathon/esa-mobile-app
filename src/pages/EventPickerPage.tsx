@@ -5,6 +5,7 @@ import Logo from '../assets/Logo';
 import {IEvent} from '../services/EventService';
 
 const Page = styled(IonPage)`
+  background: #fff;
   justify-content: flex-start !important;
 `;
 
@@ -47,26 +48,26 @@ interface IProps {
   onPickEvent: (event: IEvent) => void;
 }
 
-function EventPicker({events, onPickEvent}: IProps) {
+function EventPickerPage({events, onPickEvent}: IProps) {
   return (
     <Page>
       <LogoWrapper>
         <Logo height="120" width="120" />
       </LogoWrapper>
       <Title>Pick Event</Title>
-      <EventWrapper>
-        {events ? (
-          events.map((event) => (
+      {events ? (
+        <EventWrapper>
+          {events.map((event) => (
             <Event key={event._id} onClick={() => onPickEvent(event)}>
               <span>{event.name}</span>
             </Event>
-          ))
-        ) : (
-          <p>No Events</p>
-        )}
-      </EventWrapper>
+          ))}
+        </EventWrapper>
+      ) : (
+        <p>No Events</p>
+      )}
     </Page>
   );
 }
 
-export default EventPicker;
+export default EventPickerPage;

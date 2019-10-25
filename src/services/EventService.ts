@@ -1,7 +1,7 @@
-export type IEventTheme = 'default' | 'summer' | 'winter';
+type EventTheme = 'default' | 'summer' | 'winter';
 
 interface IEventMeta {
-  theme: IEventTheme;
+  theme: EventTheme;
   horaro: string;
   twitchChannel: string;
   cause: IEventCause;

@@ -4,6 +4,40 @@
   "version": "0.0.3",
   "private": true,
   "license": "MIT",
+  "dependencies": {
+    "@ionic/react": "^4.11.0",
+    "@ionic/react-router": "^4.11.0",
+    "dayjs": "^1.8.16",
+    "ionicons": "^4.6.3",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-router": "^5.1.0",
+    "react-router-dom": "^5.1.0",
+    "styled-components": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/eslint-plugin-prettier": "^2.2.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "@types/prettier": "^1.18.3",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "@types/react-router": "^5.1.1",
+    "@types/react-router-dom": "^5.1.0",
+    "@types/styled-components": "^4.1.19",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.19.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.1.2",
+    "husky": "^3.0.9",
+    "jest-fetch-mock": "^2.1.2",
+    "lint-staged": "^9.4.2",
+    "prettier": "^1.18.2",
+    "react-scripts": "3.2.0",
+    "typescript": "3.6.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -36,35 +70,5 @@
     "hooks": {
       "pre-commit": "npm run ts-compile-check && npm run pre-commit"
     }
-  },
-  "dependencies": {
-    "@ionic/react": "^4.11.0",
-    "@ionic/react-router": "^4.11.0",
-    "ionicons": "^4.6.3",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-router": "^5.1.0",
-    "react-router-dom": "^5.1.0",
-    "styled-components": "^4.4.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.12",
-    "@types/react": "^16.9.5",
-    "@types/react-dom": "^16.9.1",
-    "@types/react-router": "^5.1.1",
-    "@types/react-router-dom": "^5.1.0",
-    "@types/styled-components": "^4.1.19",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.19.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^2.1.2",
-    "husky": "^3.0.9",
-    "lint-staged": "^9.4.2",
-    "prettier": "^1.18.2",
-    "react-scripts": "3.2.0",
-    "typescript": "3.6.3"
   }
 }

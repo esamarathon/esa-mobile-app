@@ -3,13 +3,15 @@ import {Redirect, Route} from 'react-router-dom';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import {IEvent} from './services/EventService';
+import {IRun} from './services/ScheduleService';
 import {useEvents} from './hooks/useEvents';
-
-import Menu from './components/Menu';
-import Home from './pages/Home';
-import EventPicker from './pages/EventPicker';
-import AnnouncementsPage from './pages/Announcements';
-import SchedulePage from './pages/Schedule';
+import {useSchedule} from './hooks/useSchedule';
+import MenuBar from './components/MenuBar';
+import HomePage from './pages/HomePage';
+import LoadingPage from './pages/LoadingPage';
+import EventPickerPage from './pages/EventPickerPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import SchedulePage from './pages/SchedulePage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,30 +35,45 @@ import './theme/variables.css';
 interface IContext {
   event: IEvent;
   events: IEvent[];
+  runs: IRun[];
   updatePreferredEvent: (event?: IEvent) => void;
 }
 
 export const EventContext = React.createContext<IContext>({} as IContext);
 
 function App() {
-  const {loading, error, preferredEvent, updatePreferredEvent, events} = useEvents();
+  const {
+    loading: eventsLoading,
+    error: eventsError,
+    preferredEvent,
+    updatePreferredEvent,
+    events,
+  } = useEvents();
+  const {loading: scheduleLoading, runs} = useSchedule(preferredEvent);
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (eventsLoading) {
+    return <LoadingPage />;
   }
 
-  if (error) {
+  if (eventsError) {
     return <p>Something went wrong...</p>;
   }
 
   if (!preferredEvent) {
-    return <EventPicker events={events} onPickEvent={updatePreferredEvent} />;
+    return <EventPickerPage events={events} onPickEvent={updatePreferredEvent} />;
+  }
+
+  // This loading component needs to be put it under the event picker,
+  // because the schedule fetching hook needs an event to fetch the schedule
+  if (scheduleLoading) {
+    return <LoadingPage />;
   }
 
   return (
     <EventContext.Provider
       value={{
         event: preferredEvent,
+        runs,
         events,
         updatePreferredEvent,
       }}
@@ -64,9 +81,9 @@ function App() {
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <Menu />
+            <MenuBar />
             <IonRouterOutlet id="main">
-              <Route path="/home" component={Home} />
+              <Route path="/home" component={HomePage} />
               <Route path="/announcements" component={AnnouncementsPage} />
               <Route path="/schedule" component={SchedulePage} />
               <Redirect from="/" to="/home" exact />
