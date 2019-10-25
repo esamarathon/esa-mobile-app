@@ -129,7 +129,7 @@ const StyledHeader = styled(IonHeader)<HeaderProps>`
 
 function HomePage() {
   const [isHeaderOpen, setHeaderOpen] = useState(false);
-  const {event} = useContext(EventContext);
+  const {event, runs} = useContext(EventContext);
 
   function expandHeader() {
     setHeaderOpen((open) => !open);
@@ -186,37 +186,18 @@ function HomePage() {
 
         {/* @TODO This will probably be redesigned anyway, no need to recode */}
         <ul className="schedule-list">
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
-
-          <li className="schedule-card">
-            <div className="schedule-card__header">14:00, Sep 3</div>
-            <div className="schedule-card__content">
-              <p className="schedule-card__game">Pokemon Crystal</p>
-              <p className="schedule-card__runner">360Chrism</p>
-            </div>
-          </li>
+          {runs.map((run) => (
+            <li
+              key={run.scheduled_t + (run.Game || '') + run['Player(s)']}
+              className="schedule-card"
+            >
+              <div className="schedule-card__header">14:00, Sep 3</div>
+              <div className="schedule-card__content">
+                <p className="schedule-card__game">{run.Game}</p>
+                <p className="schedule-card__runner">{run['Player(s)']}</p>
+              </div>
+            </li>
+          ))}
         </ul>
       </Content>
     </IonPage>

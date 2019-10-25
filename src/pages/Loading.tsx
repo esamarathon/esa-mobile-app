@@ -11,10 +11,12 @@ const CenteredLogo = styled(Logo)`
   margin: auto;
 `;
 
-export function Loading() {
+function Loading() {
   return (
     <Page>
       <CenteredLogo width="140" height="140" />
     </Page>
   );
 }
+
+export default Loading;
