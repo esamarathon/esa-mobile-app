@@ -24,7 +24,7 @@ const Paragraph = styled.p`
 `;
 
 const StyledLogo = styled(Logo)`
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
 function HeaderMeta({event, isExpanded}: IProps) {

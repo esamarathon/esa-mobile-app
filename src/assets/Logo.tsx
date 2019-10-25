@@ -3,11 +3,18 @@ import React from 'react';
 interface IProps {
   height: number | string;
   width: number | string;
+  className?: string;
 }
 
-function Logo({height, width}: IProps) {
+function Logo({height, width, className}: IProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 181 197">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 181 197"
+      className={className}
+    >
       <g fill="none" fillRule="evenodd">
         <path
           fill="#DB7D0B"
