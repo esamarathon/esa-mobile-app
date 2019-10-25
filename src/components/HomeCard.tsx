@@ -1,6 +1,7 @@
 import React from 'react';
 import {IonCard, IonCardContent, IonCardHeader, IonCol, IonGrid, IonRow} from '@ionic/react';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 import {ChevronRight} from '../assets/Icons';
 
 const Card = styled(IonCard)`
@@ -67,7 +68,11 @@ function HomeCard({title, date, paragraph}: IProps) {
     <Card>
       <CardHeader>
         <Title>{title}</Title>
-        <Date>{date}</Date>
+        <Date>
+          {dayjs(date)
+            .format('MMM D. YYYY')
+            .toUpperCase()}
+        </Date>
       </CardHeader>
       <CardContent>
         <IonGrid className="ion-no-padding">

@@ -1,10 +1,11 @@
-import {IonCol, IonGrid, IonRow} from '@ionic/react';
-import Logo from '../assets/Logo';
 import React from 'react';
+import {IonCol, IonGrid, IonRow} from '@ionic/react';
 import styled from 'styled-components';
+import Logo from '../assets/Logo';
 import HeaderMetaRow from './HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from './HeaderMetaList';
 import {IEvent} from '../services/EventService';
+import {longDateRange} from '../services/DateFormatService';
 
 interface IProps {
   event: IEvent;
@@ -34,16 +35,16 @@ function HeaderMeta({event, isExpanded}: IProps) {
         <React.Fragment>
           <IonRow>
             <IonCol size="12" className="ion-align-self-start ion-text-center">
-              <StyledLogo height="50" width="50" />
+              <StyledLogo height="55" width="55" />
             </IonCol>
           </IonRow>
-          <HeaderMetaRow title="Date" content="15 - 22 February 2020 (Sat - Sat)" />
+          <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
           <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
           <HeaderMetaRow
             title="Location"
             content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
           />
-          <HeaderMetaRow title="Stream" content={`twitch.tv/${event.meta.twitchChannel}`} />
+          <HeaderMetaRow title="Stream" content={`twitch.tv/${event.meta.twitchChannel}`} link />
           <HeaderMetaList>
             <HeaderLinks href="https://google.com">Master Post</HeaderLinks>
             <HeaderLinks href="https://google.com">Code of Conduct</HeaderLinks>
@@ -53,12 +54,14 @@ function HeaderMeta({event, isExpanded}: IProps) {
       ) : (
         <IonRow>
           <IonCol size="3" className="ion-align-self-start ion-text-center">
-            <StyledLogo height="50" width="50" />
+            <StyledLogo height="55" width="55" />
           </IonCol>
           <IonCol size="9">
-            <Title>Swedish Alzheimer’s Foundation</Title>
-            <Paragraph>Quality Hotel View</Paragraph>
-            <Paragraph>Malmö, SE</Paragraph>
+            <Title>{event.meta.cause.name}</Title>
+            <Paragraph>{event.meta.venue.name}</Paragraph>
+            <Paragraph>
+              {event.meta.venue.city}, {event.meta.venue.country}
+            </Paragraph>
           </IonCol>
         </IonRow>
       )}

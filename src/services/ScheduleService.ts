@@ -58,7 +58,7 @@ export interface IRun {
 }
 
 export async function LoadHoraro(horaroEndpoint: string) {
-  const response = await fetch(`${horaroEndpoint}.json`);
+  const response = await fetch(`https://cors-anywhere.herokuapp.com/${horaroEndpoint}.json`);
   const {schedule}: IRunsResponse = await response.json();
 
   return schedule.items.map(({data, ...rest}) =>

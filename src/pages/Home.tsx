@@ -10,6 +10,7 @@ import {
 } from '@ionic/react';
 import styled, {keyframes} from 'styled-components';
 import {Link} from 'react-router-dom';
+import dayjs from 'dayjs';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
 import HeaderMeta from '../components/HeaderMeta';
 import HomeCard from '../components/HomeCard';
@@ -163,17 +164,17 @@ function HomePage() {
 
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2019-10-25T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2019-08-21T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
         <HomeCard
           title="ESA WINTER 2020 - MASTER POS"
-          date="8/2 - 14:30"
+          date="2018-05-04T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
 
@@ -186,18 +187,23 @@ function HomePage() {
 
         {/* @TODO This will probably be redesigned anyway, no need to recode */}
         <ul className="schedule-list">
-          {runs.map((run) => (
-            <li
-              key={run.scheduled_t + (run.Game || '') + run['Player(s)']}
-              className="schedule-card"
-            >
-              <div className="schedule-card__header">14:00, Sep 3</div>
-              <div className="schedule-card__content">
-                <p className="schedule-card__game">{run.Game}</p>
-                <p className="schedule-card__runner">{run['Player(s)']}</p>
-              </div>
-            </li>
-          ))}
+          {runs.map((run) => {
+            const key = run.scheduled_t + (run.Game || '') + run['Player(s)'];
+            const date = dayjs(run.scheduled_t * 1000)
+              .format('H:mm, MMM D')
+              .toUpperCase();
+            const text = (run['Player(s)'] || '').slice(0, 15) + '...';
+
+            return (
+              <li key={key} className="schedule-card">
+                <div className="schedule-card__header">{date}</div>
+                <div className="schedule-card__content">
+                  <p className="schedule-card__game">{run.Game}</p>
+                  <p className="schedule-card__runner">{text}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </Content>
     </IonPage>

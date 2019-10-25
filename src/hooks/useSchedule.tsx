@@ -13,7 +13,7 @@ export function useSchedule(event?: IEvent) {
     async function loadEvents(event?: IEvent) {
       setError(undefined);
 
-      if (!event || !false) {
+      if (!event) {
         setRuns([]);
         return;
       }
