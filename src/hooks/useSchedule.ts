@@ -5,15 +5,12 @@ import {IEvent} from '../services/EventService';
 export function useSchedule(event?: IEvent) {
   const [runs, setRuns] = useState<IRun[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>();
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadEvents(event?: IEvent) {
-      setError(undefined);
-
-      if (!event) {
+      if (!event || !event.meta.horaro) {
         setRuns([]);
         return;
       }
@@ -25,11 +22,7 @@ export function useSchedule(event?: IEvent) {
           setRuns(runs);
         }
       } catch (error) {
-        console.error('Failed fetching schedule', error);
-
-        if (!cancelled) {
-          setError(error);
-        }
+        console.error('Failed fetching schedule. Setting to empty array as fallback', error);
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -44,5 +37,5 @@ export function useSchedule(event?: IEvent) {
     };
   }, [event]);
 
-  return {runs, error, loading};
+  return {runs, loading};
 }

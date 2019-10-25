@@ -5,7 +5,7 @@ import Logo from '../assets/Logo';
 import HeaderMetaRow from './HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from './HeaderMetaList';
 import {IEvent} from '../services/EventService';
-import {longDateRange} from '../services/DateFormatService';
+import {longDateRange, shortDateRange} from '../services/DateFormatService';
 
 const Title = styled.h2`
   font-size: 14px;
@@ -21,6 +21,19 @@ const Paragraph = styled.p`
 
 const StyledLogo = styled(Logo)`
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+`;
+
+const ShortDate = styled.div`
+  background-color: #fff;
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  padding: 3px 5px;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  bottom: 30px;
 `;
 
 interface IProps {
@@ -63,6 +76,7 @@ function HeaderMeta({event, isExpanded}: IProps) {
               {event.meta.venue.city}, {event.meta.venue.country}
             </Paragraph>
           </IonCol>
+          <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
         </IonRow>
       )}
     </IonGrid>

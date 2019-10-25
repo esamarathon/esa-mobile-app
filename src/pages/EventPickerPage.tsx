@@ -48,7 +48,7 @@ interface IProps {
   onPickEvent: (event: IEvent) => void;
 }
 
-function EventPicker({events, onPickEvent}: IProps) {
+function EventPickerPage({events, onPickEvent}: IProps) {
   return (
     <Page>
       <LogoWrapper>
@@ -70,4 +70,4 @@ function EventPicker({events, onPickEvent}: IProps) {
   );
 }
 
-export default EventPicker;
+export default EventPickerPage;

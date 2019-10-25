@@ -6,13 +6,12 @@ import {IEvent} from './services/EventService';
 import {IRun} from './services/ScheduleService';
 import {useEvents} from './hooks/useEvents';
 import {useSchedule} from './hooks/useSchedule';
-
-import Menu from './components/Menu';
-import Home from './pages/Home';
-import EventPicker from './pages/EventPicker';
-import AnnouncementsPage from './pages/Announcements';
-import SchedulePage from './pages/Schedule';
-import Loading from './pages/Loading';
+import MenuBar from './components/MenuBar';
+import HomePage from './pages/HomePage';
+import LoadingPage from './pages/LoadingPage';
+import EventPickerPage from './pages/EventPickerPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import SchedulePage from './pages/SchedulePage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -50,24 +49,24 @@ function App() {
     updatePreferredEvent,
     events,
   } = useEvents();
-  const {loading: scheduleLoading, error: scheduleError, runs} = useSchedule(preferredEvent);
+  const {loading: scheduleLoading, runs} = useSchedule(preferredEvent);
 
   if (eventsLoading) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
-  if (eventsError || scheduleError) {
+  if (eventsError) {
     return <p>Something went wrong...</p>;
   }
 
   if (!preferredEvent) {
-    return <EventPicker events={events} onPickEvent={updatePreferredEvent} />;
+    return <EventPickerPage events={events} onPickEvent={updatePreferredEvent} />;
   }
 
   // This loading component needs to be put it under the event picker,
   // because the schedule fetching hook needs an event to fetch the schedule
   if (scheduleLoading) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   return (
@@ -82,9 +81,9 @@ function App() {
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <Menu />
+            <MenuBar />
             <IonRouterOutlet id="main">
-              <Route path="/home" component={Home} />
+              <Route path="/home" component={HomePage} />
               <Route path="/announcements" component={AnnouncementsPage} />
               <Route path="/schedule" component={SchedulePage} />
               <Redirect from="/" to="/home" exact />

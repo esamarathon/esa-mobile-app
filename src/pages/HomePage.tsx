@@ -10,14 +10,11 @@ import {
 } from '@ionic/react';
 import styled, {keyframes} from 'styled-components';
 import {Link} from 'react-router-dom';
-import dayjs from 'dayjs';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
 import HeaderMeta from '../components/HeaderMeta';
-import HomeCard from '../components/HomeCard';
+import AnnouncementCard from '../components/AnnouncementCard';
+import ScheduleCard from '../components/ScheduleCard';
 import {EventContext} from '../App';
-
-// @TODO Remove this when the schedule list is sorted
-import './Home.css';
 
 const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
@@ -43,7 +40,7 @@ const StyledLink = styled(Link)`
   font-size: 14px;
 
   svg {
-    color: #881ae8;
+    color: var(--ion-color-primary);
     margin-left: 4px;
   }
 `;
@@ -74,6 +71,13 @@ const StyledExpander = styled.button`
   width: 30px;
   height: 2px;
   background: var(--ion-color-light);
+`;
+
+const ScheduleList = styled.ul`
+  display: flex;
+  margin: 0;
+  padding: 0 20px 15px;
+  overflow-x: scroll;
 `;
 
 const PageHeaderContainer = styled.div`
@@ -162,17 +166,17 @@ function HomePage() {
           </StyledLink>
         </PageHeaderContainer>
 
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
           date="2019-10-25T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
           date="2019-08-21T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
         />
-        <HomeCard
+        <AnnouncementCard
           title="ESA WINTER 2020 - MASTER POS"
           date="2018-05-04T12:00:00.000Z"
           paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
@@ -185,26 +189,11 @@ function HomePage() {
           </StyledLink>
         </PageHeaderContainer>
 
-        {/* @TODO This will probably be redesigned anyway, no need to recode */}
-        <ul className="schedule-list">
-          {runs.map((run) => {
-            const key = run.scheduled_t + (run.Game || '') + run['Player(s)'];
-            const date = dayjs(run.scheduled_t * 1000)
-              .format('H:mm, MMM D')
-              .toUpperCase();
-            const text = (run['Player(s)'] || '').slice(0, 15) + '...';
-
-            return (
-              <li key={key} className="schedule-card">
-                <div className="schedule-card__header">{date}</div>
-                <div className="schedule-card__content">
-                  <p className="schedule-card__game">{run.Game}</p>
-                  <p className="schedule-card__runner">{text}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <ScheduleList>
+          {runs.map((run) => (
+            <ScheduleCard key={run.scheduled_t + (run['Player(s)'] || '')} run={run} />
+          ))}
+        </ScheduleList>
       </Content>
     </IonPage>
   );
