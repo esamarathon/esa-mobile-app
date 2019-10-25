@@ -64,7 +64,8 @@ function App() {
     return <EventPicker events={events} onPickEvent={updatePreferredEvent} />;
   }
 
-  // Need to put it under the event picker, because the schedule fetching hook needs an event to fetch the schedule
+  // This loading component needs to be put it under the event picker,
+  // because the schedule fetching hook needs an event to fetch the schedule
   if (scheduleLoading) {
     return <Loading />;
   }

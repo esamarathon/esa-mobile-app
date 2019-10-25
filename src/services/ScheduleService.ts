@@ -58,6 +58,7 @@ export interface IRun {
 }
 
 export async function LoadHoraro(horaroEndpoint: string) {
+  // @TODO Create a custom proxy for this instead
   const response = await fetch(`https://cors-anywhere.herokuapp.com/${horaroEndpoint}.json`);
   const {schedule}: IRunsResponse = await response.json();
 

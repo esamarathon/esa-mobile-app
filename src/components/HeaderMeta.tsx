@@ -7,11 +7,6 @@ import HeaderMetaList, {HeaderLinks} from './HeaderMetaList';
 import {IEvent} from '../services/EventService';
 import {longDateRange} from '../services/DateFormatService';
 
-interface IProps {
-  event: IEvent;
-  isExpanded: boolean;
-}
-
 const Title = styled.h2`
   font-size: 14px;
   font-weight: 700;
@@ -27,6 +22,11 @@ const Paragraph = styled.p`
 const StyledLogo = styled(Logo)`
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
 `;
+
+interface IProps {
+  event: IEvent;
+  isExpanded: boolean;
+}
 
 function HeaderMeta({event, isExpanded}: IProps) {
   return (

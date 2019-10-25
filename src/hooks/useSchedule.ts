@@ -1,6 +1,6 @@
+import {useState, useEffect} from 'react';
 import {LoadHoraro, IRun} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
-import {useState, useEffect} from 'react';
 
 export function useSchedule(event?: IEvent) {
   const [runs, setRuns] = useState<IRun[]>([]);

@@ -4,7 +4,7 @@ export function longDateRange(from: ConfigType, to: ConfigType) {
   const fromDate = dayjs(from);
   const toDate = dayjs(to);
 
-  const isSameMonth = fromDate.month === toDate.month;
+  const isSameMonth = fromDate.month() === toDate.month();
 
   const startDay = fromDate.format('D');
   const startMonth = fromDate.format('MMMM');
@@ -18,7 +18,7 @@ export function shortDateRange(from: ConfigType, to: ConfigType) {
   const fromDate = dayjs(from);
   const toDate = dayjs(to);
 
-  const isSameMonth = fromDate.month === toDate.month;
+  const isSameMonth = fromDate.month() === toDate.month();
 
   const startDay = fromDate.format('D');
   const startMonth = fromDate.format('MMM').toUpperCase();
