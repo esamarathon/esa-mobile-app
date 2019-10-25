@@ -22,6 +22,10 @@ const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
 `;
 
+const Content = styled(IonContent)`
+  background-color: var(--ion-background);
+`;
+
 const Title = styled.h2`
   font-family: 'Titillium Web', sans-serif;
   font-size: 14px;
@@ -149,7 +153,7 @@ function HomePage() {
         <StyledExpander onClick={expandHeader} />
       </StyledHeader>
 
-      <IonContent>
+      <Content>
         <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
           <Title>Announcements</Title>
           <StyledLink to="/announcements">
@@ -214,7 +218,7 @@ function HomePage() {
             </div>
           </li>
         </ul>
-      </IonContent>
+      </Content>
     </IonPage>
   );
 }
