@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {
   IonButtons,
   IonMenuButton,
@@ -7,14 +7,22 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonRow,
+  IonCol,
+  IonGrid,
 } from '@ionic/react';
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
-import HeaderMeta from '../components/HeaderMeta';
 import AnnouncementCard from '../components/AnnouncementCard';
 import ScheduleCard from '../components/ScheduleCard';
 import {EventContext} from '../App';
+import {animated} from 'react-spring';
+import {longDateRange, shortDateRange} from '../services/DateFormatService';
+import Logo from '../assets/Logo';
+import HeaderMetaRow from '../components/HeaderMetaRow';
+import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
+import {useHomePageAnimation} from '../hooks/useHomePageSlide';
 
 const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
@@ -85,78 +93,139 @@ const PageHeaderContainer = styled.div`
   margin: 10px 20px 5px;
 `;
 
-const reverseHeight = keyframes`
-  0% {
-    height: 100vh;
-  }
-
-  1% {
-    height: 700px;
-  }
-
-  100% {
-    height: 150px;
-  }
-`;
-
-const forwardHeight = keyframes`
-  99% {
-    height: 700px;
-  }
-
-  100% {
-    height: 100vh;
-  }
-`;
-
-interface HeaderProps {
-  expanded: boolean;
-}
-
-const StyledHeader = styled(IonHeader)<HeaderProps>`
-  position: relative;
+const StyledHeaderWrapper = styled.div`
   height: 150px;
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  padding: 0;
+`;
+
+const StyledHeader = styled(IonHeader)`
+  z-index: 1000;
+  position: absolute;
+  height: 100%;
+  width: 100%;
   background: linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #eeeeee;
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   color: #fff;
   padding-bottom: 32px;
+  overflow: hidden;
 
   &:after {
     content: none;
   }
+`;
 
-  animation-fill-mode: forwards;
-  animation-duration: 1s;
-  animation-name: ${(props) => (props.expanded ? forwardHeight : reverseHeight)};
+const HeaderTitle = styled.h2`
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ion-color-secondary);
+  margin: 0;
+`;
+
+const Paragraph = styled.p`
+  font-size: 14px;
+  margin: 0;
+`;
+
+const StyledLogo = styled(Logo)`
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+`;
+
+const ShortDate = styled.div`
+  background-color: #fff;
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  padding: 3px 5px;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  bottom: 30px;
 `;
 
 function HomePage() {
-  const [isHeaderOpen, setHeaderOpen] = useState(false);
   const {event, runs} = useContext(EventContext);
-
-  function expandHeader() {
-    setHeaderOpen((open) => !open);
-  }
+  const {animatedValue, bind, stops} = useHomePageAnimation();
 
   return (
     <IonPage>
-      <StyledHeader expanded={isHeaderOpen}>
-        <StyledToolbar>
-          <IonButtons slot="start">
-            <IonMenuButton>
-              <MenuIcon />
-            </IonMenuButton>
-          </IonButtons>
-          <MenuTitle>{event.name}</MenuTitle>
-          <IonButtons slot="end">
-            <StyledIcon />
-          </IonButtons>
-        </StyledToolbar>
-        <HeaderMeta event={event} isExpanded={isHeaderOpen} />
-        <StyledExpander onClick={expandHeader} />
-      </StyledHeader>
+      <StyledHeaderWrapper>
+        <StyledHeader
+          as={animated.div}
+          style={{
+            height: animatedValue.interpolate((height: number) => height + 'px'),
+          }}
+        >
+          <StyledToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton>
+                <MenuIcon />
+              </IonMenuButton>
+            </IonButtons>
+            <MenuTitle>{event.name}</MenuTitle>
+            <IonButtons slot="end">
+              <StyledIcon />
+            </IonButtons>
+          </StyledToolbar>
+          <IonGrid {...bind()}>
+            <animated.div
+              style={{
+                opacity: animatedValue.interpolate([stops[0], stops[1] / 2], [1, 0]),
+              }}
+            >
+              <IonRow>
+                <IonCol size="3" className="ion-align-self-start ion-text-center">
+                  <StyledLogo height="55" width="55" />
+                </IonCol>
+                <IonCol size="9">
+                  <HeaderTitle>{event.meta.cause.name}</HeaderTitle>
+                  <Paragraph>{event.meta.venue.name}</Paragraph>
+                  <Paragraph>
+                    {event.meta.venue.city}, {event.meta.venue.country}
+                  </Paragraph>
+                </IonCol>
+                <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
+              </IonRow>
+            </animated.div>
+            <animated.div
+              style={{
+                opacity: animatedValue.interpolate(stops, [0, 1]),
+                transform: animatedValue.interpolate(
+                  (x: number) => `translate3d(0, ${x - stops[1] - 60}px, 0)`,
+                ),
+              }}
+            >
+              <IonRow>
+                <IonCol size="12" className="ion-align-self-start ion-text-center">
+                  <StyledLogo height="55" width="55" />
+                </IonCol>
+              </IonRow>
+              <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
+              <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
+              <HeaderMetaRow
+                title="Location"
+                content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
+              />
+              <HeaderMetaRow
+                title="Stream"
+                content={`twitch.tv/${event.meta.twitchChannel}`}
+                link
+              />
+              <HeaderMetaList>
+                <HeaderLinks href="https://google.com">Master Post</HeaderLinks>
+                <HeaderLinks href="https://google.com">Code of Conduct</HeaderLinks>
+                <HeaderLinks href="https://google.com">Attendee Guide</HeaderLinks>
+              </HeaderMetaList>
+            </animated.div>
+          </IonGrid>
+          <StyledExpander />
+        </StyledHeader>
+      </StyledHeaderWrapper>
 
       <Content>
         <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
