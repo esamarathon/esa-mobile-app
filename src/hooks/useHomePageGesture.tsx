@@ -52,7 +52,8 @@ const useVelocityTrackedSpring = (initialConfigFunc: () => ValueConfig) => {
 
   return [springVals, wrappedSet] as [typeof springVals, typeof wrappedSet];
 };
-export function useHomePageAnimation() {
+
+export function useHomePageGesture() {
   const stops = [150, 550];
 
   const spring = {
@@ -60,20 +61,22 @@ export function useHomePageAnimation() {
     friction: 27,
   };
 
+  const dampedSpring = {
+    tension: 247,
+    friction: 33,
+  };
+
   const [{value}, set] = useVelocityTrackedSpring(() => ({
     value: stops[0],
     config: spring,
   }));
 
-  function setDrawerOpen() {
-    const dampedSpring = {
-      tension: 247,
-      friction: 33,
-    };
+  function toggleDrawer() {
+    const isClosed = value.getValue() === stops[0];
 
     set(
       {
-        value: value.getValue() === stops[0] ? stops[1] : stops[0],
+        value: isClosed ? stops[1] : stops[0],
         config: dampedSpring,
         immediate: false,
       },
@@ -81,23 +84,20 @@ export function useHomePageAnimation() {
     );
   }
 
-  const threshold = 10;
   const bind = useDrag(
     ({vxvy: [, velocityY], movement: [movementX, movementY], last, memo, event}) => {
       if (event) {
         event.preventDefault();
       }
 
-      const drawerIsOpen = value.getValue() === stops[1];
-
-      const isClick = last && Math.abs(movementX) + Math.abs(movementY) <= 3 && !drawerIsOpen;
-
+      const isClick = last && Math.abs(movementX) + Math.abs(movementY) <= 3;
       if (isClick) {
-        setDrawerOpen();
-        return memo;
+        toggleDrawer();
+        return;
       }
 
       if (!memo) {
+        const threshold = 10;
         const isIntentionalGesture =
           Math.abs(movementY) > threshold && Math.abs(movementY) > Math.abs(movementX);
 
@@ -125,16 +125,11 @@ export function useHomePageAnimation() {
         return memo;
       }
 
-      const newY = rubberBandIfOutOfBounds(
-        stops[0],
-        stops[stops.length - 1],
-        movementY + memo,
-        0.1,
-      );
+      const newValue = rubberBandIfOutOfBounds(stops[0], stops[1], movementY + memo, 0.1);
 
       set(
         {
-          value: newY,
+          value: newValue,
           immediate: true,
         },
         {},

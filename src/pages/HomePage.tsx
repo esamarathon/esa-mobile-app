@@ -22,7 +22,7 @@ import {longDateRange, shortDateRange} from '../services/DateFormatService';
 import Logo from '../assets/Logo';
 import HeaderMetaRow from '../components/HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
-import {useHomePageAnimation} from '../hooks/useHomePageSlide';
+import {useHomePageGesture} from '../hooks/useHomePageGesture';
 
 const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
@@ -104,7 +104,7 @@ const StyledHeaderWrapper = styled.div`
 const StyledHeader = styled(IonHeader)`
   z-index: 1000;
   position: absolute;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background: linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #eeeeee;
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
@@ -113,6 +113,7 @@ const StyledHeader = styled(IonHeader)`
   color: #fff;
   padding-bottom: 32px;
   overflow: hidden;
+  will-change: height;
 
   &:after {
     content: none;
@@ -150,7 +151,7 @@ const ShortDate = styled.div`
 
 function HomePage() {
   const {event, runs} = useContext(EventContext);
-  const {animatedValue, bind, stops} = useHomePageAnimation();
+  const {animatedValue, bind, stops} = useHomePageGesture();
 
   return (
     <IonPage>
@@ -158,7 +159,7 @@ function HomePage() {
         <StyledHeader
           as={animated.div}
           style={{
-            height: animatedValue.interpolate((height: number) => height + 'px'),
+            height: animatedValue.interpolate((x: number) => `${x}px`),
           }}
         >
           <StyledToolbar>
@@ -196,7 +197,8 @@ function HomePage() {
               style={{
                 opacity: animatedValue.interpolate(stops, [0, 1]),
                 transform: animatedValue.interpolate(
-                  (x: number) => `translate3d(0, ${x - stops[1] - 60}px, 0)`,
+                  (x: number) =>
+                    `translate3d(0, ${x <= stops[0] + 30 ? -1000 : x - stops[1] - 60}px, 0)`,
                 ),
               }}
             >
