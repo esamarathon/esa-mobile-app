@@ -43,10 +43,10 @@ interface IContext {
 const Themes: any = {
   default: {},
   summer: {
-    primaryColor: '#99E1F7',
+    primaryColor: '#C670D0',
     secondaryColor: '#5273BA',
     accentColor: '#6DA2D7',
-    shadowColor: '#1C2175',
+    shadowColor: '#881AE8',
     primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
     highlight: '#FFBD17',
   },
