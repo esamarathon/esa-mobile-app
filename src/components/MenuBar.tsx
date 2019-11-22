@@ -1,7 +1,6 @@
 import {
   IonContent,
   IonHeader,
-  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -10,7 +9,6 @@ import {
   IonMenuToggle,
 } from '@ionic/react';
 import React, {useContext} from 'react';
-import {home} from 'ionicons/icons';
 import {EventContext} from '../App';
 import styled from 'styled-components';
 import winterLogo from '../assets/winter-logo.png';

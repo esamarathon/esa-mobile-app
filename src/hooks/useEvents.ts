@@ -12,6 +12,7 @@ export function useEvents() {
 
   async function updatePreferredEvent(event?: IEvent) {
     setPreferredEvent(event);
+    if (event) setTheme(event.meta.theme);
 
     localStorage.setItem(PREFERRED_EVENT_ID_KEY, event ? event._id : 'undefined');
   }
