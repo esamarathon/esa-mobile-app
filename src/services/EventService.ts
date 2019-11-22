@@ -1,4 +1,4 @@
-type EventTheme = 'default' | 'summer' | 'winter';
+export type EventTheme = 'default' | 'summer' | 'winter';
 
 interface IEventMeta {
   theme: EventTheme;

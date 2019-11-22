@@ -14,7 +14,7 @@ import {home} from 'ionicons/icons';
 import {EventContext} from '../App';
 import styled from 'styled-components';
 import winterLogo from '../assets/winter-logo.png';
-import {ScheduleIcon, LocationIcon, HeartIcon} from '../assets/Icons';
+import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
 
 const StyledHeaderWrapper = styled.div`
   height: 200px;
@@ -34,7 +34,7 @@ const StyledHeader = styled(IonHeader)`
   position: absolute;
   height: 100%;
   width: 100%;
-  background: linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #eeeeee;
+  background: ${(props) => props.theme.primaryGradient};
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
   border-top-right-radius: 30px;
   color: #fff;
@@ -101,10 +101,50 @@ const StyledDateLocation = styled(StyledParagraph)`
 `;
 
 const StyledSchedule = styled(ScheduleIcon)`
-  color: #000;
+  color: ${(props) => props.theme.accentColor};
 `;
 
-const StyledBookmark = styled(HeartIcon)``;
+const StyledBookmark = styled(HeartIcon)`
+  color: ${(props) => props.theme.accentColor};
+`;
+
+const StyledUser = styled(UserIcon)`
+  color: ${(props) => props.theme.accentColor};
+`;
+
+const StyledList = styled(IonList)`
+  padding: 0 20px;
+`;
+
+const StyledItem = styled(IonItem)`
+  --color: #757575;
+  --border-width: 0;
+  --border-color: transparent;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --detail-icon-opacity: 0;
+  font-size: 12px;
+`;
+
+const ExtraItems = styled(IonItem)`
+  --color: #757575;
+  --border-width: 0;
+  --border-color: transparent;
+  --detail-icon-opacity: 0;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Titillium Web, sans-serif;
+`;
+
+const StyledLabel = styled(IonLabel)`
+  padding-left: 30px;
+`;
+
+const MenuDivider = styled.div`
+  height: 1px;
+  background: #dadada;
+  margin: 20px 0;
+`;
 
 function MenuBar() {
   const {event, updatePreferredEvent} = useContext(EventContext);
@@ -128,40 +168,45 @@ function MenuBar() {
         </StyledHeader>
       </StyledHeaderWrapper>
       <IonContent>
-        <IonList>
+        <StyledList>
           <IonMenuToggle autoHide={false}>
-            <IonItem routerLink="/home" routerDirection="none">
-              <IonIcon slot="start" icon={home} />
-              <IonLabel>Announcements</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/home" routerDirection="none">
+            <StyledItem routerLink="/home" routerDirection="none">
+              {/*@TODO This should probably be some sort of Announcement icon in the future*/}
               <StyledSchedule />
-              <IonLabel>Schedule</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/home" routerDirection="none">
+              <StyledLabel>Announcements</StyledLabel>
+            </StyledItem>
+            <StyledItem routerLink="/home" routerDirection="none">
+              <StyledSchedule />
+              <StyledLabel>Schedule</StyledLabel>
+            </StyledItem>
+            <StyledItem routerLink="/home" routerDirection="none">
               <StyledBookmark />
-              <IonLabel>My Bookmarks</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/home" routerDirection="none">
-              <IonIcon slot="start" icon={home} />
-              <IonLabel>Account</IonLabel>
-            </IonItem>
+              <StyledLabel>My Bookmarks</StyledLabel>
+            </StyledItem>
+            <StyledItem routerLink="/home" routerDirection="none">
+              <StyledUser />
+              <StyledLabel>Account</StyledLabel>
+            </StyledItem>
 
-            <div className="divider">this is a divider for now</div>
+            <MenuDivider />
 
-            <IonItem routerLink="/home" routerDirection="none">
+            <ExtraItems routerLink="/home" routerDirection="none">
               <IonLabel>About</IonLabel>
-            </IonItem>
+            </ExtraItems>
 
-            <IonItem routerLink="/home" routerDirection="none">
+            <ExtraItems routerLink="/home" routerDirection="none">
               <IonLabel>Settings Etc</IonLabel>
-            </IonItem>
+            </ExtraItems>
 
-            <IonItem onClick={() => updatePreferredEvent(undefined)} button routerDirection="none">
+            <ExtraItems
+              onClick={() => updatePreferredEvent(undefined)}
+              button
+              routerDirection="none"
+            >
               <IonLabel>Event Picker</IonLabel>
-            </IonItem>
+            </ExtraItems>
           </IonMenuToggle>
-        </IonList>
+        </StyledList>
       </IonContent>
     </StyledMenu>
   );

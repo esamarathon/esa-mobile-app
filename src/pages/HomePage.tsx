@@ -43,12 +43,12 @@ const Title = styled.h2`
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
-  color: rgba(136, 26, 232, 0.5);
+  color: ${(props) => props.theme.secondaryColor};
   text-decoration: none;
   font-size: 14px;
 
   svg {
-    color: var(--ion-color-primary);
+    color: ${(props) => props.theme.secondaryColor};
     margin-left: 4px;
   }
 `;
@@ -106,7 +106,7 @@ const StyledHeader = styled(IonHeader)`
   position: absolute;
   height: 100vh;
   width: 100%;
-  background: linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #eeeeee;
+  background: ${(props) => props.theme.primaryGradient};
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -138,7 +138,7 @@ const StyledLogo = styled(Logo)`
 
 const ShortDate = styled.div`
   background-color: #fff;
-  color: var(--ion-color-primary);
+  color: ${(props) => props.theme.shadowColor};
   font-size: 12px;
   line-height: 16px;
   text-align: center;

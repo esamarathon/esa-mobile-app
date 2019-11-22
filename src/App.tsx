@@ -31,6 +31,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import {ThemeProvider} from 'styled-components';
 
 interface IContext {
   event: IEvent;
@@ -38,6 +39,26 @@ interface IContext {
   runs: IRun[];
   updatePreferredEvent: (event?: IEvent) => void;
 }
+
+const Themes: any = {
+  default: {},
+  summer: {
+    primaryColor: '#99E1F7',
+    secondaryColor: '#5273BA',
+    accentColor: '#6DA2D7',
+    shadowColor: '#1C2175',
+    primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
+    highlight: '#FFBD17',
+  },
+  winter: {
+    primaryColor: '#99E1F7',
+    secondaryColor: '#5273BA',
+    accentColor: '#6DA2D7',
+    shadowColor: '#1C2175',
+    primaryGradient: 'linear-gradient(108.91deg, #99E1F7 -10.47%, #6596D1 96.17%), #EEEEEE',
+    highlight: '#FFBD17',
+  },
+};
 
 export const EventContext = React.createContext<IContext>({} as IContext);
 
@@ -48,6 +69,7 @@ function App() {
     preferredEvent,
     updatePreferredEvent,
     events,
+    theme,
   } = useEvents();
   const {loading: scheduleLoading, runs} = useSchedule(preferredEvent);
 
@@ -69,6 +91,10 @@ function App() {
     return <LoadingPage />;
   }
 
+  function themeSelector() {
+    return Themes[theme];
+  }
+
   return (
     <EventContext.Provider
       value={{
@@ -78,19 +104,21 @@ function App() {
         updatePreferredEvent,
       }}
     >
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <MenuBar />
-            <IonRouterOutlet id="main">
-              <Route path="/home" component={HomePage} />
-              <Route path="/announcements" component={AnnouncementsPage} />
-              <Route path="/schedule" component={SchedulePage} />
-              <Redirect from="/" to="/home" exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
+      <ThemeProvider theme={themeSelector()}>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <MenuBar />
+              <IonRouterOutlet id="main">
+                <Route path="/home" component={HomePage} />
+                <Route path="/announcements" component={AnnouncementsPage} />
+                <Route path="/schedule" component={SchedulePage} />
+                <Redirect from="/" to="/home" exact />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </IonApp>
+      </ThemeProvider>
     </EventContext.Provider>
   );
 }

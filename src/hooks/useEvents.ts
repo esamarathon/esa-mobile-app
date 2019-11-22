@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {IEvent, LoadEvents} from '../services/EventService';
+import {EventTheme, IEvent, LoadEvents} from '../services/EventService';
 
 const PREFERRED_EVENT_ID_KEY = '@ESA:preferredEventId';
 
@@ -8,6 +8,7 @@ export function useEvents() {
   const [preferredEvent, setPreferredEvent] = useState<IEvent>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
+  const [theme, setTheme] = useState<EventTheme>('default');
 
   async function updatePreferredEvent(event?: IEvent) {
     setPreferredEvent(event);
@@ -34,6 +35,7 @@ export function useEvents() {
             : undefined;
 
           setPreferredEvent(preferredEvent);
+          if (preferredEvent) setTheme(preferredEvent.meta.theme);
         }
       } catch (error) {
         console.error('Failed fetching events', error);
@@ -61,5 +63,6 @@ export function useEvents() {
     updatePreferredEvent,
     loading,
     error,
+    theme,
   };
 }
