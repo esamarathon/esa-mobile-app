@@ -59,12 +59,12 @@ export function useHomePageGesture() {
   const spring = {
     tension: 247,
     friction: 27,
-  };
+  } as const;
 
   const dampedSpring = {
     tension: 247,
     friction: 33,
-  };
+  } as const;
 
   const [{value}, set] = useVelocityTrackedSpring(() => ({
     value: stops[0],

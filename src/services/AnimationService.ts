@@ -38,7 +38,7 @@ export const rubberBandIfOutOfBounds = (
 export const decelerationRates = {
   fast: 0.99,
   normal: 0.998,
-};
+} as const;
 
 // https://medium.com/@nathangitter/building-fluid-interfaces-ios-swift-9732bb934bf5
 // note: velocity in UIkit is points per second, but react use gesture gives px per millisecond,

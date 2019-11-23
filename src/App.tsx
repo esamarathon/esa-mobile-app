@@ -40,7 +40,7 @@ interface IContext {
   updatePreferredEvent: (event?: IEvent) => void;
 }
 
-const Themes: any = {
+const Themes = {
   default: {
     primaryColor: '#C670D0',
     secondaryColor: '#5273BA',
@@ -65,7 +65,7 @@ const Themes: any = {
     primaryGradient: 'linear-gradient(108.91deg, #99E1F7 -10.47%, #6596D1 96.17%), #EEEEEE',
     highlight: '#FFBD17',
   },
-};
+} as const;
 
 export const EventContext = React.createContext<IContext>({} as IContext);
 
@@ -98,10 +98,6 @@ function App() {
     return <LoadingPage />;
   }
 
-  function themeSelector() {
-    return Themes[theme];
-  }
-
   return (
     <EventContext.Provider
       value={{
@@ -111,7 +107,7 @@ function App() {
         updatePreferredEvent,
       }}
     >
-      <ThemeProvider theme={themeSelector()}>
+      <ThemeProvider theme={Themes[theme]}>
         <IonApp>
           <IonReactRouter>
             <IonSplitPane contentId="main">
