@@ -47,16 +47,16 @@ interface IProps {
 }
 
 function ScheduleCard({run}: IProps) {
-  const date = dayjs(run.scheduled_t * 1000)
+  const date = dayjs(run.scheduled)
     .format('H:mm, MMM D')
     .toUpperCase();
-  const text = (run['Player(s)'] || '').slice(0, 15) + '...';
+  const text = (run.players.join(' vs. ') || '').slice(0, 15) + '...';
 
   return (
     <Card>
       <Header>{date}</Header>
       <Content>
-        <Game>{run.Game}</Game>
+        <Game>{run.game}</Game>
         <Runner>{text}</Runner>
       </Content>
     </Card>
