@@ -64,3 +64,90 @@ export function NotificationIcon({className}: IProps) {
     </svg>
   );
 }
+
+export function LocationIcon({className}: IProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 16 16"
+      className={className}
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M8 1.333A4.663 4.663 0 003.333 6C3.333 9.5 8 14.667 8 14.667S12.667 9.5 12.667 6A4.663 4.663 0 008 1.333zM4.667 6a3.335 3.335 0 016.666 0c0 1.92-1.92 4.793-3.333 6.587C6.613 10.807 4.667 7.9 4.667 6zm1.666 0a1.667 1.667 0 113.334 0 1.667 1.667 0 01-3.334 0z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+export function ScheduleIcon({className}: IProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M8 6H6V5H4v3h16V5h-2v1h-2V5H8v1zm12 4H4v10h16V10zm-4-7H8V2H6v1H4a2 2 0 00-2 2v15a2 2 0 002 2h16a2 2 0 002-2V5a2 2 0 00-2-2h-2V2h-2v1zM7 14v-2h2v2H7zm4 0h2v-2h-2v2zm4 0v-2h2v2h-2zm-8 2v2h2v-2H7zm6 2h-2v-2h2v2z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+export function HeartIcon({className}: IProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path
+        fill="currentColor"
+        d="M12 21.175l-1.45-1.32C5.4 15.185 2 12.105 2 8.325c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09 1.09-1.28 2.76-2.09 4.5-2.09 3.08 0 5.5 2.42 5.5 5.5 0 3.78-3.4 6.86-8.55 11.54L12 21.175z"
+      />
+    </svg>
+  );
+}
+
+export function UserIcon({className}: IProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"
+      />
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 11a4 4 0 100-8 4 4 0 000 8z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}

@@ -25,16 +25,16 @@ export function useEvents() {
 
         const fetchedEvents = await LoadEvents();
 
-        if (!cancelled) {
-          setEvents(fetchedEvents);
+        if (cancelled) return;
 
-          const preferredEventId = localStorage.getItem(PREFERRED_EVENT_ID_KEY);
-          const preferredEvent = preferredEventId
-            ? fetchedEvents.find((event) => event._id === preferredEventId)
-            : undefined;
+        setEvents(fetchedEvents);
 
-          setPreferredEvent(preferredEvent);
-        }
+        const preferredEventId = localStorage.getItem(PREFERRED_EVENT_ID_KEY);
+        const preferredEvent = preferredEventId
+          ? fetchedEvents.find((event) => event._id === preferredEventId)
+          : undefined;
+
+        setPreferredEvent(preferredEvent);
       } catch (error) {
         console.error('Failed fetching events', error);
 
@@ -56,10 +56,11 @@ export function useEvents() {
   }, []);
 
   return {
-    events,
-    preferredEvent,
-    updatePreferredEvent,
     loading,
     error,
+    events,
+    preferredEvent,
+    theme: preferredEvent ? preferredEvent.meta.theme : 'default',
+    updatePreferredEvent,
   };
 }
