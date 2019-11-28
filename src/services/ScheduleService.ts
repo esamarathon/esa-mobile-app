@@ -3,72 +3,42 @@ interface IScheduleEvent {
   slug: string;
 }
 
-interface IScheduleItem {
-  length: string;
-  length_t: number;
-  scheduled: string;
-  scheduled_t: number;
-  data: string[];
-}
-
-interface ISchedule {
+interface IScheduleMeta {
   name: string;
   slug: string;
   timezone: string;
   start: string;
-  start_t: number;
   website: string;
   twitter: string;
   twitch: string;
   description: string;
   setup: string;
-  setup_t: number;
   updated: string;
   url: string;
   event: IScheduleEvent;
-  hidden_columns: string[];
-  columns: string[];
-  items: IScheduleItem[];
-}
-
-interface IScheduleMeta {
   exported: string;
-  hint: string;
-  api: string;
-  'api-link': string;
 }
 
 interface IRunsResponse {
   meta: IScheduleMeta;
-  schedule: ISchedule;
+  data: IRun[];
 }
 
 export interface IRun {
-  length: string;
-  length_t: number;
+  length: number;
   scheduled: string;
-  scheduled_t: number;
-  Game?: string;
-  'Player(s)'?: string;
-  Platform?: string;
-  Category?: string;
-  Note?: string | null;
-  Layout?: string;
-  Info?: string | null;
+  game: string | null;
+  players: string[];
+  platform: string | null;
+  category: string | null;
+  note: string | null;
+  layout: string | null;
+  info: string | null;
 }
 
-export async function LoadHoraro(horaroEndpoint: string) {
-  // @TODO Create a custom proxy for this instead
-  const response = await fetch(`https://cors-anywhere.herokuapp.com/${horaroEndpoint}.json`);
-  const {schedule}: IRunsResponse = await response.json();
+const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';
 
-  return schedule.items.map(({data, ...rest}) =>
-    data.reduce<IRun>(
-      (total, next, index) =>
-        Object.assign(total, {
-          [schedule.columns[index]]: next,
-        }),
-      {...rest},
-    ),
-  );
+export async function LoadHoraro(horaroEndpoint: string): Promise<IRunsResponse> {
+  const response = await fetch(`${baseUrl}/v1/esa/${encodeURIComponent(horaroEndpoint)}`);
+  return response.json();
 }

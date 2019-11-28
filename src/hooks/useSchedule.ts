@@ -19,7 +19,7 @@ export function useSchedule(event?: IEvent) {
         setLoading(true);
         const runs = await LoadHoraro(event.meta.horaro);
         if (!cancelled) {
-          setRuns(runs);
+          setRuns(runs.data);
         }
       } catch (error) {
         console.error('Failed fetching schedule. Setting to empty array as fallback', error);

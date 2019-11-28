@@ -262,7 +262,7 @@ function HomePage() {
 
         <ScheduleList>
           {runs.map((run) => (
-            <ScheduleCard key={run.scheduled_t + (run['Player(s)'] || '')} run={run} />
+            <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
           ))}
         </ScheduleList>
       </Content>
