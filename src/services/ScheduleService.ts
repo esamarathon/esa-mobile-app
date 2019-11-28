@@ -36,7 +36,7 @@ export interface IRun {
   info: string | null;
 }
 
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';
 
 export async function LoadHoraro(horaroEndpoint: string): Promise<IRunsResponse> {
   const response = await fetch(`${baseUrl}/v1/esa/${encodeURIComponent(horaroEndpoint)}`);
