@@ -35,16 +35,16 @@ import './theme/variables.css';
 const Themes = {
   default: {
     primaryColor: '#C670D0',
-    secondaryColor: '#5273BA',
-    accentColor: '#6DA2D7',
-    shadowColor: '#881AE8',
+    secondaryColor: '#881AE8',
+    accentColor: '#881AE8',
+    shadowColor: '#C670D0',
     primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
     highlight: '#FFBD17',
   },
   summer: {
     primaryColor: '#C670D0',
-    secondaryColor: '#5273BA',
-    accentColor: '#6DA2D7',
+    secondaryColor: '#881AE8',
+    accentColor: '#C670D0',
     shadowColor: '#881AE8',
     primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
     highlight: '#FFBD17',
@@ -54,7 +54,7 @@ const Themes = {
     secondaryColor: '#5273BA',
     accentColor: '#6DA2D7',
     shadowColor: '#1C2175',
-    primaryGradient: 'linear-gradient(108.91deg, #99E1F7 -10.47%, #6596D1 96.17%), #EEEEEE',
+    primaryGradient: 'linear-gradient(108.91deg, #99e1f7 -10.47%, #6596d1 96.17%), #eeeeee',
     highlight: '#FFBD17',
   },
 } as const;

@@ -10,9 +10,9 @@ import {
 } from '@ionic/react';
 import React from 'react';
 import styled from 'styled-components';
-import winterLogo from '../assets/winter-logo.png';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
+import {logoMap} from '../theme/constants';
 
 const StyledHeaderWrapper = styled.div`
   height: 200px;
@@ -155,7 +155,7 @@ function MenuBar({event, onClearEvent}: IProps) {
         <StyledHeader>
           <StyledToolbar>
             <InnerToolbar>
-              <StyledImage src={winterLogo} alt="ESA Logo" />
+              <StyledImage src={logoMap[event.meta.theme]} alt="ESA Logo" />
               <StyledTitle>{event.name}</StyledTitle>
               <StyledParagraph>
                 {event.meta.cause.name ? event.meta.cause.name : 'No Cause have been selected yet'}
