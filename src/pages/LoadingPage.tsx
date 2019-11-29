@@ -14,7 +14,7 @@ const CenteredLogo = styled(Logo)`
 function LoadingPage() {
   return (
     <Page>
-      <CenteredLogo width="140" height="140" />
+      <CenteredLogo size={130} />
     </Page>
   );
 }

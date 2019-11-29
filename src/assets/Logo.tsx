@@ -1,17 +1,16 @@
 import React from 'react';
 
 interface IProps {
-  height: number | string;
-  width: number | string;
+  size?: number;
   className?: string;
 }
 
-function Logo({height, width, className}: IProps) {
+function Logo({size = 197, className}: IProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={(size / 197) * 181}
+      height={size}
       viewBox="0 0 181 197"
       className={className}
     >
