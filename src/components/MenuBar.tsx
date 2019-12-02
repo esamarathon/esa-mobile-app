@@ -8,11 +8,11 @@ import {
   IonToolbar,
   IonMenuToggle,
 } from '@ionic/react';
-import React, {useContext} from 'react';
-import {EventContext} from '../App';
+import React from 'react';
 import styled from 'styled-components';
-import winterLogo from '../assets/winter-logo.png';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
+import {IEvent} from '../services/EventService';
+import {logoMap} from '../theme/constants';
 
 const StyledHeaderWrapper = styled.div`
   height: 200px;
@@ -28,7 +28,6 @@ const StyledMenu = styled(IonMenu)`
 `;
 
 const StyledHeader = styled(IonHeader)`
-  z-index: 1000;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -144,16 +143,19 @@ const MenuDivider = styled.div`
   margin: 20px 0;
 `;
 
-function MenuBar() {
-  const {event, updatePreferredEvent} = useContext(EventContext);
+interface IProps {
+  event: IEvent;
+  onClearEvent: () => void;
+}
 
+function MenuBar({event, onClearEvent}: IProps) {
   return (
     <StyledMenu contentId="main" type="overlay">
       <StyledHeaderWrapper>
         <StyledHeader>
           <StyledToolbar>
             <InnerToolbar>
-              <StyledImage src={winterLogo} alt="ESA Logo" />
+              <StyledImage src={logoMap[event.meta.theme]} alt="ESA Logo" />
               <StyledTitle>{event.name}</StyledTitle>
               <StyledParagraph>
                 {event.meta.cause.name ? event.meta.cause.name : 'No Cause have been selected yet'}
@@ -173,34 +175,30 @@ function MenuBar() {
               <StyledSchedule />
               <StyledLabel>Announcements</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/home" routerDirection="none">
+            <StyledItem routerLink="/schedule" routerDirection="none">
               <StyledSchedule />
               <StyledLabel>Schedule</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/home" routerDirection="none">
+            <StyledItem routerLink="/bookmarks" routerDirection="none">
               <StyledBookmark />
               <StyledLabel>My Bookmarks</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/home" routerDirection="none">
+            <StyledItem routerLink="/account" routerDirection="none">
               <StyledUser />
               <StyledLabel>Account</StyledLabel>
             </StyledItem>
 
             <MenuDivider />
 
-            <ExtraItems routerLink="/home" routerDirection="none">
+            <ExtraItems routerLink="/about" routerDirection="none">
               <IonLabel>About</IonLabel>
             </ExtraItems>
 
-            <ExtraItems routerLink="/home" routerDirection="none">
+            <ExtraItems routerLink="/settings" routerDirection="none">
               <IonLabel>Settings Etc</IonLabel>
             </ExtraItems>
 
-            <ExtraItems
-              onClick={() => updatePreferredEvent(undefined)}
-              button
-              routerDirection="none"
-            >
+            <ExtraItems onClick={onClearEvent} button routerDirection="none">
               <IonLabel>Event Picker</IonLabel>
             </ExtraItems>
           </IonMenuToggle>

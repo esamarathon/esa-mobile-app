@@ -38,8 +38,8 @@ export interface IEvent {
   updatedAt: string;
 }
 
-export async function LoadEvents(): Promise<IEvent[]> {
-  const response = await fetch('https://api.submissions.esamarathon.com/events');
+export async function LoadEvents(url: string): Promise<IEvent[]> {
+  const response = await fetch(url);
 
   return response.json();
 }

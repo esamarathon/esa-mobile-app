@@ -1,32 +1,20 @@
-import React, {useContext} from 'react';
-import {
-  IonButtons,
-  IonMenuButton,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonRow,
-  IonCol,
-  IonGrid,
-} from '@ionic/react';
+import React from 'react';
+import {IonContent, IonHeader, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
-import {NotificationIcon, ChevronRight, MenuIcon} from '../assets/Icons';
+import {Link, RouteComponentProps} from 'react-router-dom';
+import {animated} from 'react-spring';
+import useSWR from 'swr';
+import {longDateRange, shortDateRange} from '../services/DateFormatService';
+import {LoadHoraro} from '../services/ScheduleService';
+import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import AnnouncementCard from '../components/AnnouncementCard';
 import ScheduleCard from '../components/ScheduleCard';
-import {EventContext} from '../App';
-import {animated} from 'react-spring';
-import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import Logo from '../assets/Logo';
 import HeaderMetaRow from '../components/HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
-import {useHomePageGesture} from '../hooks/useHomePageGesture';
-
-const MenuTitle = styled(IonTitle)`
-  font-family: 'Titillium Web', sans-serif;
-`;
+import Logo from '../assets/Logo';
+import {ChevronRight} from '../assets/Icons';
+import {IEvent} from '../services/EventService';
+import Toolbar from '../components/Toolbar';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -51,24 +39,6 @@ const StyledLink = styled(Link)`
     color: ${(props) => props.theme.secondaryColor};
     margin-left: 4px;
   }
-`;
-
-const StyledToolbar = styled(IonToolbar)`
-  --background: transparent;
-  --color: rgba(255, 255, 255, 0.9);
-  --border-width: 0 !important;
-
-  margin: 0;
-
-  .button {
-    color: var(--icon-color-contrast);
-    margin-left: 10px;
-  }
-`;
-
-const StyledIcon = styled(NotificationIcon)`
-  margin-right: 15px;
-  color: var(--ion-color-secondary);
 `;
 
 const StyledExpander = styled.button`
@@ -102,7 +72,7 @@ const StyledHeaderWrapper = styled.div`
 `;
 
 const StyledHeader = styled(IonHeader)`
-  z-index: 1000;
+  z-index: 10;
   position: absolute;
   height: 100vh;
   width: 100%;
@@ -149,8 +119,12 @@ const ShortDate = styled.div`
   bottom: 30px;
 `;
 
-function HomePage() {
-  const {event, runs} = useContext(EventContext);
+interface IProps {
+  event: IEvent;
+}
+
+function HomePage({event}: IProps & RouteComponentProps) {
+  const {data, isValidating} = useSWR(event.meta.horaro, LoadHoraro);
   const {animatedValue, bind, stops} = useHomePageGesture();
 
   return (
@@ -162,17 +136,7 @@ function HomePage() {
             height: animatedValue.interpolate((x: number) => `${x}px`),
           }}
         >
-          <StyledToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton>
-                <MenuIcon />
-              </IonMenuButton>
-            </IonButtons>
-            <MenuTitle>{event.name}</MenuTitle>
-            <IonButtons slot="end">
-              <StyledIcon />
-            </IonButtons>
-          </StyledToolbar>
+          <Toolbar opaque>{event.name}</Toolbar>
           <IonGrid {...bind()}>
             <animated.div
               style={{
@@ -181,7 +145,7 @@ function HomePage() {
             >
               <IonRow>
                 <IonCol size="3" className="ion-align-self-start ion-text-center">
-                  <StyledLogo height="55" width="55" />
+                  <StyledLogo size={55} />
                 </IonCol>
                 <IonCol size="9">
                   <HeaderTitle>{event.meta.cause.name}</HeaderTitle>
@@ -204,7 +168,7 @@ function HomePage() {
             >
               <IonRow>
                 <IonCol size="12" className="ion-align-self-start ion-text-center">
-                  <StyledLogo height="55" width="55" />
+                  <StyledLogo size={55} />
                 </IonCol>
               </IonRow>
               <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
@@ -260,11 +224,15 @@ function HomePage() {
           </StyledLink>
         </PageHeaderContainer>
 
-        <ScheduleList>
-          {runs.map((run) => (
-            <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-          ))}
-        </ScheduleList>
+        {!data && isValidating ? (
+          <IonSpinner />
+        ) : (
+          <ScheduleList>
+            {(data ? data.data : []).map((run) => (
+              <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
+            ))}
+          </ScheduleList>
+        )}
       </Content>
     </IonPage>
   );

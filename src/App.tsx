@@ -1,11 +1,11 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
+import {ThemeProvider} from 'styled-components';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import {IEvent} from './services/EventService';
-import {IRun} from './services/ScheduleService';
-import {useEvents} from './hooks/useEvents';
-import {useSchedule} from './hooks/useSchedule';
+import useSWR from 'swr';
+import {LoadEvents} from './services/EventService';
+import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
 import HomePage from './pages/HomePage';
 import LoadingPage from './pages/LoadingPage';
@@ -31,28 +31,20 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import {ThemeProvider} from 'styled-components';
-
-interface IContext {
-  event: IEvent;
-  events: IEvent[];
-  runs: IRun[];
-  updatePreferredEvent: (event?: IEvent) => void;
-}
 
 const Themes = {
   default: {
     primaryColor: '#C670D0',
-    secondaryColor: '#5273BA',
-    accentColor: '#6DA2D7',
-    shadowColor: '#881AE8',
+    secondaryColor: '#881AE8',
+    accentColor: '#881AE8',
+    shadowColor: '#C670D0',
     primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
     highlight: '#FFBD17',
   },
   summer: {
     primaryColor: '#C670D0',
-    secondaryColor: '#5273BA',
-    accentColor: '#6DA2D7',
+    secondaryColor: '#881AE8',
+    accentColor: '#C670D0',
     shadowColor: '#881AE8',
     primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
     highlight: '#FFBD17',
@@ -62,67 +54,54 @@ const Themes = {
     secondaryColor: '#5273BA',
     accentColor: '#6DA2D7',
     shadowColor: '#1C2175',
-    primaryGradient: 'linear-gradient(108.91deg, #99E1F7 -10.47%, #6596D1 96.17%), #EEEEEE',
+    primaryGradient: 'linear-gradient(108.91deg, #99e1f7 -10.47%, #6596d1 96.17%), #eeeeee',
     highlight: '#FFBD17',
   },
 } as const;
 
-export const EventContext = React.createContext<IContext>({} as IContext);
-
 function App() {
-  const {
-    loading: eventsLoading,
-    error: eventsError,
-    preferredEvent,
-    updatePreferredEvent,
-    events,
-    theme,
-  } = useEvents();
-  const {loading: scheduleLoading, runs} = useSchedule(preferredEvent);
+  const {error, data: events} = useSWR(
+    'https://api.submissions.esamarathon.com/events',
+    LoadEvents,
+  );
+  const [currentEventID, setCurrentEventID] = usePersistent<string | undefined>('preferred_event');
 
-  if (eventsLoading) {
+  if (!events) {
     return <LoadingPage />;
   }
 
-  if (eventsError) {
+  if (error) {
     return <p>Something went wrong...</p>;
   }
 
-  if (!preferredEvent) {
-    return <EventPickerPage events={events} onPickEvent={updatePreferredEvent} />;
+  const currentEvent = events.find((event) => event._id === currentEventID);
+  if (!currentEvent) {
+    return (
+      <EventPickerPage events={events} onPickEvent={(event) => setCurrentEventID(event._id)} />
+    );
   }
 
-  // This loading component needs to be put it under the event picker,
-  // because the schedule fetching hook needs an event to fetch the schedule
-  if (scheduleLoading) {
-    return <LoadingPage />;
-  }
+  const theme = Themes[currentEvent.meta.theme];
 
   return (
-    <EventContext.Provider
-      value={{
-        event: preferredEvent,
-        runs,
-        events,
-        updatePreferredEvent,
-      }}
-    >
-      <ThemeProvider theme={Themes[theme]}>
-        <IonApp>
-          <IonReactRouter>
-            <IonSplitPane contentId="main">
-              <MenuBar />
-              <IonRouterOutlet id="main">
-                <Route path="/home" component={HomePage} />
-                <Route path="/announcements" component={AnnouncementsPage} />
-                <Route path="/schedule" component={SchedulePage} />
-                <Redirect from="/" to="/home" exact />
-              </IonRouterOutlet>
-            </IonSplitPane>
-          </IonReactRouter>
-        </IonApp>
-      </ThemeProvider>
-    </EventContext.Provider>
+    <ThemeProvider theme={theme}>
+      <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <MenuBar event={currentEvent} onClearEvent={() => setCurrentEventID(undefined)} />
+            <IonRouterOutlet id="main">
+              <Route
+                path="/home"
+                render={(props) => <HomePage {...props} event={currentEvent} />}
+              />
+              <Route path="/announcements" render={(props) => <AnnouncementsPage {...props} />} />
+              <Route path="/schedule" render={(props) => <SchedulePage {...props} />} />
+              <Redirect from="/" to="/home" exact />
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    </ThemeProvider>
   );
 }
 

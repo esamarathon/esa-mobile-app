@@ -1,10 +1,12 @@
 import React from 'react';
 import {IonPage} from '@ionic/react';
+import {RouteComponentProps} from 'react-router';
+import Toolbar from '../components/Toolbar';
 
-function SchedulePage() {
+function SchedulePage(_: RouteComponentProps) {
   return (
     <IonPage>
-      <p>Schedule</p>
+      <Toolbar>Schedule</Toolbar>
     </IonPage>
   );
 }

@@ -52,7 +52,7 @@ function EventPickerPage({events, onPickEvent}: IProps) {
   return (
     <Page>
       <LogoWrapper>
-        <Logo height="120" width="120" />
+        <Logo size={120} />
       </LogoWrapper>
       <Title>Pick Event</Title>
       {events ? (
