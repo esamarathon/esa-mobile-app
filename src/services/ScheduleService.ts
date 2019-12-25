@@ -39,6 +39,8 @@ export interface IRun {
 const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';
 
 export async function LoadHoraro(horaroEndpoint: string): Promise<IRunsResponse> {
-  const response = await fetch(`${baseUrl}/v1/esa/${encodeURIComponent(horaroEndpoint)}`);
+  const response = await fetch(
+    `${baseUrl}/v1/esa/${encodeURIComponent('https://horaro.org/esa/2019-one')}`,
+  );
   return response.json();
 }

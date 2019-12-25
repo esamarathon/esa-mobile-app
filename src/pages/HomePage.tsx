@@ -7,7 +7,6 @@ import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
 import {LoadHoraro} from '../services/ScheduleService';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
-import AnnouncementCard from '../components/AnnouncementCard';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
 import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
@@ -15,6 +14,7 @@ import Logo from '../assets/Logo';
 import {ChevronRight} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
+import LiveNow from '../components/LiveNow';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -22,21 +22,22 @@ const Content = styled(IonContent)`
 
 const Title = styled.h2`
   font-family: 'Titillium Web', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 600;
   margin: 0;
-  color: #979797;
-  text-transform: uppercase;
+  color: #444444;
+  text-transform: capitalize;
 `;
 
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
-  color: ${(props) => props.theme.secondaryColor};
+  color: #979797;
   text-decoration: none;
   font-size: 14px;
 
   svg {
-    color: ${(props) => props.theme.secondaryColor};
+    color: #979797;
     margin-left: 4px;
   }
 `;
@@ -51,8 +52,16 @@ const StyledExpander = styled.button`
   background: var(--ion-color-light);
 `;
 
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 20px 15px;
+`;
+
 const ScheduleList = styled.ul`
   display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0 20px 15px;
   overflow-x: scroll;
@@ -195,32 +204,20 @@ function HomePage({event}: IProps & RouteComponentProps) {
 
       <Content>
         <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-          <Title>Announcements</Title>
-          <StyledLink to="/announcements">
-            More <ChevronRight />
-          </StyledLink>
+          <Title>Live Now</Title>
         </PageHeaderContainer>
-
-        <AnnouncementCard
-          title="ESA WINTER 2020 - MASTER POS"
-          date="2019-10-25T12:00:00.000Z"
-          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
-        />
-        <AnnouncementCard
-          title="ESA WINTER 2020 - MASTER POS"
-          date="2019-08-21T12:00:00.000Z"
-          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
-        />
-        <AnnouncementCard
-          title="ESA WINTER 2020 - MASTER POS"
-          date="2018-05-04T12:00:00.000Z"
-          paragraph="ESA Winter 2020 has moved!. It will be held, just like summer, in the..."
-        />
+        {!data && isValidating ? (
+          <IonSpinner />
+        ) : (
+          <ContentWrapper>
+            <LiveNow />
+          </ContentWrapper>
+        )}
 
         <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-          <Title>Scheduled Events</Title>
+          <Title>Up Next</Title>
           <StyledLink to="schedule">
-            More <ChevronRight />
+            Schedule <ChevronRight />
           </StyledLink>
         </PageHeaderContainer>
 
