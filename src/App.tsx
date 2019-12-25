@@ -53,7 +53,8 @@ const Themes = {
     secondaryColor: '#6596D1',
     accentColor: '#6DA2D7',
     shadowColor: '#1C2175',
-    primaryGradient: 'linear-gradient(108.91deg, #99e1f7 -10.47%, #6596d1 96.17%), #eeeeee',
+    primaryGradient:
+      'linear-gradient(149.25deg, #99E1F7 -10.47%, #6596D1 41.18%, #5273BA 96.17%), #EEEEEE;',
     highlight: '#FFBD17',
   },
 } as const;
