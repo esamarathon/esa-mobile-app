@@ -1,5 +1,5 @@
 import React from 'react';
-import {IonContent, IonHeader, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
+import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
 import styled from 'styled-components';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {animated} from 'react-spring';
@@ -15,6 +15,7 @@ import {ChevronRight, LocationIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
+import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -72,33 +73,6 @@ const PageHeaderContainer = styled.div`
   margin: 10px 20px 5px;
 `;
 
-const StyledHeaderWrapper = styled.div`
-  height: 150px;
-  position: relative;
-  overflow: visible;
-  width: 100%;
-  padding: 0;
-`;
-
-const StyledHeader = styled(IonHeader)`
-  z-index: 10;
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  background: ${(props) => props.theme.primaryGradient};
-  box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  color: #fff;
-  padding-bottom: 32px;
-  overflow: hidden;
-  will-change: height;
-
-  &:after {
-    content: none;
-  }
-`;
-
 const HeaderTitle = styled.h2`
   font-family: Titillium Web, sans-serif;
   font-size: 24px;
@@ -144,7 +118,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
   return (
     <IonPage>
       <StyledHeaderWrapper>
-        <StyledHeader
+        <StyledHeaderFull
           as={animated.div}
           style={{
             height: animatedValue.interpolate((x: number) => `${x}px`),
@@ -205,7 +179,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
             </animated.div>
           </IonGrid>
           <StyledExpander />
-        </StyledHeader>
+        </StyledHeaderFull>
       </StyledHeaderWrapper>
 
       <Content>

@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import LoadingPage from './pages/LoadingPage';
 import EventPickerPage from './pages/EventPickerPage';
 import SchedulePage from './pages/SchedulePage';
+import BookmarkPage from './pages/BookmarksPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -94,6 +95,7 @@ function App() {
                 path="/home"
                 render={(props) => <HomePage {...props} event={currentEvent} />}
               />
+              <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
               <Route path="/schedule" render={(props) => <SchedulePage {...props} />} />
               <Redirect from="/" to="/home" exact />
             </IonRouterOutlet>

@@ -28,6 +28,8 @@ const StyledIcon = styled(NotificationIcon)`
 
 const MenuTitle = styled(IonTitle)`
   font-family: 'Titillium Web', sans-serif;
+  line-height: 37px;
+  font-size: 24px;
 `;
 
 interface IProps {
