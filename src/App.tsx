@@ -10,7 +10,6 @@ import MenuBar from './components/MenuBar';
 import HomePage from './pages/HomePage';
 import LoadingPage from './pages/LoadingPage';
 import EventPickerPage from './pages/EventPickerPage';
-import AnnouncementsPage from './pages/AnnouncementsPage';
 import SchedulePage from './pages/SchedulePage';
 
 /* Core CSS required for Ionic components to work properly */
@@ -51,10 +50,11 @@ const Themes = {
   },
   winter: {
     primaryColor: '#99E1F7',
-    secondaryColor: '#5273BA',
+    secondaryColor: '#6596D1',
     accentColor: '#6DA2D7',
     shadowColor: '#1C2175',
-    primaryGradient: 'linear-gradient(108.91deg, #99e1f7 -10.47%, #6596d1 96.17%), #eeeeee',
+    primaryGradient:
+      'linear-gradient(149.25deg, #99E1F7 -10.47%, #6596D1 41.18%, #5273BA 96.17%), #EEEEEE;',
     highlight: '#FFBD17',
   },
 } as const;
@@ -94,7 +94,6 @@ function App() {
                 path="/home"
                 render={(props) => <HomePage {...props} event={currentEvent} />}
               />
-              <Route path="/announcements" render={(props) => <AnnouncementsPage {...props} />} />
               <Route path="/schedule" render={(props) => <SchedulePage {...props} />} />
               <Redirect from="/" to="/home" exact />
             </IonRouterOutlet>

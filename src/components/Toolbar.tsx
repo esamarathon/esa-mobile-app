@@ -32,7 +32,7 @@ const MenuTitle = styled(IonTitle)`
 
 interface IProps {
   opaque?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Toolbar({children, opaque}: IProps) {
