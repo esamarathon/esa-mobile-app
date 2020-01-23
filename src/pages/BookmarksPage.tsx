@@ -2,7 +2,7 @@ import React from 'react';
 import useSWR from 'swr';
 import {IonContent, IonPage, IonSpinner} from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
-import {StyledHeaderWrapper, StyledHeader} from '../components/common/HeaderBar';
+import {StyledHeaderWrapper, StyledHeaderSmall} from '../components/common/HeaderBar';
 import styled from 'styled-components';
 import Toolbar from '../components/Toolbar';
 import {GetBookmarks} from '../services/BookmarkService';
@@ -26,9 +26,9 @@ function BookmarkPage(_: RouteComponentProps) {
   return (
     <IonPage>
       <StyledHeaderWrapper>
-        <StyledHeader>
+        <StyledHeaderSmall>
           <Toolbar opaque>My Bookmarks</Toolbar>
-        </StyledHeader>
+        </StyledHeaderSmall>
       </StyledHeaderWrapper>
       <Content>
         {!data && isValidating ? (

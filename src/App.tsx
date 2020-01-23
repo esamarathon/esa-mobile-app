@@ -96,7 +96,10 @@ function App() {
                 render={(props) => <HomePage {...props} event={currentEvent} />}
               />
               <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
-              <Route path="/schedule" render={(props) => <SchedulePage {...props} />} />
+              <Route
+                path="/schedule"
+                render={(props) => <SchedulePage {...props} event={currentEvent} />}
+              />
               <Redirect from="/" to="/home" exact />
             </IonRouterOutlet>
           </IonSplitPane>

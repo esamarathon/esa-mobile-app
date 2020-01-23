@@ -117,7 +117,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
 
   return (
     <IonPage>
-      <StyledHeaderWrapper>
+      <StyledHeaderWrapper large>
         <StyledHeaderFull
           as={animated.div}
           style={{
