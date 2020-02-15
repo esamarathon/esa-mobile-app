@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {IonToolbar, IonTitle, IonButtons, IonMenuButton} from '@ionic/react';
-import {NotificationIcon, MenuIcon} from '../assets/Icons';
+import {MenuIcon} from '../assets/Icons';
 
 const ToolbarWrapper = styled.div<{opaque?: boolean}>`
   background: ${(props) => (props.opaque ? 'transparent' : props.theme.primaryGradient)};
@@ -19,11 +19,6 @@ const StyledToolbar = styled(IonToolbar)`
     color: var(--icon-color-contrast);
     margin-left: 10px;
   }
-`;
-
-const StyledIcon = styled(NotificationIcon)`
-  margin-right: 15px;
-  color: var(--ion-color-secondary);
 `;
 
 const MenuTitle = styled(IonTitle)`
@@ -47,9 +42,6 @@ function Toolbar({children, opaque}: IProps) {
           </IonMenuButton>
         </IonButtons>
         <MenuTitle>{children}</MenuTitle>
-        <IonButtons slot="end">
-          <StyledIcon />
-        </IonButtons>
       </StyledToolbar>
     </ToolbarWrapper>
   );
