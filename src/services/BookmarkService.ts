@@ -8,8 +8,6 @@ export async function GetBookmarks() {
 
 export async function SetBookmark(bookmark: any) {
   bookmarks = [...bookmarks, bookmark];
-
-  console.log(bookmarks);
 }
 
 export async function RemoveBookmark(bookmark: any) {

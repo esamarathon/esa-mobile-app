@@ -112,7 +112,7 @@ interface IProps {
 }
 
 function HomePage({event}: IProps & RouteComponentProps) {
-  const {data, isValidating} = useSWR(event.meta.horaro, LoadHoraro);
+  const {data, isValidating} = useSWR(['homePage:schedule', event.meta.horaro], LoadHoraro);
   const {animatedValue, bind, stops} = useHomePageGesture();
 
   return (

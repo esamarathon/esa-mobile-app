@@ -172,8 +172,8 @@ function MenuBar({event, onClearEvent}: IProps) {
           <IonMenuToggle autoHide={false}>
             <StyledItem routerLink="/home" routerDirection="none">
               {/*@TODO This should probably be some sort of Announcement icon in the future*/}
-              <StyledSchedule />
-              <StyledLabel>Announcements</StyledLabel>
+              <StyledUser />
+              <StyledLabel>Home</StyledLabel>
             </StyledItem>
             <StyledItem routerLink="/schedule" routerDirection="none">
               <StyledSchedule />
@@ -183,20 +183,20 @@ function MenuBar({event, onClearEvent}: IProps) {
               <StyledBookmark />
               <StyledLabel>My Bookmarks</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/account" routerDirection="none">
-              <StyledUser />
-              <StyledLabel>Account</StyledLabel>
-            </StyledItem>
+            {/*<StyledItem routerLink="/account" routerDirection="none">*/}
+            {/*  <StyledUser />*/}
+            {/*  <StyledLabel>Account</StyledLabel>*/}
+            {/*</StyledItem>*/}
 
             <MenuDivider />
 
-            <ExtraItems routerLink="/about" routerDirection="none">
-              <IonLabel>About</IonLabel>
-            </ExtraItems>
+            {/*<ExtraItems routerLink="/about" routerDirection="none">*/}
+            {/*  <IonLabel>About</IonLabel>*/}
+            {/*</ExtraItems>*/}
 
-            <ExtraItems routerLink="/settings" routerDirection="none">
-              <IonLabel>Settings Etc</IonLabel>
-            </ExtraItems>
+            {/*<ExtraItems routerLink="/settings" routerDirection="none">*/}
+            {/*  <IonLabel>Settings Etc</IonLabel>*/}
+            {/*</ExtraItems>*/}
 
             <ExtraItems onClick={onClearEvent} button routerDirection="none">
               <IonLabel>Event Picker</IonLabel>

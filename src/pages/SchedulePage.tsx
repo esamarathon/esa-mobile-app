@@ -5,9 +5,11 @@ import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import {LoadHoraro} from '../services/ScheduleService';
+import {LoadSchedule} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleCard from '../components/ScheduleCard';
+import dayjs from 'dayjs';
+import {HashLink} from 'react-router-hash-link';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -17,6 +19,7 @@ const DayScroller = styled.ul`
   display: flex;
   flex-wrap: nowrap;
   overflow-y: scroll;
+  justify-content: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -27,6 +30,11 @@ const ScrollItem = styled.li`
   flex-direction: column;
   align-items: center;
   margin: 0 10px;
+`;
+
+const ScrollLink = styled(HashLink)`
+  text-decoration: none;
+  color: #fff;
 `;
 
 const ScrollBorder = styled.span`
@@ -40,9 +48,14 @@ const ScrollBorder = styled.span`
 const ScheduleList = styled.ul`
   display: flex;
   flex-direction: column;
-  margin: 60px 0 0;
+  margin: 10px 0 0;
   padding: 0 20px 15px;
   overflow-x: scroll;
+`;
+
+const DayTitle = styled.p`
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 interface IProps {
@@ -50,7 +63,7 @@ interface IProps {
 }
 
 function SchedulePage({event}: IProps & RouteComponentProps) {
-  const {data, isValidating} = useSWR(event.meta.horaro, LoadHoraro);
+  const {data, isValidating} = useSWR(['schedulePage:schedule', event.meta.horaro], LoadSchedule);
 
   return (
     <IonPage>
@@ -58,10 +71,16 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
         <StyledHeader>
           <Toolbar opaque>Schedule</Toolbar>
           <DayScroller>
-            <ScrollItem>
-              <span>Mon</span>
-              <ScrollBorder />
-            </ScrollItem>
+            {(data ? data.days : []).map((day: string) => {
+              return (
+                <ScrollItem key={day}>
+                  <ScrollLink smooth to={`#${day}`}>
+                    {dayjs(day).format('ddd')}
+                  </ScrollLink>
+                  <ScrollBorder />
+                </ScrollItem>
+              );
+            })}
           </DayScroller>
         </StyledHeader>
       </StyledHeaderWrapper>
@@ -70,8 +89,14 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <IonSpinner />
         ) : (
           <ScheduleList>
-            {(data ? data.data : []).map((run) => (
-              <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
+            {(data ? data.data : []).map((day: any) => (
+              <React.Fragment key={day.title}>
+                <p id={day.title} />
+                <DayTitle>{dayjs(day.title).format('dddd D/M')}</DayTitle>
+                {day.runs.map((run: any) => (
+                  <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
+                ))}
+              </React.Fragment>
             ))}
           </ScheduleList>
         )}

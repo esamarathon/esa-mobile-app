@@ -38,9 +38,27 @@ export interface IRun {
 
 const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';
 
-export async function LoadHoraro(horaroEndpoint: string): Promise<IRunsResponse> {
+export async function LoadHoraro(key: string, horaroEndpoint: string): Promise<IRunsResponse> {
   const response = await fetch(
-    `${baseUrl}/v1/esa/${encodeURIComponent('https://horaro.org/esa/2019-one')}`,
+    `${baseUrl}/v1/esa/upcoming/${encodeURIComponent(horaroEndpoint)}?amount=5`,
   );
   return response.json();
+}
+
+export async function LoadSchedule(key: string, horaroEndpoint: string): Promise<any> {
+  const response = await fetch(`${baseUrl}/v1/esa/schedule/${encodeURIComponent(horaroEndpoint)}`);
+
+  const {data} = await response.json();
+
+  const fixObject = Object.entries(data).map(([key, value]) => {
+    return Object.assign({
+      title: key,
+      runs: value,
+    });
+  });
+
+  return {
+    days: [...Object.keys(data)],
+    data: fixObject,
+  };
 }
