@@ -1,0 +1,8 @@
+{
+  "appId": "esa.app.event",
+  "appName": "esa-app",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

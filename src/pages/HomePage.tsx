@@ -172,9 +172,13 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 link
               />
               <HeaderMetaList>
-                <HeaderLinks href="https://google.com">Master Post</HeaderLinks>
-                <HeaderLinks href="https://google.com">Code of Conduct</HeaderLinks>
-                <HeaderLinks href="https://google.com">Attendee Guide</HeaderLinks>
+                <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
+                  Master Post
+                </HeaderLinks>
+                <HeaderLinks href="https://esamarathon.com/rules">Code of Conduct</HeaderLinks>
+                <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">
+                  Attendee Guide
+                </HeaderLinks>
               </HeaderMetaList>
             </animated.div>
           </IonGrid>

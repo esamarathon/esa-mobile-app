@@ -1,5 +1,7 @@
 {
   "name": "esa-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }

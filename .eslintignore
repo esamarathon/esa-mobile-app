@@ -3,3 +3,4 @@ __tests__
 *.test.js
 android
 ios
+www
