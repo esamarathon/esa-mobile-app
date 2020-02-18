@@ -22,19 +22,20 @@ const DayScroller = styled.ul`
   justify-content: center;
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0;
 `;
 
 const ScrollItem = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 10px;
+  margin: 0 20px;
 `;
 
 const ScrollLink = styled(HashLink)`
   text-decoration: none;
   color: #fff;
+  font-size: 12px;
 `;
 
 const ScrollBorder = styled.span`

@@ -1,4 +1,4 @@
-package esa.app.event;
+package com.esamobile;
 
 import android.os.Bundle;
 

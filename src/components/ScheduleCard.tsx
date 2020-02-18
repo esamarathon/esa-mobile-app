@@ -78,12 +78,32 @@ const HeartSymbolLiked = styled(HeartIcon)`
   stroke: none;
 `;
 
+const Expanded = styled.div``;
+
+const Expander = styled.div`
+  border-top: 1px solid #dadada;
+  margin: 6px 0;
+`;
+
+const InnerExpander = styled.div`
+  display: flex;
+  p {
+    margin: 0 8px 0 0;
+    font-family: Titillium Web;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    color: #979797;
+  }
+`;
+
 interface IProps {
   run: IRun;
 }
 
 function ScheduleCard({run}: IProps) {
   const [bookmarked, setBookmarked] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled)
     .format('H:mm A')
     .toUpperCase();
@@ -91,11 +111,23 @@ function ScheduleCard({run}: IProps) {
     SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
   }
 
-  const text = (run.players.join(' vs. ') || '').slice(0, 15);
+  async function expandToggle(state: boolean) {
+    setExpanded((state = !expanded));
+  }
+
+  const regEx = new RegExp('\\(([^)]+)\\)');
+
+  const playersArray = run.players.map((player) => {
+    const firstText = player.replace('[', '');
+    const secondText = firstText.replace(']', '');
+    const thirdText = secondText.replace(regEx, '');
+    return thirdText;
+  });
+
+  const text = playersArray.join(' vs. ' || '');
 
   return (
-    <Card>
-      {/* @TODO Fix this time to this format */}
+    <Card onClick={() => expandToggle(expanded)}>
       <Date>{date}</Date>
       <Content>
         <Game>{run.game}</Game>
@@ -103,6 +135,17 @@ function ScheduleCard({run}: IProps) {
         <HeartButton onClick={() => bookmarkMe(run)}>
           {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
         </HeartButton>
+        {expanded ? (
+          <Expanded>
+            <Expander />
+            <InnerExpander>
+              <p>{run.length}</p>
+              <p>{run.category}</p>
+            </InnerExpander>
+          </Expanded>
+        ) : (
+          <React.Fragment />
+        )}
       </Content>
     </Card>
   );
