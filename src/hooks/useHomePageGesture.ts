@@ -87,6 +87,10 @@ export function useHomePageGesture() {
   const bind = useDrag(
     ({vxvy: [, velocityY], movement: [movementX, movementY], last, memo, event}) => {
       if (event) {
+        if (event.target.toString().startsWith('http')) {
+          return;
+        }
+
         event.preventDefault();
       }
 
