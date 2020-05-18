@@ -52,8 +52,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run clean && react-scripts build && mv build www && npx cap copy",
     "test": "react-scripts test",
+    "clean": "rm -fr build && rm -fr www",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .tsx,.ts,.jsx,.js",
     "pre-commit": "lint-staged",

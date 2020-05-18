@@ -41,12 +41,13 @@ const Image = styled.img`
   width: 100%;
 `;
 
-function LiveNow() {
+function LiveNow({run}: any) {
+  console.log(run);
   return (
     <LiveCard>
-      <Title>Super Mario Land 2: Golden Coins</Title>
-      <Runner>Oh_DeeR vs LateLearner</Runner>
-      <Image src={demoImg} alt="demo image" />
+      {/*<Title>{props.run}</Title>*/}
+      {/*<Runner>{props.runner}</Runner>*/}
+      {/*<Image src={demoImg} alt="demo image" />*/}
     </LiveCard>
   );
 }
