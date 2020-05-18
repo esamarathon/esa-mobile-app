@@ -4,6 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import useSWR from 'swr';
+import {Plugins} from '@capacitor/core';
 import {LoadEvents} from './services/EventService';
 import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
@@ -12,9 +13,6 @@ import LoadingPage from './pages/LoadingPage';
 import EventPickerPage from './pages/EventPickerPage';
 import SchedulePage from './pages/SchedulePage';
 import BookmarkPage from './pages/BookmarksPage';
-import {PushProvider} from './providers/PushProvider';
-import {Plugins} from '@capacitor/core';
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -32,17 +30,10 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
+
 import './theme/variables.css';
 
-const {Device} = Plugins;
-
-Device.getInfo().then((deviceInfo) => {
-  if (deviceInfo.platform !== 'web') {
-    // Setup push
-    // @TODO This probably still needs a check if the permission is set
-    PushProvider();
-  }
-});
+const {SplashScreen} = Plugins;
 
 const Themes = {
   default: {
@@ -78,6 +69,8 @@ function App() {
     LoadEvents,
   );
   const [currentEventID, setCurrentEventID] = usePersistent<string | undefined>('preferred_event');
+
+  SplashScreen.hide();
 
   if (!events) {
     return <LoadingPage />;

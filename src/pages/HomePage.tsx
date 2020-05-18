@@ -16,6 +16,7 @@ import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
 import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
+import dayjs from 'dayjs';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -187,32 +188,36 @@ function HomePage({event}: IProps & RouteComponentProps) {
       </StyledHeaderWrapper>
 
       <Content>
-        <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-          <Title>Live Now</Title>
-        </PageHeaderContainer>
-        {!data && isValidating ? (
-          <IonSpinner />
-        ) : (
-          <ContentWrapper>
-            <LiveNow />
-          </ContentWrapper>
-        )}
-
-        <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-          <Title>Up Next</Title>
-          <StyledLink to="schedule">
-            Schedule <ChevronRight />
-          </StyledLink>
-        </PageHeaderContainer>
+        {/*<PageHeaderContainer className="ion-align-items-center ion-justify-content-between">*/}
+        {/*  <Title>Up Next</Title>*/}
+        {/*  <StyledLink to="schedule">*/}
+        {/*    Schedule <ChevronRight />*/}
+        {/*  </StyledLink>*/}
+        {/*</PageHeaderContainer>*/}
 
         {!data && isValidating ? (
           <IonSpinner />
         ) : (
-          <ScheduleList>
-            {(data ? data.data : []).map((run) => (
-              <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-            ))}
-          </ScheduleList>
+          <React.Fragment>
+            <ScheduleList>
+              {dayjs().isAfter(event.endDate) ? (
+                <p>Event is over</p>
+              ) : (
+                (data ? data.data : []).map((run: any, index: number) =>
+                  index > 0 ? (
+                    <React.Fragment>
+                      <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+                        <Title>Live Now</Title>
+                      </PageHeaderContainer>
+                      <LiveNow run={run} />
+                    </React.Fragment>
+                  ) : (
+                    <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
+                  ),
+                )
+              )}
+            </ScheduleList>
+          </React.Fragment>
         )}
       </Content>
     </IonPage>

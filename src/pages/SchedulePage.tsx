@@ -29,7 +29,7 @@ const ScrollItem = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 20px;
+  margin: 0 15px;
 `;
 
 const ScrollLink = styled(HashLink)`

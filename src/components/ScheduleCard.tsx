@@ -4,6 +4,7 @@ import {IRun} from '../services/ScheduleService';
 import {SetBookmark} from '../services/BookmarkService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
+import {scheduleNotification} from '../providers/PushProvider';
 
 const Card = styled.li`
   position: relative;
@@ -108,6 +109,13 @@ function ScheduleCard({run}: IProps) {
     .format('H:mm A')
     .toUpperCase();
   async function bookmarkMe(bookmark: any) {
+    scheduleNotification({
+      title: 'Your run is about to start!',
+      body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
+      scheduled: dayjs(bookmark.scheduled)
+        .subtract(1, 'hour')
+        .toDate(),
+    });
     SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
   }
 
