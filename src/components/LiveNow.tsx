@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import demoImg from '../assets/NowPlayingDemo.png';
+import {IRun} from '../services/ScheduleService';
+import {formatPlayers} from '../services/PlayersService';
 
 const LiveCard = styled.div`
   position: relative;
@@ -11,6 +13,7 @@ const LiveCard = styled.div`
   justify-content: flex-end;
   height: 185px;
   padding: 0 20px 16px;
+  margin-bottom: 12px;
 `;
 
 const Title = styled.h3`
@@ -41,13 +44,16 @@ const Image = styled.img`
   width: 100%;
 `;
 
-function LiveNow({run}: any) {
-  console.log(run);
+interface Props {
+  run: IRun;
+}
+
+function LiveNow({run}: Props) {
   return (
     <LiveCard>
-      {/*<Title>{props.run}</Title>*/}
-      {/*<Runner>{props.runner}</Runner>*/}
-      {/*<Image src={demoImg} alt="demo image" />*/}
+      <Title>{run.game}</Title>
+      <Runner>{formatPlayers(run.players)}</Runner>
+      <Image src={demoImg} alt="demo image" />
     </LiveCard>
   );
 }
