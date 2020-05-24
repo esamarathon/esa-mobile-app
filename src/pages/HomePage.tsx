@@ -138,10 +138,16 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 </IonCol>
                 <IonCol size="12" className="ion-align-self-start ion-text-center">
                   <SomeDiv>
-                    <LocationIcon />
-                    <Paragraph>
-                      {event.meta.venue.city}, {event.meta.venue.country}
-                    </Paragraph>
+                    {event.meta.venue.country.length > 0 ? (
+                      <React.Fragment>
+                        <LocationIcon />
+                        <Paragraph>
+                          {event.meta.venue.city}, {event.meta.venue.country}
+                        </Paragraph>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment />
+                    )}
                     <ShortDate>| {shortDateRange(event.startDate, event.endDate)}</ShortDate>
                   </SomeDiv>
                 </IonCol>
@@ -163,10 +169,14 @@ function HomePage({event}: IProps & RouteComponentProps) {
               </IonRow>
               <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
               <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-              <HeaderMetaRow
-                title="Location"
-                content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
-              />
+              {event.meta.venue.country.length > 0 ? (
+                <HeaderMetaRow
+                  title="Location"
+                  content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
+                />
+              ) : (
+                <React.Fragment />
+              )}
               <HeaderMetaRow
                 title="Stream"
                 content={`twitch.tv/${event.meta.twitchChannel}`}
