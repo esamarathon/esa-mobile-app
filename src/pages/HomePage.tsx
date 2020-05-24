@@ -5,7 +5,7 @@ import {Link, RouteComponentProps} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import {LoadHoraro} from '../services/ScheduleService';
+import {LoadHoraro, IRun} from '../services/ScheduleService';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
@@ -213,7 +213,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
               {dayjs().isAfter(event.endDate) ? (
                 <p>Event is over</p>
               ) : (
-                (data ? data.data : []).map((run: any, index: number) =>
+                (data ? data.data : []).map((run: IRun, index) =>
                   index > 0 ? (
                     <React.Fragment>
                       <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">

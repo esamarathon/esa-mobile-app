@@ -64,9 +64,7 @@ interface IProps {
 }
 
 function AnnouncementCard({title, date, paragraph}: IProps) {
-  const dateString = dayjs(date)
-    .format('MMM D. YYYY')
-    .toUpperCase();
+  const dateString = dayjs(date).format('MMM D. YYYY').toUpperCase();
 
   return (
     <Card>

@@ -105,16 +105,12 @@ interface IProps {
 function ScheduleCard({run}: IProps) {
   const [bookmarked, setBookmarked] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const date = dayjs(run.scheduled)
-    .format('H:mm A')
-    .toUpperCase();
+  const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
   async function bookmarkMe(bookmark: any) {
     scheduleNotification({
       title: 'Your run is about to start!',
       body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
-      scheduled: dayjs(bookmark.scheduled)
-        .subtract(1, 'hour')
-        .toDate(),
+      scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
     });
     SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
   }
