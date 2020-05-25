@@ -9,7 +9,6 @@ import {LoadHoraro} from '../services/ScheduleService';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
-import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
 import Logo from '../assets/Logo';
 import {ChevronRight, LocationIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
@@ -55,13 +54,6 @@ const StyledExpander = styled.button`
   width: 30px;
   height: 2px;
   background: var(--ion-color-light);
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0 20px 15px;
 `;
 
 const ScheduleList = styled.ul`
@@ -145,7 +137,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 </IonCol>
                 <IonCol size="12" className="ion-align-self-start ion-text-center">
                   <SomeDiv>
-                    {event.meta.venue.country.length ? (
+                    {event.meta.venue.country ? (
                       <React.Fragment>
                         <LocationIcon />
                         <Paragraph>
@@ -174,7 +166,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
               </IonRow>
               <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
               <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-              {event.meta.venue.country.length > 0 ? (
+              {event.meta.venue.country ? (
                 <HeaderMetaRow
                   title="Location"
                   content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
@@ -187,7 +179,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 content={`twitch.tv/${event.meta.twitchChannel}`}
                 link
               />
-              <HeaderMetaList>
+              {/* <HeaderMetaList>
                 <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
                   Master Post
                 </HeaderLinks>
@@ -195,7 +187,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">
                   Attendee Guide
                 </HeaderLinks>
-              </HeaderMetaList>
+              </HeaderMetaList> */}
             </animated.div>
           </IonGrid>
           <StyledExpander />

@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import {logoMap} from '../theme/constants';
+import {shortDateRange} from '../services/DateFormatService';
 
 const StyledHeaderWrapper = styled.div`
   height: 200px;
@@ -161,7 +162,13 @@ function MenuBar({event, onClearEvent}: IProps) {
                 {event.meta.cause.name ? event.meta.cause.name : 'No Cause have been selected yet'}
               </StyledParagraph>
               <StyledDateLocation>
-                <LocationIcon /> {event.meta.venue.city}, {event.meta.venue.country} | 15-22 Sep
+                {event.meta.venue.country ? (
+                  <>
+                    <LocationIcon />
+                    {event.meta.venue.city || 'yes'}, {event.meta.venue.country || 'Oakland'} |{' '}
+                  </>
+                ) : null}
+                {shortDateRange(event.startDate, event.endDate)}
               </StyledDateLocation>
             </InnerToolbar>
           </StyledToolbar>
