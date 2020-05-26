@@ -5,6 +5,7 @@ import {SetBookmark} from '../services/BookmarkService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {scheduleNotification} from '../providers/PushProvider';
+import {formatPlayers} from '../services/PlayersService';
 
 const Card = styled.li`
   position: relative;
@@ -105,16 +106,13 @@ interface IProps {
 function ScheduleCard({run}: IProps) {
   const [bookmarked, setBookmarked] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const date = dayjs(run.scheduled)
-    .format('H:mm A')
-    .toUpperCase();
+  const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
+
   async function bookmarkMe(bookmark: any) {
     scheduleNotification({
       title: 'Your run is about to start!',
       body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
-      scheduled: dayjs(bookmark.scheduled)
-        .subtract(1, 'hour')
-        .toDate(),
+      scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
     });
     SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
   }
@@ -123,23 +121,12 @@ function ScheduleCard({run}: IProps) {
     setExpanded((state = !expanded));
   }
 
-  const regEx = new RegExp('\\(([^)]+)\\)');
-
-  const playersArray = run.players.map((player) => {
-    const firstText = player.replace('[', '');
-    const secondText = firstText.replace(']', '');
-    const thirdText = secondText.replace(regEx, '');
-    return thirdText;
-  });
-
-  const text = playersArray.join(' vs. ' || '');
-
   return (
     <Card onClick={() => expandToggle(expanded)}>
       <Date>{date}</Date>
       <Content>
         <Game>{run.game}</Game>
-        <Runner>{text}</Runner>
+        <Runner>{formatPlayers(run.players)}</Runner>
         <HeartButton onClick={() => bookmarkMe(run)}>
           {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
         </HeartButton>

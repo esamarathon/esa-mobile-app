@@ -54,7 +54,7 @@ const useVelocityTrackedSpring = (initialConfigFunc: () => ValueConfig) => {
 };
 
 export function useHomePageGesture() {
-  const stops = [150, 550];
+  const stops = [150, 390];
 
   const spring = {
     tension: 247,

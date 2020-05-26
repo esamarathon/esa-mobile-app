@@ -9,7 +9,6 @@ import {LoadHoraro} from '../services/ScheduleService';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
-import HeaderMetaList, {HeaderLinks} from '../components/HeaderMetaList';
 import Logo from '../assets/Logo';
 import {ChevronRight, LocationIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
@@ -27,6 +26,8 @@ const Title = styled.h2`
   font-size: 16px;
   font-weight: 600;
   margin: 0;
+  margin-left: 8px;
+  margin-bottom: 4px;
   color: #444444;
   text-transform: capitalize;
 `;
@@ -37,6 +38,7 @@ const StyledLink = styled(Link)`
   color: #979797;
   text-decoration: none;
   font-size: 14px;
+  margin-right: 8px;
 
   svg {
     color: #979797;
@@ -52,13 +54,6 @@ const StyledExpander = styled.button`
   width: 30px;
   height: 2px;
   background: var(--ion-color-light);
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0 20px 15px;
 `;
 
 const ScheduleList = styled.ul`
@@ -116,6 +111,10 @@ function HomePage({event}: IProps & RouteComponentProps) {
   const {data, isValidating} = useSWR(['homePage:schedule', event.meta.horaro], LoadHoraro);
   const {animatedValue, bind, stops} = useHomePageGesture();
 
+  const eventIsOver = dayjs().isAfter(event.endDate);
+  const liveNow = data?.data[0];
+  const upNext = data?.data.slice(1);
+
   return (
     <IonPage>
       <StyledHeaderWrapper large>
@@ -138,17 +137,15 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 </IonCol>
                 <IonCol size="12" className="ion-align-self-start ion-text-center">
                   <SomeDiv>
-                    {event.meta.venue.country.length > 0 ? (
+                    {event.meta.venue.country ? (
                       <React.Fragment>
                         <LocationIcon />
                         <Paragraph>
-                          {event.meta.venue.city}, {event.meta.venue.country}
+                          {event.meta.venue.city}, {event.meta.venue.country} |
                         </Paragraph>
                       </React.Fragment>
-                    ) : (
-                      <React.Fragment />
-                    )}
-                    <ShortDate>| {shortDateRange(event.startDate, event.endDate)}</ShortDate>
+                    ) : null}
+                    <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
                   </SomeDiv>
                 </IonCol>
               </IonRow>
@@ -169,7 +166,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
               </IonRow>
               <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
               <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-              {event.meta.venue.country.length > 0 ? (
+              {event.meta.venue.country ? (
                 <HeaderMetaRow
                   title="Location"
                   content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
@@ -182,15 +179,15 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 content={`twitch.tv/${event.meta.twitchChannel}`}
                 link
               />
-              {/*<HeaderMetaList>*/}
-              {/*  <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">*/}
-              {/*    Master Post*/}
-              {/*  </HeaderLinks>*/}
-              {/*  <HeaderLinks href="https://esamarathon.com/rules">Code of Conduct</HeaderLinks>*/}
-              {/*  <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">*/}
-              {/*    Attendee Guide*/}
-              {/*  </HeaderLinks>*/}
-              {/*</HeaderMetaList>*/}
+              {/* <HeaderMetaList>
+                <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
+                  Master Post
+                </HeaderLinks>
+                <HeaderLinks href="https://esamarathon.com/rules">Code of Conduct</HeaderLinks>
+                <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">
+                  Attendee Guide
+                </HeaderLinks>
+              </HeaderMetaList> */}
             </animated.div>
           </IonGrid>
           <StyledExpander />
@@ -198,35 +195,39 @@ function HomePage({event}: IProps & RouteComponentProps) {
       </StyledHeaderWrapper>
 
       <Content>
-        {/*<PageHeaderContainer className="ion-align-items-center ion-justify-content-between">*/}
-        {/*  <Title>Up Next</Title>*/}
-        {/*  <StyledLink to="schedule">*/}
-        {/*    Schedule <ChevronRight />*/}
-        {/*  </StyledLink>*/}
-        {/*</PageHeaderContainer>*/}
-
-        {!data && isValidating ? (
+        {!data || isValidating ? (
           <IonSpinner />
+        ) : eventIsOver ? (
+          <ScheduleList>
+            <p>Event is over</p>
+          </ScheduleList>
         ) : (
           <React.Fragment>
-            <ScheduleList>
-              {dayjs().isAfter(event.endDate) ? (
-                <p>Event is over</p>
-              ) : (
-                (data ? data.data : []).map((run: any, index: number) =>
-                  index > 0 ? (
-                    <React.Fragment>
-                      <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-                        <Title>Live Now</Title>
-                      </PageHeaderContainer>
-                      <LiveNow run={run} />
-                    </React.Fragment>
-                  ) : (
-                    <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-                  ),
-                )
-              )}
-            </ScheduleList>
+            {liveNow ? (
+              <React.Fragment>
+                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+                  <Title>Live Now</Title>
+                </PageHeaderContainer>
+                <ScheduleList>
+                  <LiveNow run={liveNow} />
+                </ScheduleList>
+              </React.Fragment>
+            ) : null}
+            {upNext ? (
+              <React.Fragment>
+                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+                  <Title>Up Next</Title>
+                  <StyledLink to="schedule">
+                    Schedule <ChevronRight />
+                  </StyledLink>
+                </PageHeaderContainer>
+                <ScheduleList>
+                  {upNext.map((run) => (
+                    <ScheduleCard key={run.scheduled + run.players.join('')} run={run} />
+                  ))}
+                </ScheduleList>
+              </React.Fragment>
+            ) : null}
           </React.Fragment>
         )}
       </Content>
