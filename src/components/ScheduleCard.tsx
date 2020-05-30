@@ -114,10 +114,10 @@ function ScheduleCard({run}: IProps) {
     if (item) {
       const parsed = JSON.parse(item);
       if (parsed.id === run.id) {
-        setBookmarked(!bookmarked);
+        setBookmarked((b) => !b);
       }
     }
-  }, []);
+  }, [run.id]);
 
   async function bookmarkMe(bookmark: IRun) {
     scheduleNotification({
@@ -125,8 +125,13 @@ function ScheduleCard({run}: IProps) {
       body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
       scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
     });
-    SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
-    localStorage.setItem(bookmark.id, JSON.stringify({id: bookmark.id, state: bookmarked}));
+    setBookmarked(!bookmarked);
+    console.log(bookmarked);
+    if (!bookmarked) {
+      localStorage.setItem(bookmark.id, JSON.stringify({id: bookmark.id, state: bookmarked}));
+    } else {
+      localStorage.removeItem(bookmark.id);
+    }
   }
 
   async function expandToggle(state: boolean) {
