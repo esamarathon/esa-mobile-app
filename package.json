@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run clean && react-scripts build && mv build www && npx cap copy",
+    "build": "npm run clean && react-scripts build && mv build www && npx cap copy android",
     "test": "react-scripts test",
     "clean": "rm -fr build && rm -fr www",
     "eject": "react-scripts eject",

@@ -1,8 +1,0 @@
-{
-  "appId": "com.esamobile",
-  "appName": "esa-app",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "cordova": {}
-}
