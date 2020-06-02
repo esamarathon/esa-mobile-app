@@ -34,6 +34,7 @@ export interface IRun {
   note: string | null;
   layout: string | null;
   info: string | null;
+  id: string;
 }
 
 const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {IRun} from '../services/ScheduleService';
 import {SetBookmark} from '../services/BookmarkService';
@@ -108,13 +108,30 @@ function ScheduleCard({run}: IProps) {
   const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
 
-  async function bookmarkMe(bookmark: any) {
+  useEffect(() => {
+    const item = localStorage.getItem(run.id);
+
+    if (item) {
+      const parsed = JSON.parse(item);
+      if (parsed.id === run.id) {
+        setBookmarked((b) => !b);
+      }
+    }
+  }, [run.id]);
+
+  async function bookmarkMe(bookmark: IRun) {
     scheduleNotification({
       title: 'Your run is about to start!',
       body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
       scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
     });
-    SetBookmark(bookmark).then(() => setBookmarked(!bookmarked));
+    setBookmarked(!bookmarked);
+    console.log(bookmarked);
+    if (!bookmarked) {
+      localStorage.setItem(bookmark.id, JSON.stringify({id: bookmark.id, state: bookmarked}));
+    } else {
+      localStorage.removeItem(bookmark.id);
+    }
   }
 
   async function expandToggle(state: boolean) {
