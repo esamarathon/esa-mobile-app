@@ -1,19 +1,23 @@
 import {Plugins} from '@capacitor/core';
 const {LocalNotifications} = Plugins;
 
-let someNumber = 0;
+let notificationId = 1;
+
+export function cancelNotification(runId: number) {
+  LocalNotifications.cancel({
+    notifications: [{id: `${runId}`}],
+  });
+}
 
 export async function scheduleNotification(options: any) {
-  const notifs = await LocalNotifications.schedule({
+  return LocalNotifications.schedule({
     notifications: [
       {
         title: options.title,
         body: options.body,
-        id: someNumber++,
+        id: notificationId++,
         schedule: {at: options.scheduled},
       },
     ],
   });
-
-  console.log('scheduled notifications', notifs);
 }
