@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {IRun} from '../services/ScheduleService';
-import {SetBookmark} from '../services/BookmarkService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
-import {scheduleNotification} from '../providers/PushProvider';
+import {scheduleNotification, cancelNotification} from '../providers/PushProvider';
 import {formatPlayers} from '../services/PlayersService';
 
 const Card = styled.li`
@@ -120,16 +119,26 @@ function ScheduleCard({run}: IProps) {
   }, [run.id]);
 
   async function bookmarkMe(bookmark: IRun) {
-    scheduleNotification({
-      title: 'Your run is about to start!',
-      body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
-      scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
-    });
     setBookmarked(!bookmarked);
-    console.log(bookmarked);
     if (!bookmarked) {
-      localStorage.setItem(bookmark.id, JSON.stringify({id: bookmark.id, state: bookmarked}));
+      scheduleNotification({
+        title: 'Your run is about to start!',
+        body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
+        scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
+      }).then((res) => {
+        localStorage.setItem(
+          bookmark.id,
+          JSON.stringify({
+            id: bookmark.id,
+            state: bookmarked,
+            notificationId: res.notifications[0].id,
+          }),
+        );
+      });
     } else {
+      const currentItem = JSON.parse(localStorage.getItem(bookmark.id) as string);
+      cancelNotification(currentItem.notificationId);
+
       localStorage.removeItem(bookmark.id);
     }
   }
