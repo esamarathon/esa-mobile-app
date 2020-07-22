@@ -3,6 +3,7 @@ import {IonPage} from '@ionic/react';
 import styled from 'styled-components';
 import Logo from '../assets/Logo';
 import {IEvent} from '../services/EventService';
+import dayjs from 'dayjs';
 
 const Page = styled(IonPage)`
   background: #fff;
@@ -57,11 +58,13 @@ function EventPickerPage({events, onPickEvent}: IProps) {
       <Title>Pick Event</Title>
       {events ? (
         <EventWrapper>
-          {events.map((event) => (
-            <Event key={event._id} onClick={() => onPickEvent(event)}>
-              <span>{event.name}</span>
-            </Event>
-          ))}
+          {events.map((event) =>
+            dayjs(event.endDate).isAfter(dayjs()) && event._id !== '2a2819283ae92585552adde0' ? (
+              <Event key={event._id} onClick={() => onPickEvent(event)}>
+                <span>{event.name}</span>
+              </Event>
+            ) : null,
+          )}
         </EventWrapper>
       ) : (
         <p>No Events</p>
