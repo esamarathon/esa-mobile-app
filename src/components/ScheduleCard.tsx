@@ -33,11 +33,11 @@ const Content = styled.div`
 `;
 
 const Game = styled.p`
-  width: 130px;
   font-size: 16px;
   font-family: 'Titillium Web', sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
   font-weight: 600;
   color: #444444;
   margin: 0;
