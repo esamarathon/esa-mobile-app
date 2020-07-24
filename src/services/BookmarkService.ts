@@ -1,17 +1,49 @@
-// @TODO This needs to be hooked up to some external service,
-// @TODO could be firebase or the schedule proxy for easy access to push
-let bookmarks: any[] = [];
+import {IRun} from './ScheduleService';
+import dayjs from 'dayjs';
 
-export async function GetBookmarks() {
-  return bookmarks;
+export interface IBookmark {
+  run: IRun;
+  notificationId: string;
 }
 
-export async function SetBookmark(bookmark: any) {
-  bookmarks = [...bookmarks, bookmark];
+export function IsBookmarked(runId: string) {
+  return localStorage.getItem(`ESA@notification-${runId}`) != null;
 }
 
-export async function RemoveBookmark(bookmark: any) {
-  bookmarks.filter((bm) => {
-    return bm.id !== bookmark.id;
-  });
+export function GetBookmark(runId: string) {
+  return GetBookmarks().find((bookmark) => bookmark.run.id === runId);
+}
+
+export function GetBookmarks() {
+  return Object.keys(localStorage).reduce<IBookmark[]>((bookmarks, key) => {
+    if (key.startsWith('ESA@notification-')) {
+      const storedNotification = localStorage.getItem(key);
+
+      try {
+        if (storedNotification != null && storedNotification !== '') {
+          const bookmark = JSON.parse(storedNotification) as IBookmark;
+
+          // Only show bookmark if run is yet to be played,
+          // as we currently do not purge localstorage after notifications happen.
+          if (dayjs(bookmark.run.scheduled).isAfter(dayjs())) {
+            bookmarks.push(bookmark);
+          } else {
+            RemoveBookmark(bookmark.run.id);
+          }
+        }
+      } catch (error) {
+        console.warn('Invalid notification storage, just ignoring the data');
+      }
+    }
+
+    return bookmarks;
+  }, []);
+}
+
+export function StoreBookmark(details: IBookmark) {
+  localStorage.setItem(`ESA@notification-${details.run.id}`, JSON.stringify(details));
+}
+
+export function RemoveBookmark(runId: string) {
+  localStorage.removeItem(`ESA@notification-${runId}`);
 }

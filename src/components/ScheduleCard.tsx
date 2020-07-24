@@ -5,6 +5,12 @@ import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {scheduleNotification, cancelNotification} from '../providers/PushProvider';
 import {formatPlayers} from '../services/PlayersService';
+import {
+  StoreBookmark,
+  RemoveBookmark,
+  GetBookmark,
+  IsBookmarked,
+} from '../services/BookmarkService';
 
 const Card = styled.li`
   position: relative;
@@ -108,38 +114,29 @@ function ScheduleCard({run}: IProps) {
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
 
   useEffect(() => {
-    const item = localStorage.getItem(run.id);
-
-    if (item) {
-      const parsed = JSON.parse(item);
-      if (parsed.id === run.id) {
-        setBookmarked((b) => !b);
-      }
+    if (IsBookmarked(run.id)) {
+      setBookmarked(true);
     }
   }, [run.id]);
 
-  async function bookmarkMe(bookmark: IRun) {
+  async function bookmarkMe(run: IRun) {
     setBookmarked(!bookmarked);
-    if (!bookmarked) {
-      scheduleNotification({
-        title: 'Your run is about to start!',
-        body: `In about an hour ${bookmark.game} - ${bookmark.category} starts`,
-        scheduled: dayjs(bookmark.scheduled).subtract(1, 'hour').toDate(),
-      }).then((res) => {
-        localStorage.setItem(
-          bookmark.id,
-          JSON.stringify({
-            id: bookmark.id,
-            state: bookmarked,
-            notificationId: res.notifications[0].id,
-          }),
-        );
-      });
-    } else {
-      const currentItem = JSON.parse(localStorage.getItem(bookmark.id) as string);
-      cancelNotification(currentItem.notificationId);
 
-      localStorage.removeItem(bookmark.id);
+    if (!bookmarked) {
+      const {notifications} = await scheduleNotification({
+        title: 'Your run is about to start!',
+        body: `In about an hour ${run.game} - ${run.category} starts`,
+        scheduled: dayjs(run.scheduled).subtract(1, 'hour').toDate(),
+      });
+
+      StoreBookmark({run, notificationId: notifications[0].id});
+    } else {
+      const bookmark = GetBookmark(run.id);
+
+      if (bookmark) {
+        RemoveBookmark(run.id);
+        await cancelNotification(bookmark.notificationId);
+      }
     }
   }
 
