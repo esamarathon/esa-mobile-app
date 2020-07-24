@@ -19,12 +19,12 @@ const ScheduleList = styled.ul`
   overflow-x: scroll;
 `;
 
-function BookmarkPage(_: RouteComponentProps) {
+function BookmarkPage({location}: RouteComponentProps) {
   const [bookmarks, setBookmarks] = useState<IBookmark[]>([]);
 
   useEffect(() => {
     setBookmarks(GetBookmarks());
-  }, [_.location.pathname]);
+  }, [location.pathname]);
 
   return (
     <IonPage>
