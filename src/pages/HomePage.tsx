@@ -1,7 +1,7 @@
 import React from 'react';
 import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
 import styled from 'styled-components';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import {Link, RouteComponentProps, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
@@ -16,6 +16,9 @@ import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
 import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
+import {Plugins} from '@capacitor/core';
+
+const {App} = Plugins;
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -110,10 +113,22 @@ interface IProps {
 function HomePage({event}: IProps & RouteComponentProps) {
   const {data, isValidating} = useSWR(['homePage:schedule', event.meta.horaro], LoadHoraro);
   const {animatedValue, bind, stops} = useHomePageGesture();
+  const location = useLocation();
 
   const eventIsOver = dayjs().isAfter(event.endDate);
   const liveNow = data?.data[0];
   const upNext = data?.data.slice(1);
+
+  document.addEventListener('ionBackButton', (ev: any) => {
+    ev.detail.register(-1, () => {
+      const path = location.pathname;
+      console.log(path);
+      // @ts-ignore
+      if (path === '/home') {
+        App.exitApp();
+      }
+    });
+  });
 
   return (
     <IonPage>
