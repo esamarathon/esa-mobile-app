@@ -1,5 +1,6 @@
 import React from 'react';
 import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
+import {BackButtonEvent} from '@ionic/core';
 import styled from 'styled-components';
 import {Link, RouteComponentProps, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
@@ -119,11 +120,9 @@ function HomePage({event}: IProps & RouteComponentProps) {
   const liveNow = data?.data[0];
   const upNext = data?.data.slice(1);
 
-  document.addEventListener('ionBackButton', (ev: any) => {
-    ev.detail.register(-1, () => {
+  document.addEventListener('ionBackButton', (e) => {
+    (e as BackButtonEvent).detail.register(-1, () => {
       const path = location.pathname;
-      console.log(path);
-      // @ts-ignore
       if (path === '/home') {
         App.exitApp();
       }

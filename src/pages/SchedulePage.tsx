@@ -21,15 +21,15 @@ const DayScroller = styled.ul`
   overflow-y: scroll;
   justify-content: center;
   list-style-type: none;
-  padding: 0;
-  margin: 0 0;
+  padding: 0 15px 15px 0;
+  margin: 0 15px;
 `;
 
 const ScrollItem = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 15px;
+  padding: 5px 15px;
 `;
 
 const ScrollLink = styled(HashLink)`
@@ -39,24 +39,25 @@ const ScrollLink = styled(HashLink)`
 `;
 
 const ScrollBorder = styled.span`
-    width: 130%;
-    border-radius: 3px;
-    height: 3px;
-    background #fff;
-    margin-top: 4px;
+  width: 130%;
+  border-radius: 3px;
+  height: 3px;
+  background: #fff;
+  margin-top: 4px;
 `;
 
 const ScheduleList = styled.ul`
   display: flex;
   flex-direction: column;
-  margin: 10px 0 0;
-  padding: 0 20px 15px;
+  margin: 20px 0 0;
+  padding: 0 20px 0;
   overflow-x: scroll;
 `;
 
 const DayTitle = styled.p`
   font-weight: 600;
   font-size: 16px;
+  padding-top: 60px;
 `;
 
 interface IProps {
@@ -72,16 +73,14 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
         <StyledHeader>
           <Toolbar opaque>Schedule</Toolbar>
           <DayScroller>
-            {(data ? data.days : []).map((day: string) => {
-              return (
-                <ScrollItem key={day}>
-                  <ScrollLink smooth to={`#${day}`}>
-                    {dayjs(day).format('ddd')}
-                  </ScrollLink>
+            {(data ? data.days : []).map((day) => (
+              <ScrollLink key={day} smooth to={`#${day}`}>
+                <ScrollItem>
+                  {dayjs(day).format('ddd')}
                   <ScrollBorder />
                 </ScrollItem>
-              );
-            })}
+              </ScrollLink>
+            ))}
           </DayScroller>
         </StyledHeader>
       </StyledHeaderWrapper>
@@ -90,11 +89,10 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <IonSpinner />
         ) : (
           <ScheduleList>
-            {(data ? data.data : []).map((day: any) => (
+            {(data ? data.data : []).map((day) => (
               <React.Fragment key={day.title}>
-                <p id={day.title} />
-                <DayTitle>{dayjs(day.title).format('dddd D/M')}</DayTitle>
-                {day.runs.map((run: any) => (
+                <DayTitle id={day.title}>{dayjs(day.title).format('dddd D/M')}</DayTitle>
+                {day.runs.map((run) => (
                   <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
                 ))}
               </React.Fragment>
