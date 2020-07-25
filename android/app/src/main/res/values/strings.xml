@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">esa-app</string>
-    <string name="title_activity_main">esa-app</string>
+    <string name="app_name">ESA Mobile</string>
+    <string name="title_activity_main">ESA Mobile</string>
     <string name="package_name">com.esamobile</string>
     <string name="custom_url_scheme">com.esamobile</string>
 </resources>
