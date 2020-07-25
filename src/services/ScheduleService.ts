@@ -46,16 +46,16 @@ export async function LoadHoraro(_: string, horaroEndpoint: string): Promise<IRu
   return response.json();
 }
 
-export async function LoadSchedule(_: string, horaroEndpoint: string): Promise<any> {
+export async function LoadSchedule(_: string, horaroEndpoint: string) {
   const response = await fetch(`${baseUrl}/v1/esa/schedule/${encodeURIComponent(horaroEndpoint)}`);
 
   const {data} = await response.json();
 
   const fixObject = Object.entries(data).map(([key, value]) => {
-    return Object.assign({
+    return {
       title: key,
-      runs: value,
-    });
+      runs: value as IRun[],
+    };
   });
 
   return {
