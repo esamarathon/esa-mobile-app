@@ -11,6 +11,7 @@ import {
   GetBookmark,
   IsBookmarked,
 } from '../services/BookmarkService';
+import EstimateParser from './common/EstimateParser';
 
 const Card = styled.li`
   position: relative;
@@ -157,7 +158,9 @@ function ScheduleCard({run}: IProps) {
           <Expanded>
             <Expander />
             <InnerExpander>
-              <p>{run.length}</p>
+              <p>
+                <EstimateParser seconds={run.length} />
+              </p>
               <p>{run.category}</p>
             </InnerExpander>
           </Expanded>
