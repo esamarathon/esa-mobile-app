@@ -1,6 +1,6 @@
 {
   "appId": "com.esamobile",
-  "appName": "esa-app",
+  "appName": "ESA Mobile",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
