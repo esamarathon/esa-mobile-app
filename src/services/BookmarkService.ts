@@ -1,5 +1,4 @@
 import {IRun} from './ScheduleService';
-import dayjs from 'dayjs';
 
 export interface IBookmark {
   run: IRun;
@@ -25,11 +24,7 @@ export function GetBookmarks() {
 
           // Only show bookmark if run is yet to be played,
           // as we currently do not purge localstorage after notifications happen.
-          if (dayjs(bookmark.run.scheduled).isAfter(dayjs())) {
-            bookmarks.push(bookmark);
-          } else {
-            RemoveBookmark(bookmark.run.id);
-          }
+          bookmarks.push(bookmark);
         }
       } catch (error) {
         console.warn('Invalid notification storage, just ignoring the data');
