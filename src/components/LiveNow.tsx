@@ -4,7 +4,7 @@ import demoImg from '../assets/NowPlayingDemo.png';
 import {IRun} from '../services/ScheduleService';
 import {formatPlayers} from '../services/PlayersService';
 
-const LiveCard = styled.div`
+const LiveCard = styled.a`
   position: relative;
   border-radius: 10px;
   overflow: hidden;
@@ -45,12 +45,12 @@ const Image = styled.img`
 `;
 
 interface Props {
-  run: IRun;
+  run: any;
 }
 
 function LiveNow({run}: Props) {
   return (
-    <LiveCard>
+    <LiveCard href="https://twitch.tv/esamarathon">
       <Title>{run.game}</Title>
       <Runner>{formatPlayers(run.players)}</Runner>
       <Image src={demoImg} alt="demo image" />
