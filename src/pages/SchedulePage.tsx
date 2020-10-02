@@ -1,11 +1,12 @@
 import React from 'react';
 import {IonContent, IonPage, IonSpinner} from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
+import {List} from 'react-virtualized';
 import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import {LoadSchedule} from '../services/ScheduleService';
+import {IRun, LoadSchedule} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleCard from '../components/ScheduleCard';
 import dayjs from 'dayjs';
@@ -67,20 +68,51 @@ interface IProps {
 function SchedulePage({event}: IProps & RouteComponentProps) {
   const {data, isValidating} = useSWR(['schedulePage:schedule', event.meta.horaro], LoadSchedule);
 
+  function rowRenderer({
+    key, // Unique key within array of rows
+    index, // Index of row within collection
+    isScrolling, // The List is currently being scrolled
+    isVisible, // This row is visible within the List (eg it is not an overscanned row)
+    style, // Style object to be applied to row (to position it)
+  }: any) {
+    if(data) {
+      if(data[index]["title"]) {
+        return(
+          <React.Fragment key={data[index]["title"]}>
+            <DayTitle id={data[index]["title"]}>{dayjs(data[index]["title"]).format('dddd D/M')}</DayTitle>
+          </React.Fragment>
+        )
+      }
+      return (
+        <React.Fragment key={data[index]["scheduled"]}>
+          <ScheduleCard key={data[index]["scheduled"] + (data[index]["players"])} run={data[index]} />
+        </React.Fragment>  
+      )
+    }
+    return (
+      <div key={key} style={style}>
+      </div>
+    );
+  }
+
   return (
     <IonPage>
       <StyledHeaderWrapper>
         <StyledHeader>
           <Toolbar opaque>Schedule</Toolbar>
           <DayScroller>
-            {(data ? data.days : []).map((day) => (
-              <ScrollLink key={day} smooth to={`#${day}`}>
-                <ScrollItem>
-                  {dayjs(day).format('ddd')}
-                  <ScrollBorder />
-                </ScrollItem>
-              </ScrollLink>
-            ))}
+            {(data ? data : []).map((day: any) => {
+              if(day["title"]) {
+                return(
+                  <ScrollLink key={day.title} smooth to={`#${day.title}`}>
+                    <ScrollItem>
+                      {dayjs(day.title).format('ddd')}
+                    <ScrollBorder />
+                   </ScrollItem>
+                  </ScrollLink> 
+                )
+              }
+            })}
           </DayScroller>
         </StyledHeader>
       </StyledHeaderWrapper>
@@ -89,14 +121,27 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <IonSpinner />
         ) : (
           <ScheduleList>
-            {(data ? data.data : []).map((day) => (
-              <React.Fragment key={day.title}>
-                <DayTitle id={day.title}>{dayjs(day.title).format('dddd D/M')}</DayTitle>
-                {day.runs.map((run) => (
-                  <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-                ))}
-              </React.Fragment>
-            ))}
+              <List
+                width={window.innerWidth - 40}
+                height={window.innerHeight - 140}
+                rowCount={data ? data.length : 0}
+                rowHeight={20}
+                rowRenderer={rowRenderer}
+              />
+            {/* {(data ? data : []).map((event: any) => {
+              if(event["title"]) {
+                return(
+                  <React.Fragment key={event.title}>
+                    <DayTitle id={event.title}>{dayjs(event.title).format('dddd D/M')}</DayTitle>
+                  </React.Fragment>
+                )
+              }
+              return (
+                <React.Fragment key={event.scheduled}>
+                  <ScheduleCard key={event.scheduled + (event.players.join('-') || '')} run={event} />
+                </React.Fragment>  
+              )
+            })} */}
           </ScheduleList>
         )}
       </Content>
