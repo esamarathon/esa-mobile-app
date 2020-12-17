@@ -210,7 +210,16 @@ function HomePage({event}: IProps & RouteComponentProps) {
 
       <Content>
         {!data || isValidating ? (
-          <IonSpinner />
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <IonSpinner />
+          </div>
         ) : eventIsOver ? (
           <ScheduleList>
             <p>Event is over</p>

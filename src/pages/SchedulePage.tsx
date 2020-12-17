@@ -6,7 +6,7 @@ import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import {IRun, LoadSchedule} from '../services/ScheduleService';
+import {LoadSchedule} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleCard from '../components/ScheduleCard';
 import dayjs from 'dayjs';
@@ -75,24 +75,23 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
     isVisible, // This row is visible within the List (eg it is not an overscanned row)
     style, // Style object to be applied to row (to position it)
   }: any) {
-    if(data) {
-      if(data[index]["title"]) {
-        return(
-          <React.Fragment key={data[index]["title"]}>
-            <DayTitle id={data[index]["title"]}>{dayjs(data[index]["title"]).format('dddd D/M')}</DayTitle>
+    if (data) {
+      if (data[index]['title']) {
+        return (
+          <React.Fragment key={data[index]['title']}>
+            <DayTitle id={data[index]['title']}>
+              {dayjs(data[index]['title']).format('dddd D/M')}
+            </DayTitle>
           </React.Fragment>
-        )
+        );
       }
       return (
-        <React.Fragment key={data[index]["scheduled"]}>
-          <ScheduleCard key={data[index]["scheduled"] + (data[index]["players"])} run={data[index]} />
-        </React.Fragment>  
-      )
+        <React.Fragment key={data[index]['scheduled']}>
+          <ScheduleCard key={data[index]['scheduled'] + data[index]['players']} run={data[index]} />
+        </React.Fragment>
+      );
     }
-    return (
-      <div key={key} style={style}>
-      </div>
-    );
+    return <div key={key} style={style}></div>;
   }
 
   return (
@@ -102,16 +101,17 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <Toolbar opaque>Schedule</Toolbar>
           <DayScroller>
             {(data ? data : []).map((day: any) => {
-              if(day["title"]) {
-                return(
+              if (day['title']) {
+                return (
                   <ScrollLink key={day.title} smooth to={`#${day.title}`}>
                     <ScrollItem>
                       {dayjs(day.title).format('ddd')}
-                    <ScrollBorder />
-                   </ScrollItem>
-                  </ScrollLink> 
-                )
+                      <ScrollBorder />
+                    </ScrollItem>
+                  </ScrollLink>
+                );
               }
+              return null;
             })}
           </DayScroller>
         </StyledHeader>
@@ -121,13 +121,13 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <IonSpinner />
         ) : (
           <ScheduleList>
-              <List
-                width={window.innerWidth - 40}
-                height={window.innerHeight - 140}
-                rowCount={data ? data.length : 0}
-                rowHeight={20}
-                rowRenderer={rowRenderer}
-              />
+            <List
+              width={window.innerWidth - 40}
+              height={window.innerHeight - 140}
+              rowCount={data ? data.length : 0}
+              rowHeight={20}
+              rowRenderer={rowRenderer}
+            />
             {/* {(data ? data : []).map((event: any) => {
               if(event["title"]) {
                 return(
