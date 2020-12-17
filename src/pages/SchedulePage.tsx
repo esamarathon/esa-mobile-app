@@ -1,16 +1,15 @@
 import React from 'react';
 import {IonContent, IonPage, IonSpinner} from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
-import {List} from 'react-virtualized';
 import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import {LoadSchedule} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
-import ScheduleCard from '../components/ScheduleCard';
-import dayjs from 'dayjs';
+import ScheduleList from '../components/ScheduleList';
 import {HashLink} from 'react-router-hash-link';
+import dayjs from 'dayjs';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -47,14 +46,6 @@ const ScrollBorder = styled.span`
   margin-top: 4px;
 `;
 
-const ScheduleList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0 0;
-  padding: 0 20px 0;
-  overflow-x: scroll;
-`;
-
 const DayTitle = styled.p`
   font-weight: 600;
   font-size: 16px;
@@ -67,32 +58,6 @@ interface IProps {
 
 function SchedulePage({event}: IProps & RouteComponentProps) {
   const {data, isValidating} = useSWR(['schedulePage:schedule', event.meta.horaro], LoadSchedule);
-
-  function rowRenderer({
-    key, // Unique key within array of rows
-    index, // Index of row within collection
-    isScrolling, // The List is currently being scrolled
-    isVisible, // This row is visible within the List (eg it is not an overscanned row)
-    style, // Style object to be applied to row (to position it)
-  }: any) {
-    if (data) {
-      if (data[index]['title']) {
-        return (
-          <React.Fragment key={data[index]['title']}>
-            <DayTitle id={data[index]['title']}>
-              {dayjs(data[index]['title']).format('dddd D/M')}
-            </DayTitle>
-          </React.Fragment>
-        );
-      }
-      return (
-        <React.Fragment key={data[index]['scheduled']}>
-          <ScheduleCard key={data[index]['scheduled'] + data[index]['players']} run={data[index]} />
-        </React.Fragment>
-      );
-    }
-    return <div key={key} style={style}></div>;
-  }
 
   return (
     <IonPage>
@@ -116,35 +81,7 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           </DayScroller>
         </StyledHeader>
       </StyledHeaderWrapper>
-      <Content>
-        {!data && isValidating ? (
-          <IonSpinner />
-        ) : (
-          <ScheduleList>
-            <List
-              width={window.innerWidth - 40}
-              height={window.innerHeight - 140}
-              rowCount={data ? data.length : 0}
-              rowHeight={20}
-              rowRenderer={rowRenderer}
-            />
-            {/* {(data ? data : []).map((event: any) => {
-              if(event["title"]) {
-                return(
-                  <React.Fragment key={event.title}>
-                    <DayTitle id={event.title}>{dayjs(event.title).format('dddd D/M')}</DayTitle>
-                  </React.Fragment>
-                )
-              }
-              return (
-                <React.Fragment key={event.scheduled}>
-                  <ScheduleCard key={event.scheduled + (event.players.join('-') || '')} run={event} />
-                </React.Fragment>  
-              )
-            })} */}
-          </ScheduleList>
-        )}
-      </Content>
+      <Content>{!data && isValidating ? <IonSpinner /> : <ScheduleList items={data} />}</Content>
     </IonPage>
   );
 }
