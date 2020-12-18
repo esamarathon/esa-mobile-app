@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo} from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import {GroupedVirtuoso} from 'react-virtuoso';
@@ -97,15 +97,7 @@ function generateGroups(data: any) {
 }
 
 function ScheduleList({items}: IProps) {
-  const [groups, setGroups] = useState<GeneratedGroupData>({
-    groups: [],
-    groupsData: [],
-    groupsCount: [],
-  });
-
-  useEffect(() => {
-    setGroups(generateGroups(items));
-  }, [items]);
+  const groups = useMemo(() => generateGroups(items), [items]);
 
   return (
     <List>
