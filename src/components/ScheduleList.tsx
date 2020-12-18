@@ -49,7 +49,7 @@ function groupData(data: any[]): GroupDataReturn {
     return result;
   }
 
-  data.map((item: GroupWithTitle | any) => {
+  data.forEach((item: GroupWithTitle | any) => {
     if (item.title) {
       result.groups = [...result.groups, item];
     } else {
@@ -70,7 +70,7 @@ function calculateGroups(result: any): string[] {
     return value.scheduled.split('T')[0];
   });
 
-  groupValues.map((value: string) => {
+  groupValues.forEach((value: string) => {
     const megaVal = groupDatas.filter((value2: string) => {
       return value === value2;
     });
