@@ -51,15 +51,10 @@ export async function LoadSchedule(_: string, horaroEndpoint: string) {
 
   const {data} = await response.json();
 
-  const fixObject = Object.entries(data).map(([key, value]) => {
-    return {
-      title: key,
-      runs: value as IRun[],
-    };
-  });
+  const fixedObject = Object.entries(data).map(([key, value]: any) => {
+    value.unshift({title: key});
+    return value;
+  })
 
-  return {
-    days: [...Object.keys(data)],
-    data: fixObject,
-  };
+  return [].concat.apply([], fixedObject);
 }

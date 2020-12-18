@@ -90,8 +90,6 @@ export function useHomePageGesture() {
         if (event.target.toString().startsWith('http')) {
           return;
         }
-
-        event.preventDefault();
       }
 
       const isClick = last && Math.abs(movementX) + Math.abs(movementY) <= 3;

@@ -7,9 +7,9 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import {LoadSchedule} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
-import ScheduleCard from '../components/ScheduleCard';
-import dayjs from 'dayjs';
+import ScheduleList from '../components/ScheduleList';
 import {HashLink} from 'react-router-hash-link';
+import dayjs from 'dayjs';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -46,20 +46,6 @@ const ScrollBorder = styled.span`
   margin-top: 4px;
 `;
 
-const ScheduleList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0 0;
-  padding: 0 20px 0;
-  overflow-x: scroll;
-`;
-
-const DayTitle = styled.p`
-  font-weight: 600;
-  font-size: 16px;
-  padding-top: 60px;
-`;
-
 interface IProps {
   event: IEvent;
 }
@@ -73,33 +59,23 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
         <StyledHeader>
           <Toolbar opaque>Schedule</Toolbar>
           <DayScroller>
-            {(data ? data.days : []).map((day) => (
-              <ScrollLink key={day} smooth to={`#${day}`}>
-                <ScrollItem>
-                  {dayjs(day).format('ddd')}
-                  <ScrollBorder />
-                </ScrollItem>
-              </ScrollLink>
-            ))}
+            {(data ? data : []).map((day: any) => {
+              if (day['title']) {
+                return (
+                  <ScrollLink key={day.title} smooth to={`#${day.title}`}>
+                    <ScrollItem>
+                      {dayjs(day.title).format('ddd')}
+                      <ScrollBorder />
+                    </ScrollItem>
+                  </ScrollLink>
+                );
+              }
+              return null;
+            })}
           </DayScroller>
         </StyledHeader>
       </StyledHeaderWrapper>
-      <Content>
-        {!data && isValidating ? (
-          <IonSpinner />
-        ) : (
-          <ScheduleList>
-            {(data ? data.data : []).map((day) => (
-              <React.Fragment key={day.title}>
-                <DayTitle id={day.title}>{dayjs(day.title).format('dddd D/M')}</DayTitle>
-                {day.runs.map((run) => (
-                  <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-                ))}
-              </React.Fragment>
-            ))}
-          </ScheduleList>
-        )}
-      </Content>
+      <Content>{!data && isValidating ? <IonSpinner /> : <ScheduleList items={data} />}</Content>
     </IonPage>
   );
 }
