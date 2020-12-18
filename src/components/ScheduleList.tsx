@@ -105,25 +105,13 @@ function ScheduleList({items}: IProps) {
         groupCounts={groups.groupsCount}
         groupContent={(index: number) => {
           return (
-            <React.Fragment>
-              <DayTitle id={groups.groups[index].title}>
-                {dayjs(groups.groups[index].title).format('dddd D/M')}
-              </DayTitle>
-            </React.Fragment>
+            <DayTitle id={groups.groups[index].title}>
+              {dayjs(groups.groups[index].title).format('dddd D/M')}
+            </DayTitle>
           );
         }}
         itemContent={(index: number) => {
-          return (
-            <React.Fragment key={groups.groupsData[index].scheduled}>
-              <ScheduleCard
-                key={
-                  groups.groupsData[index].scheduled +
-                  (groups.groupsData[index].players.join('-') || '')
-                }
-                run={groups.groupsData[index]}
-              />
-            </React.Fragment>
-          );
+          return <ScheduleCard run={groups.groupsData[index]} />;
         }}
       />
     </List>

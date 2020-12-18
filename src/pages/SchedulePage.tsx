@@ -46,12 +46,6 @@ const ScrollBorder = styled.span`
   margin-top: 4px;
 `;
 
-const DayTitle = styled.p`
-  font-weight: 600;
-  font-size: 16px;
-  padding-top: 60px;
-`;
-
 interface IProps {
   event: IEvent;
 }
