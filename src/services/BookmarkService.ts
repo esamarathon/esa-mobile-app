@@ -5,16 +5,17 @@ export interface IBookmark {
   notificationId: string;
 }
 
-export function IsBookmarked(runId: string) {
-  return localStorage.getItem(`ESA@notification-${runId}`) != null;
-}
-
 export function GetBookmark(runId: string) {
-  return GetBookmarks().find((bookmark) => bookmark.run.id === runId);
+  const item = localStorage.getItem(`ESA@notification-${runId}`);
+  if (!item) {
+    return undefined;
+  }
+
+  return JSON.parse(item) as IBookmark;
 }
 
 export function GetBookmarks() {
-  return Object.keys(localStorage).reduce<IBookmark[]>((bookmarks, key) => {
+  return Object.keys(localStorage).reduce((bookmarks, key) => {
     if (key.startsWith('ESA@notification-')) {
       const storedNotification = localStorage.getItem(key);
 
@@ -24,19 +25,27 @@ export function GetBookmarks() {
 
           // Only show bookmark if run is yet to be played,
           // as we currently do not purge localstorage after notifications happen.
-          bookmarks.push(bookmark);
+          if (!bookmark.run.id) {
+            throw new Error('Bookmark has not run ID');
+          }
+
+          bookmarks.set(bookmark.run.id, bookmark);
         }
       } catch (error) {
-        console.warn('Invalid notification storage, just ignoring the data');
+        console.warn('Invalid notification storage, just ignoring the data', error);
       }
     }
 
     return bookmarks;
-  }, []);
+  }, new Map<string, IBookmark>());
 }
 
 export function StoreBookmark(details: IBookmark) {
   localStorage.setItem(`ESA@notification-${details.run.id}`, JSON.stringify(details));
+}
+
+export function IsBookmarked(runId: string) {
+  return !!localStorage.getItem(`ESA@notification-${runId}`);
 }
 
 export function RemoveBookmark(runId: string) {

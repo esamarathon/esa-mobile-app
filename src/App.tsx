@@ -1,18 +1,30 @@
-import React, {useEffect} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
+import useSWR from 'swr';
+import dayjs from 'dayjs';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import useSWR from 'swr';
 import {Plugins} from '@capacitor/core';
 import {loadFromESASubmissions} from './services/EventService';
+import {IRun} from './services/ScheduleService';
+import {
+  GetBookmark,
+  GetBookmarks,
+  IBookmark,
+  IsBookmarked,
+  RemoveBookmark,
+  StoreBookmark,
+} from './services/BookmarkService';
 import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
+import {cancelNotification, scheduleNotification} from './providers/PushProvider';
 import HomePage from './pages/HomePage';
 import LoadingPage from './pages/LoadingPage';
 import EventPickerPage from './pages/EventPickerPage';
 import SchedulePage from './pages/SchedulePage';
 import BookmarkPage from './pages/BookmarksPage';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -30,7 +42,6 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-
 import './theme/variables.css';
 
 const Themes = {
@@ -61,9 +72,50 @@ const Themes = {
   },
 } as const;
 
+export interface IBookmarkContext {
+  bookmarks: Map<string, IBookmark>;
+  onBookmark: (run: IRun) => void;
+}
+
+export const BookmarkContext = createContext<IBookmarkContext | null>(null);
+
 function App() {
   const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
+  const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
+    bookmarks: GetBookmarks(),
+    onBookmark,
+  }));
+
+  async function onBookmark(run: IRun) {
+    if (!run.id) {
+      console.warn('Trying to bookmark a run without an ID');
+      return;
+    }
+
+    const isBookmarked = IsBookmarked(run.id);
+    if (isBookmarked) {
+      RemoveBookmark(run.id);
+
+      const bookmark = GetBookmark(run.id);
+      if (bookmark) {
+        await cancelNotification(bookmark.notificationId);
+      }
+    } else {
+      const {notifications} = await scheduleNotification({
+        title: 'Your run is about to start!',
+        body: `In about an hour ${run.game} - ${run.category} starts`,
+        scheduled: dayjs(run.scheduled).subtract(1, 'hour').toDate(),
+      });
+
+      StoreBookmark({run, notificationId: notifications[0].id});
+    }
+
+    setBookmarkContext((value) => ({
+      ...value,
+      bookmarks: GetBookmarks(),
+    }));
+  }
 
   useEffect(() => {
     Plugins.SplashScreen.hide();
@@ -97,25 +149,27 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
-            <IonRouterOutlet id="main">
-              <Route
-                path="/home"
-                render={(props) => <HomePage {...props} event={selectedEvent} />}
-              />
-              <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
-              <Route
-                path="/schedule"
-                render={(props) => <SchedulePage {...props} event={selectedEvent} />}
-              />
-              <Redirect from="/" to="/home" exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
+      <BookmarkContext.Provider value={bookmarkContext}>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
+              <IonRouterOutlet id="main">
+                <Route
+                  path="/home"
+                  render={(props) => <HomePage {...props} event={selectedEvent} />}
+                />
+                <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
+                <Route
+                  path="/schedule"
+                  render={(props) => <SchedulePage {...props} event={selectedEvent} />}
+                />
+                <Redirect from="/" to="/home" exact />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </IonApp>
+      </BookmarkContext.Provider>
     </ThemeProvider>
   );
 }

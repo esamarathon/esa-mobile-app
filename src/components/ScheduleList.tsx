@@ -1,9 +1,10 @@
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useContext, useEffect, useMemo, useRef} from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import {GroupedVirtuoso, GroupedVirtuosoHandle} from 'react-virtuoso';
 import ScheduleCard from './ScheduleCard';
 import {IRun} from '../services/ScheduleService';
+import {BookmarkContext, IBookmarkContext} from '../App';
 
 const List = styled.ul`
   display: flex;
@@ -23,11 +24,6 @@ const DayTitle = styled.p`
   margin: 0;
 `;
 
-interface IProps {
-  scrollToDate?: string;
-  schedule: [string, IRun[]][];
-}
-
 function transformGroups(schedule: IProps['schedule']) {
   const groupsCount = schedule.map((runs) => runs[1].length);
   const runs = schedule.flatMap((runs) => runs[1]);
@@ -38,7 +34,13 @@ function transformGroups(schedule: IProps['schedule']) {
   };
 }
 
+interface IProps {
+  scrollToDate?: string;
+  schedule: [string, IRun[]][];
+}
+
 function ScheduleList({scrollToDate, schedule}: IProps) {
+  const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
   const virtuoso = useRef<GroupedVirtuosoHandle>(null);
   const {groupsCount, runs} = useMemo(() => transformGroups(schedule), [schedule]);
 
@@ -64,7 +66,13 @@ function ScheduleList({scrollToDate, schedule}: IProps) {
             {dayjs(schedule[index][0]).format('dddd D/M')}
           </DayTitle>
         )}
-        itemContent={(index) => <ScheduleCard run={runs[index]} />}
+        itemContent={(index) => (
+          <ScheduleCard
+            run={runs[index]}
+            bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
+            onBookmark={() => runs[index].id && onBookmark(runs[index])}
+          />
+        )}
       />
     </List>
   );
