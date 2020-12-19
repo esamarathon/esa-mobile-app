@@ -32,7 +32,7 @@ function BookmarkPage(_: RouteComponentProps) {
       <Content>
         <ScheduleList>
           {bookmarks.size === 0 ? (
-            <p>You don't have any bookmarks yet. Go to the schedule and favorite some!</p>
+            <p>You don't have any bookmarks yet. Go to the schedule and mark some!</p>
           ) : (
             Array.from(bookmarks.values()).map(({run}) => (
               <ScheduleCard

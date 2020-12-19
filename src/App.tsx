@@ -9,12 +9,12 @@ import {Plugins} from '@capacitor/core';
 import {loadFromESASubmissions} from './services/EventService';
 import {IRun} from './services/ScheduleService';
 import {
-  GetBookmark,
-  GetBookmarks,
+  getBookmark,
+  getBookmarks,
   IBookmark,
-  IsBookmarked,
-  RemoveBookmark,
-  StoreBookmark,
+  isBookmarked,
+  removeBookmark,
+  storeBookmark,
 } from './services/BookmarkService';
 import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
@@ -83,7 +83,7 @@ function App() {
   const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
   const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
-    bookmarks: GetBookmarks(),
+    bookmarks: getBookmarks(),
     onBookmark,
   }));
 
@@ -93,11 +93,10 @@ function App() {
       return;
     }
 
-    const isBookmarked = IsBookmarked(run.id);
-    if (isBookmarked) {
-      RemoveBookmark(run.id);
+    if (isBookmarked(run.id)) {
+      removeBookmark(run.id);
 
-      const bookmark = GetBookmark(run.id);
+      const bookmark = getBookmark(run.id);
       if (bookmark) {
         await cancelNotification(bookmark.notificationId);
       }
@@ -108,12 +107,12 @@ function App() {
         scheduled: dayjs(run.scheduled).subtract(1, 'hour').toDate(),
       });
 
-      StoreBookmark({run, notificationId: notifications[0].id});
+      storeBookmark({run, notificationId: notifications[0].id});
     }
 
     setBookmarkContext((value) => ({
       ...value,
-      bookmarks: GetBookmarks(),
+      bookmarks: getBookmarks(),
     }));
   }
 

@@ -5,7 +5,7 @@ export interface IBookmark {
   notificationId: string;
 }
 
-export function GetBookmark(runId: string) {
+export function getBookmark(runId: string) {
   const item = localStorage.getItem(`ESA@notification-${runId}`);
   if (!item) {
     return undefined;
@@ -14,7 +14,7 @@ export function GetBookmark(runId: string) {
   return JSON.parse(item) as IBookmark;
 }
 
-export function GetBookmarks() {
+export function getBookmarks() {
   return Object.keys(localStorage).reduce((bookmarks, key) => {
     if (key.startsWith('ESA@notification-')) {
       const storedNotification = localStorage.getItem(key);
@@ -40,14 +40,14 @@ export function GetBookmarks() {
   }, new Map<string, IBookmark>());
 }
 
-export function StoreBookmark(details: IBookmark) {
+export function storeBookmark(details: IBookmark) {
   localStorage.setItem(`ESA@notification-${details.run.id}`, JSON.stringify(details));
 }
 
-export function IsBookmarked(runId: string) {
+export function isBookmarked(runId: string) {
   return !!localStorage.getItem(`ESA@notification-${runId}`);
 }
 
-export function RemoveBookmark(runId: string) {
+export function removeBookmark(runId: string) {
   localStorage.removeItem(`ESA@notification-${runId}`);
 }

@@ -165,12 +165,12 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 <IonCol size="12" className="ion-align-self-start ion-text-center">
                   <SomeDiv>
                     {event.meta.venue.country ? (
-                      <>
+                      <React.Fragment>
                         <LocationIcon />
                         <Paragraph>
                           {event.meta.venue.city}, {event.meta.venue.country} |
                         </Paragraph>
-                      </>
+                      </React.Fragment>
                     ) : null}
                     <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
                   </SomeDiv>
@@ -244,19 +244,19 @@ function HomePage({event}: IProps & RouteComponentProps) {
             <p>Event is over</p>
           </ScheduleList>
         ) : (
-          <>
+          <React.Fragment>
             {liveNow ? (
-              <>
+              <React.Fragment>
                 <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
                   <Title>Live Now</Title>
                 </PageHeaderContainer>
                 <ScheduleList>
                   <LiveNow run={liveNow} />
                 </ScheduleList>
-              </>
+              </React.Fragment>
             ) : null}
             {upNext ? (
-              <>
+              <React.Fragment>
                 <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
                   <Title>Up Next</Title>
                   <StyledLink to="schedule">
@@ -273,9 +273,9 @@ function HomePage({event}: IProps & RouteComponentProps) {
                     />
                   ))}
                 </ScheduleList>
-              </>
+              </React.Fragment>
             ) : null}
-          </>
+          </React.Fragment>
         )}
       </Content>
     </IonPage>

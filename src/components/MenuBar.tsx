@@ -163,10 +163,10 @@ function MenuBar({event, onClearEvent}: IProps) {
               ) : null}
               <StyledDateLocation>
                 {event.meta.venue.country ? (
-                  <>
+                  <React.Fragment>
                     <LocationIcon />
                     {event.meta.venue.city || 'yes'}, {event.meta.venue.country || 'Oakland'} |{' '}
-                  </>
+                  </React.Fragment>
                 ) : null}
                 {shortDateRange(event.startDate, event.endDate)}
               </StyledDateLocation>
