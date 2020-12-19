@@ -6,7 +6,7 @@ interface IProps {
 
 function EstimateParser({seconds}: IProps) {
   const parsedTimer = new window.Date(seconds * 1000).toISOString().substr(11, 8);
-  return <React.Fragment>{parsedTimer}</React.Fragment>;
+  return <>{parsedTimer}</>;
 }
 
 export default EstimateParser;

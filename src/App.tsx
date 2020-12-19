@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
 import useSWR from 'swr';
 import {Plugins} from '@capacitor/core';
-import {LoadEvents} from './services/EventService';
+import {loadFromESASubmissions} from './services/EventService';
 import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
 import HomePage from './pages/HomePage';
@@ -32,8 +32,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 
 import './theme/variables.css';
-
-const {SplashScreen} = Plugins;
 
 const Themes = {
   default: {
@@ -64,15 +62,14 @@ const Themes = {
 } as const;
 
 function App() {
-  const {error, data: events} = useSWR(
-    'https://api.submissions.esamarathon.com/events',
-    LoadEvents,
-  );
-  const [currentEventID, setCurrentEventID] = usePersistent<string | undefined>('preferred_event');
+  const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
+  const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
 
-  SplashScreen.hide();
+  useEffect(() => {
+    Plugins.SplashScreen.hide();
+  }, []);
 
-  if (!events) {
+  if (isValidating) {
     return <LoadingPage />;
   }
 
@@ -80,30 +77,39 @@ function App() {
     return <p>Something went wrong...</p>;
   }
 
-  const currentEvent = events.find((event) => event._id === currentEventID);
-  if (!currentEvent) {
-    return (
-      <EventPickerPage events={events} onPickEvent={(event) => setCurrentEventID(event._id)} />
-    );
+  if (!events) {
+    return <p>No events found</p>;
   }
 
-  const theme = Themes[currentEvent.meta.theme];
+  const selectedEvent = selectedEventID
+    ? events.find((event) => event._id === selectedEventID)
+    : undefined;
+  if (!selectedEvent) {
+    return <EventPickerPage events={events} onPickEvent={(event) => setSelectedEvent(event._id)} />;
+  }
+
+  // Set theme to default if unknown
+  selectedEvent.meta.theme =
+    selectedEvent.meta.theme && selectedEvent.meta.theme in Themes
+      ? selectedEvent.meta.theme
+      : 'default';
+  const theme = Themes[selectedEvent.meta.theme];
 
   return (
     <ThemeProvider theme={theme}>
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <MenuBar event={currentEvent} onClearEvent={() => setCurrentEventID(undefined)} />
+            <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
             <IonRouterOutlet id="main">
               <Route
                 path="/home"
-                render={(props) => <HomePage {...props} event={currentEvent} />}
+                render={(props) => <HomePage {...props} event={selectedEvent} />}
               />
               <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
               <Route
                 path="/schedule"
-                render={(props) => <SchedulePage {...props} event={currentEvent} />}
+                render={(props) => <SchedulePage {...props} event={selectedEvent} />}
               />
               <Redirect from="/" to="/home" exact />
             </IonRouterOutlet>

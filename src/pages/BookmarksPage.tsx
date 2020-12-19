@@ -35,9 +35,13 @@ function BookmarkPage({location}: RouteComponentProps) {
       </StyledHeaderWrapper>
       <Content>
         <ScheduleList>
-          {bookmarks.map(({run}) => (
-            <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-          ))}
+          {bookmarks.length === 0 ? (
+            <p>You don't have any bookmarks yet. Go to the schedule and favorite some!</p>
+          ) : (
+            bookmarks.map(({run}) => (
+              <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
+            ))
+          )}
         </ScheduleList>
       </Content>
     </IonPage>

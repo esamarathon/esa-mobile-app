@@ -164,9 +164,7 @@ function ScheduleCard({run}: IProps) {
               <p>{run.category}</p>
             </InnerExpander>
           </Expanded>
-        ) : (
-          <React.Fragment />
-        )}
+        ) : null}
       </Content>
     </Card>
   );

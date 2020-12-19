@@ -1,11 +1,9 @@
 export type EventTheme = 'default' | 'summer' | 'winter';
 
-interface IEventMeta {
-  theme: EventTheme;
-  horaro: string;
-  twitchChannel: string;
-  cause: IEventCause;
-  venue: IEventVenue;
+interface IEventCause {
+  name: string;
+  link: string;
+  logo: string;
 }
 
 interface IEventVenue {
@@ -15,10 +13,12 @@ interface IEventVenue {
   name: string;
 }
 
-interface IEventCause {
-  name: string;
-  link: string;
-  logo: string;
+interface IEventMeta {
+  theme: EventTheme;
+  horaro: string;
+  twitchChannel: string;
+  cause: IEventCause;
+  venue: IEventVenue;
 }
 
 export interface IEvent {
@@ -38,8 +38,9 @@ export interface IEvent {
   updatedAt: string;
 }
 
-export async function LoadEvents(url: string): Promise<IEvent[]> {
-  const response = await fetch(url);
-
+const baseURL = 'https://api.submissions.esamarathon.com';
+export async function loadFromESASubmissions<T extends IEvent[]>(endpoint: string): Promise<T> {
+  const path = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  const response = await fetch(`${baseURL}/${path}`);
   return response.json();
 }

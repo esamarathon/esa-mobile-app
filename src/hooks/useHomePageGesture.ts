@@ -107,12 +107,12 @@ export function useHomePageGesture() {
           return memo;
         }
 
-        memo = value.getValue() - movementY;
+        memo = (value.getValue() as number) - movementY;
       }
 
       // On drag end
       if (last) {
-        const projectedEndpoint = value.getValue() + projection(velocityY);
+        const projectedEndpoint = (value.getValue() as number) + projection(velocityY);
         const point = findNearestNumberInArray(projectedEndpoint, stops);
 
         set(
