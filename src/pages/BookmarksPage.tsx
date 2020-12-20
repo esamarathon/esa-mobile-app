@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {IonContent, IonPage} from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
 import styled from 'styled-components';
 import {StyledHeaderWrapper, StyledHeaderSmall} from '../components/common/HeaderBar';
 import Toolbar from '../components/Toolbar';
 import ScheduleCard from '../components/ScheduleCard';
-import {GetBookmarks, IBookmark} from '../services/BookmarkService';
+import {BookmarkContext, IBookmarkContext} from '../App';
 
 const Content = styled(IonContent)`
   background-color: var(--ion-background);
@@ -19,12 +19,8 @@ const ScheduleList = styled.ul`
   overflow-x: scroll;
 `;
 
-function BookmarkPage({location}: RouteComponentProps) {
-  const [bookmarks, setBookmarks] = useState<IBookmark[]>([]);
-
-  useEffect(() => {
-    setBookmarks(GetBookmarks());
-  }, [location.pathname]);
+function BookmarkPage(_: RouteComponentProps) {
+  const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
 
   return (
     <IonPage>
@@ -35,9 +31,18 @@ function BookmarkPage({location}: RouteComponentProps) {
       </StyledHeaderWrapper>
       <Content>
         <ScheduleList>
-          {bookmarks.map(({run}) => (
-            <ScheduleCard key={run.scheduled + (run.players.join('-') || '')} run={run} />
-          ))}
+          {bookmarks.size === 0 ? (
+            <p>You don't have any bookmarks yet. Go to the schedule and mark some!</p>
+          ) : (
+            Array.from(bookmarks.values()).map(({run}) => (
+              <ScheduleCard
+                key={run.scheduled + (run.players.join('-') || '')}
+                run={run}
+                bookmarked
+                onBookmark={() => onBookmark(run)}
+              />
+            ))
+          )}
         </ScheduleList>
       </Content>
     </IonPage>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
 import {BackButtonEvent} from '@ionic/core';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import {Link, RouteComponentProps, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import {LoadHoraro} from '../services/ScheduleService';
+import {IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
@@ -18,6 +18,7 @@ import LiveNow from '../components/LiveNow';
 import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
 import {Plugins} from '@capacitor/core';
+import {BookmarkContext, IBookmarkContext} from '../App';
 
 const {App} = Plugins;
 
@@ -112,21 +113,33 @@ interface IProps {
 }
 
 function HomePage({event}: IProps & RouteComponentProps) {
-  const {data, isValidating} = useSWR(['homePage:schedule', event.meta.horaro], LoadHoraro);
+  const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
+  const {data, error, isValidating} = useSWR(
+    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}?amount=5` : null,
+    (path: string) => loadFromHoraro<IUpcomingResponse>(path),
+  );
   const {animatedValue, bind, stops} = useHomePageGesture();
   const location = useLocation();
 
   const eventIsOver = dayjs().isAfter(event.endDate);
-  const liveNow = data?.data[0];
-  const upNext = data?.data.slice(1);
+  const liveNow = data?.data?.[0];
+  const upNext = data?.data?.slice(1);
 
-  document.addEventListener('ionBackButton', (e) => {
-    (e as BackButtonEvent).detail.register(-1, () => {
-      const path = location.pathname;
-      if (path === '/home') {
-        App.exitApp();
-      }
-    });
+  useEffect(() => {
+    function onBackButton(event: BackButtonEvent) {
+      event.detail.register(-1, () => {
+        const path = location.pathname;
+        if (path === '/home') {
+          App.exitApp();
+        }
+      });
+    }
+
+    document.addEventListener('ionBackButton', onBackButton as EventListener);
+
+    return () => {
+      document.removeEventListener('ionBackButton', onBackButton as EventListener);
+    };
   });
 
   return (
@@ -185,9 +198,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
                   title="Location"
                   content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
                 />
-              ) : (
-                <React.Fragment />
-              )}
+              ) : null}
               <HeaderMetaRow
                 title="Stream"
                 content={`twitch.tv/${event.meta.twitchChannel}`}
@@ -209,7 +220,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
       </StyledHeaderWrapper>
 
       <Content>
-        {!data || isValidating ? (
+        {isValidating ? (
           <div
             style={{
               height: '100%',
@@ -220,6 +231,14 @@ function HomePage({event}: IProps & RouteComponentProps) {
           >
             <IonSpinner />
           </div>
+        ) : error ? (
+          <ScheduleList>
+            <p>Could not fetch scheduled runs</p>
+          </ScheduleList>
+        ) : !data ? (
+          <ScheduleList>
+            <p>No runs scheduled yet. Stay tuned!</p>
+          </ScheduleList>
         ) : eventIsOver ? (
           <ScheduleList>
             <p>Event is over</p>
@@ -246,7 +265,12 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 </PageHeaderContainer>
                 <ScheduleList>
                   {upNext.map((run) => (
-                    <ScheduleCard key={run.scheduled + run.players.join('')} run={run} />
+                    <ScheduleCard
+                      key={run.scheduled + run.players.join('')}
+                      run={run}
+                      bookmarked={!!run.id && bookmarks.has(run.id)}
+                      onBookmark={() => onBookmark(run)}
+                    />
                   ))}
                 </ScheduleList>
               </React.Fragment>

@@ -1,8 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useContext, useEffect, useMemo, useRef} from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
-import {GroupedVirtuoso} from 'react-virtuoso';
+import {GroupedVirtuoso, GroupedVirtuosoHandle} from 'react-virtuoso';
 import ScheduleCard from './ScheduleCard';
+import {IRun} from '../services/ScheduleService';
+import {BookmarkContext, IBookmarkContext} from '../App';
 
 const List = styled.ul`
   display: flex;
@@ -22,97 +24,55 @@ const DayTitle = styled.p`
   margin: 0;
 `;
 
+function transformGroups(schedule: IProps['schedule']) {
+  const groupsCount = schedule.map((runs) => runs[1].length);
+  const runs = schedule.flatMap((runs) => runs[1]);
+
+  return {
+    groupsCount,
+    runs,
+  };
+}
+
 interface IProps {
-  items: any;
+  scrollToDate?: string;
+  schedule: [string, IRun[]][];
 }
 
-interface GroupDataReturn {
-  groups: any[];
-  groupsData: any[];
-}
+function ScheduleList({scrollToDate, schedule}: IProps) {
+  const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
+  const virtuoso = useRef<GroupedVirtuosoHandle>(null);
+  const {groupsCount, runs} = useMemo(() => transformGroups(schedule), [schedule]);
 
-interface GeneratedGroupData extends GroupDataReturn {
-  groupsCount: any[];
-}
-
-interface GroupWithTitle {
-  title: string;
-}
-
-function groupData(data: any[]): GroupDataReturn {
-  const result: GroupDataReturn = {
-    groups: [],
-    groupsData: [],
-  };
-
-  if (!data) {
-    return result;
-  }
-
-  data.forEach((item: GroupWithTitle | any) => {
-    if (item.title) {
-      result.groups = [...result.groups, item];
-    } else {
-      result.groupsData = [...result.groupsData, item];
+  useEffect(() => {
+    const scrollGroupIndex = schedule.findIndex((x) => x[0] === scrollToDate);
+    const scrollItemIndex = groupsCount.slice(0, scrollGroupIndex).reduce((a, b) => a + b, 0);
+    if (scrollGroupIndex > -1) {
+      virtuoso.current?.scrollToIndex({
+        index: scrollItemIndex,
+        align: 'start',
+        behavior: 'smooth',
+      });
     }
-  });
-
-  return result;
-}
-
-function calculateGroups(result: any): string[] {
-  const counts: any[] = [];
-  const groupValues = result.groups.map((value: any) => {
-    return value.title;
-  });
-
-  const groupDatas = result.groupsData.map((value: any) => {
-    return value.scheduled.split('T')[0];
-  });
-
-  groupValues.forEach((value: string) => {
-    const megaVal = groupDatas.filter((value2: string) => {
-      return value === value2;
-    });
-
-    counts.push(megaVal.length);
-  });
-
-  return counts;
-}
-
-function generateGroups(data: any) {
-  const result: GeneratedGroupData = {
-    groups: [],
-    groupsData: [],
-    groupsCount: [],
-  };
-
-  const generatedData = groupData(data);
-  result.groups = generatedData.groups;
-  result.groupsData = generatedData.groupsData;
-  result.groupsCount = calculateGroups(result);
-
-  return result;
-}
-
-function ScheduleList({items}: IProps) {
-  const groups = useMemo(() => generateGroups(items), [items]);
+  }, [groupsCount, schedule, scrollToDate]);
 
   return (
     <List>
       <GroupedVirtuoso
-        groupCounts={groups.groupsCount}
-        groupContent={(index: number) => {
-          return (
-            <DayTitle id={groups.groups[index].title}>
-              {dayjs(groups.groups[index].title).format('dddd D/M')}
-            </DayTitle>
-          );
-        }}
-        itemContent={(index: number) => {
-          return <ScheduleCard run={groups.groupsData[index]} />;
-        }}
+        ref={virtuoso}
+        groupCounts={groupsCount}
+        groupContent={(index) => (
+          <DayTitle id={schedule[index][0]}>
+            {dayjs(schedule[index][0]).format('dddd D/M')}
+          </DayTitle>
+        )}
+        itemContent={(index) => (
+          <ScheduleCard
+            run={runs[index]}
+            bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
+            onBookmark={() => runs[index].id && onBookmark(runs[index])}
+          />
+        )}
       />
     </List>
   );

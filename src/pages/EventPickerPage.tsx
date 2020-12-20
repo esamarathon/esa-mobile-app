@@ -49,6 +49,8 @@ interface IProps {
   onPickEvent: (event: IEvent) => void;
 }
 
+const blackListedEvents = new Set(['2a2819283ae92585552adde0']);
+
 function EventPickerPage({events, onPickEvent}: IProps) {
   return (
     <Page>
@@ -56,15 +58,20 @@ function EventPickerPage({events, onPickEvent}: IProps) {
         <Logo size={120} />
       </LogoWrapper>
       <Title>Pick Event</Title>
-      {events ? (
+      {events.length ? (
         <EventWrapper>
-          {events.map((event) =>
-            dayjs(event.endDate).isAfter(dayjs()) && event._id !== '2a2819283ae92585552adde0' ? (
+          {events
+            .filter(
+              (event) =>
+                // uncomment next line for debugging old events
+                // true ||
+                dayjs(event.endDate).isAfter(dayjs()) && !blackListedEvents.has(event._id),
+            )
+            .map((event) => (
               <Event key={event._id} onClick={() => onPickEvent(event)}>
                 <span>{event.name}</span>
               </Event>
-            ) : null,
-          )}
+            ))}
         </EventWrapper>
       ) : (
         <p>No Events</p>

@@ -1,9 +1,4 @@
-interface IScheduleEvent {
-  name: string;
-  slug: string;
-}
-
-interface IScheduleMeta {
+interface IEventMeta {
   name: string;
   slug: string;
   timezone: string;
@@ -15,13 +10,11 @@ interface IScheduleMeta {
   setup: string;
   updated: string;
   url: string;
-  event: IScheduleEvent;
+  event: {
+    name: string;
+    slug: string;
+  };
   exported: string;
-}
-
-interface IRunsResponse {
-  meta: IScheduleMeta;
-  data: IRun[];
 }
 
 export interface IRun {
@@ -37,24 +30,24 @@ export interface IRun {
   id: string;
 }
 
-const baseUrl = 'https://app.esamarathon.dev/horaro-proxy';
-
-export async function LoadHoraro(_: string, horaroEndpoint: string): Promise<IRunsResponse> {
-  const response = await fetch(
-    `${baseUrl}/v1/esa/upcoming/${encodeURIComponent(horaroEndpoint)}?amount=5`,
-  );
-  return response.json();
+export interface IUpcomingResponse {
+  meta: IEventMeta;
+  data: IRun[];
 }
 
-export async function LoadSchedule(_: string, horaroEndpoint: string) {
-  const response = await fetch(`${baseUrl}/v1/esa/schedule/${encodeURIComponent(horaroEndpoint)}`);
+export interface IScheduleResponse {
+  meta: IEventMeta;
+  data: {
+    [key: string]: IRun[];
+  };
+}
 
-  const {data} = await response.json();
+const baseUrl = 'https://app.esamarathon.dev/horaro-proxy/v1/esa';
 
-  const fixedObject = Object.entries(data).map(([key, value]: any) => {
-    value.unshift({title: key});
-    return value;
-  })
-
-  return [].concat.apply([], fixedObject);
+export async function loadFromHoraro<T extends IScheduleResponse | IUpcomingResponse>(
+  horaroEvent: string,
+): Promise<T> {
+  const path = horaroEvent.startsWith('/') ? horaroEvent.slice(1) : horaroEvent;
+  const response = await fetch(`${baseUrl}/${path}`);
+  return response.json();
 }

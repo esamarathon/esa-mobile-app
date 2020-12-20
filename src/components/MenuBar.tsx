@@ -158,15 +158,15 @@ function MenuBar({event, onClearEvent}: IProps) {
             <InnerToolbar>
               <StyledImage src={logoMap[event.meta.theme]} alt="ESA Logo" />
               <StyledTitle>{event.name}</StyledTitle>
-              <StyledParagraph>
-                {event.meta.cause.name ? event.meta.cause.name : 'No Cause have been selected yet'}
-              </StyledParagraph>
+              {event.meta.cause.name ? (
+                <StyledParagraph>{event.meta.cause.name}</StyledParagraph>
+              ) : null}
               <StyledDateLocation>
                 {event.meta.venue.country ? (
-                  <>
+                  <React.Fragment>
                     <LocationIcon />
                     {event.meta.venue.city || 'yes'}, {event.meta.venue.country || 'Oakland'} |{' '}
-                  </>
+                  </React.Fragment>
                 ) : null}
                 {shortDateRange(event.startDate, event.endDate)}
               </StyledDateLocation>

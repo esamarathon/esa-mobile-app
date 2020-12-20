@@ -1,16 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {IRun} from '../services/ScheduleService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
-import {scheduleNotification, cancelNotification} from '../providers/PushProvider';
 import {formatPlayers} from '../services/PlayersService';
-import {
-  StoreBookmark,
-  RemoveBookmark,
-  GetBookmark,
-  IsBookmarked,
-} from '../services/BookmarkService';
 import EstimateParser from './common/EstimateParser';
 
 const Card = styled.li`
@@ -107,39 +100,13 @@ const InnerExpander = styled.div`
 
 interface IProps {
   run: IRun;
+  bookmarked: boolean;
+  onBookmark: (run: IRun) => void;
 }
 
-function ScheduleCard({run}: IProps) {
-  const [bookmarked, setBookmarked] = useState(false);
+function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
   const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
-
-  useEffect(() => {
-    if (IsBookmarked(run.id)) {
-      setBookmarked(true);
-    }
-  }, [run.id]);
-
-  async function bookmarkMe(run: IRun) {
-    setBookmarked(!bookmarked);
-
-    if (!bookmarked) {
-      const {notifications} = await scheduleNotification({
-        title: 'Your run is about to start!',
-        body: `In about an hour ${run.game} - ${run.category} starts`,
-        scheduled: dayjs(run.scheduled).subtract(1, 'hour').toDate(),
-      });
-
-      StoreBookmark({run, notificationId: notifications[0].id});
-    } else {
-      const bookmark = GetBookmark(run.id);
-
-      if (bookmark) {
-        RemoveBookmark(run.id);
-        await cancelNotification(bookmark.notificationId);
-      }
-    }
-  }
 
   async function expandToggle(state: boolean) {
     setExpanded((state = !expanded));
@@ -151,9 +118,11 @@ function ScheduleCard({run}: IProps) {
       <Content>
         <Game>{run.game}</Game>
         <Runner>{formatPlayers(run.players)}</Runner>
-        <HeartButton onClick={() => bookmarkMe(run)}>
-          {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
-        </HeartButton>
+        {run.id ? (
+          <HeartButton onClick={() => onBookmark(run)}>
+            {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
+          </HeartButton>
+        ) : null}
         {expanded ? (
           <Expanded>
             <Expander />
@@ -164,9 +133,7 @@ function ScheduleCard({run}: IProps) {
               <p>{run.category}</p>
             </InnerExpander>
           </Expanded>
-        ) : (
-          <React.Fragment />
-        )}
+        ) : null}
       </Content>
     </Card>
   );

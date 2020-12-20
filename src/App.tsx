@@ -1,18 +1,30 @@
-import React from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
+import useSWR from 'swr';
+import dayjs from 'dayjs';
 import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import useSWR from 'swr';
 import {Plugins} from '@capacitor/core';
-import {LoadEvents} from './services/EventService';
+import {loadFromESASubmissions} from './services/EventService';
+import {IRun} from './services/ScheduleService';
+import {
+  getBookmark,
+  getBookmarks,
+  IBookmark,
+  isBookmarked,
+  removeBookmark,
+  storeBookmark,
+} from './services/BookmarkService';
 import {usePersistent} from './hooks/usePersistent';
 import MenuBar from './components/MenuBar';
+import {cancelNotification, scheduleNotification} from './providers/PushProvider';
 import HomePage from './pages/HomePage';
 import LoadingPage from './pages/LoadingPage';
 import EventPickerPage from './pages/EventPickerPage';
 import SchedulePage from './pages/SchedulePage';
 import BookmarkPage from './pages/BookmarksPage';
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 
@@ -30,10 +42,7 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-
 import './theme/variables.css';
-
-const {SplashScreen} = Plugins;
 
 const Themes = {
   default: {
@@ -63,16 +72,55 @@ const Themes = {
   },
 } as const;
 
+export interface IBookmarkContext {
+  bookmarks: Map<string, IBookmark>;
+  onBookmark: (run: IRun) => void;
+}
+
+export const BookmarkContext = createContext<IBookmarkContext | null>(null);
+
 function App() {
-  const {error, data: events} = useSWR(
-    'https://api.submissions.esamarathon.com/events',
-    LoadEvents,
-  );
-  const [currentEventID, setCurrentEventID] = usePersistent<string | undefined>('preferred_event');
+  const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
+  const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
+  const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
+    bookmarks: getBookmarks(),
+    onBookmark,
+  }));
 
-  SplashScreen.hide();
+  async function onBookmark(run: IRun) {
+    if (!run.id) {
+      console.warn('Trying to bookmark a run without an ID');
+      return;
+    }
 
-  if (!events) {
+    if (isBookmarked(run.id)) {
+      removeBookmark(run.id);
+
+      const bookmark = getBookmark(run.id);
+      if (bookmark) {
+        await cancelNotification(bookmark.notificationId);
+      }
+    } else {
+      const {notifications} = await scheduleNotification({
+        title: 'Your run is about to start!',
+        body: `In about an hour ${run.game} - ${run.category} starts`,
+        scheduled: dayjs(run.scheduled).subtract(1, 'hour').toDate(),
+      });
+
+      storeBookmark({run, notificationId: notifications[0].id});
+    }
+
+    setBookmarkContext((value) => ({
+      ...value,
+      bookmarks: getBookmarks(),
+    }));
+  }
+
+  useEffect(() => {
+    Plugins.SplashScreen.hide();
+  }, []);
+
+  if (isValidating) {
     return <LoadingPage />;
   }
 
@@ -80,36 +128,47 @@ function App() {
     return <p>Something went wrong...</p>;
   }
 
-  const currentEvent = events.find((event) => event._id === currentEventID);
-  if (!currentEvent) {
-    return (
-      <EventPickerPage events={events} onPickEvent={(event) => setCurrentEventID(event._id)} />
-    );
+  if (!events) {
+    return <p>No events found</p>;
   }
 
-  const theme = Themes[currentEvent.meta.theme];
+  const selectedEvent = selectedEventID
+    ? events.find((event) => event._id === selectedEventID)
+    : undefined;
+  if (!selectedEvent) {
+    return <EventPickerPage events={events} onPickEvent={(event) => setSelectedEvent(event._id)} />;
+  }
+
+  // Set theme to default if unknown
+  selectedEvent.meta.theme =
+    selectedEvent.meta.theme && selectedEvent.meta.theme in Themes
+      ? selectedEvent.meta.theme
+      : 'default';
+  const theme = Themes[selectedEvent.meta.theme];
 
   return (
     <ThemeProvider theme={theme}>
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <MenuBar event={currentEvent} onClearEvent={() => setCurrentEventID(undefined)} />
-            <IonRouterOutlet id="main">
-              <Route
-                path="/home"
-                render={(props) => <HomePage {...props} event={currentEvent} />}
-              />
-              <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
-              <Route
-                path="/schedule"
-                render={(props) => <SchedulePage {...props} event={currentEvent} />}
-              />
-              <Redirect from="/" to="/home" exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
+      <BookmarkContext.Provider value={bookmarkContext}>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
+              <IonRouterOutlet id="main">
+                <Route
+                  path="/home"
+                  render={(props) => <HomePage {...props} event={selectedEvent} />}
+                />
+                <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
+                <Route
+                  path="/schedule"
+                  render={(props) => <SchedulePage {...props} event={selectedEvent} />}
+                />
+                <Redirect from="/" to="/home" exact />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </IonApp>
+      </BookmarkContext.Provider>
     </ThemeProvider>
   );
 }
