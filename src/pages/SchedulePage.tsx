@@ -63,9 +63,7 @@ interface IProps {
 
 function SchedulePage({event}: IProps & RouteComponentProps) {
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro
-      ? `schedule/${encodeURIComponent(event.meta.horaro)}`
-      : `schedule/${encodeURIComponent('https://horaro.org/esa/2021-winter')}`,
+    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
     (path: string) => loadFromHoraro<IScheduleResponse>(path),
   );
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);
