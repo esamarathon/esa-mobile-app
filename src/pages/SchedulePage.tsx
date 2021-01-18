@@ -17,11 +17,10 @@ const Content = styled(IonContent)`
 const DayScroller = styled.ul`
   display: flex;
   flex-wrap: nowrap;
-  overflow-y: scroll;
-  justify-content: center;
+  overflow-y: auto;
   list-style-type: none;
-  padding: 0 15px 15px 0;
-  margin: 0 15px;
+  width: 100%;
+  padding: 0 15px;
 `;
 
 const ScrollItem = styled.li`
@@ -39,10 +38,13 @@ const ScrollLink = styled.button`
   margin: 0;
   color: #fff;
   font-size: 12px;
+  &:last-child {
+    padding-right: 15px;
+  }
 `;
 
 const ScrollBorder = styled.span`
-  width: 130%;
+  width: 40px;
   border-radius: 3px;
   height: 3px;
   background: #fff;
@@ -61,7 +63,9 @@ interface IProps {
 
 function SchedulePage({event}: IProps & RouteComponentProps) {
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
+    event.meta.horaro
+      ? `schedule/${encodeURIComponent(event.meta.horaro)}`
+      : `schedule/${encodeURIComponent('https://horaro.org/esa/2021-winter')}`,
     (path: string) => loadFromHoraro<IScheduleResponse>(path),
   );
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);

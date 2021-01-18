@@ -6,13 +6,10 @@ import ScheduleCard from './ScheduleCard';
 import {IRun} from '../services/ScheduleService';
 import {BookmarkContext, IBookmarkContext} from '../App';
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
+const List = styled.div`
   height: 100%;
-  margin: 20px 0 0;
+  margin: 40px 0 0;
   padding: 0 20px 0;
-  overflow-x: scroll;
 `;
 
 const DayTitle = styled.p`

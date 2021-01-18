@@ -115,7 +115,7 @@ interface IProps {
 function HomePage({event}: IProps & RouteComponentProps) {
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}?amount=5` : null,
+    `upcoming/${encodeURIComponent('https://horaro.org/esa/2021-winter')}?amount=5`,
     (path: string) => loadFromHoraro<IUpcomingResponse>(path),
   );
   const {animatedValue, bind, stops} = useHomePageGesture();
