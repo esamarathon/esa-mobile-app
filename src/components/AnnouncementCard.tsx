@@ -28,7 +28,6 @@ const CardContent = styled(IonCardContent)`
 
 const Title = styled.h2`
   color: ${(props) => props.theme.secondaryColor};
-  font-family: 'Titillium Web', sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 18px;

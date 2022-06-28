@@ -1,8 +1,7 @@
 import React, {useContext, useEffect} from 'react';
-import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
 import {BackButtonEvent} from '@ionic/core';
 import styled from 'styled-components';
-import {Link, RouteComponentProps, useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
@@ -17,17 +16,15 @@ import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
 import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
-import {Plugins} from '@capacitor/core';
+import { App } from '@capacitor/app';
+
 import {BookmarkContext, IBookmarkContext} from '../App';
 
-const {App} = Plugins;
-
-const Content = styled(IonContent)`
-  background-color: var(--ion-background);
+const Content = styled('div')`
+  background-color: tomato;
 `;
 
 const Title = styled.h2`
-  font-family: 'Titillium Web', sans-serif;
   font-size: 16px;
   font-weight: 600;
   margin: 0;
@@ -75,7 +72,6 @@ const PageHeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-  font-family: Titillium Web, sans-serif;
   font-size: 24px;
   font-weight: 700;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -112,7 +108,7 @@ interface IProps {
   event: IEvent;
 }
 
-function HomePage({event}: IProps & RouteComponentProps) {
+function HomePage({event}: IProps) {
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
   const {data, error, isValidating} = useSWR(
     event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}?amount=5` : null,
@@ -143,26 +139,21 @@ function HomePage({event}: IProps & RouteComponentProps) {
   });
 
   return (
-    <IonPage>
+    <div>
       <StyledHeaderWrapper large>
-        <StyledHeaderFull
-          as={animated.div}
-          style={{
-            height: animatedValue.interpolate((x: number) => `${x}px`),
-          }}
-        >
+        <StyledHeaderFull>
           <Toolbar opaque />
-          <IonGrid {...bind()}>
+          <div {...bind()}>
             <animated.div
-              style={{
-                opacity: animatedValue.interpolate([stops[0], stops[1] / 2], [1, 0]),
-              }}
+              // style={{
+              //   opacity: animatedValue.interpolate([stops[0], stops[1] / 2], [1, 0]),
+              // }}
             >
-              <IonRow>
-                <IonCol size="12" className="ion-text-center">
+              <div>
+                <div className="ion-text-center">
                   <HeaderTitle>{event.name}</HeaderTitle>
-                </IonCol>
-                <IonCol size="12" className="ion-align-self-start ion-text-center">
+                </div>
+                <div className="ion-align-self-start ion-text-center">
                   <SomeDiv>
                     {event.meta.venue.country ? (
                       <React.Fragment>
@@ -174,8 +165,8 @@ function HomePage({event}: IProps & RouteComponentProps) {
                     ) : null}
                     <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
                   </SomeDiv>
-                </IonCol>
-              </IonRow>
+                </div>
+              </div>
             </animated.div>
             <animated.div
               style={{
@@ -186,11 +177,11 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 ),
               }}
             >
-              <IonRow>
-                <IonCol size="12" className="ion-align-self-start ion-text-center">
+              <div>
+                <div className="ion-align-self-start ion-text-center">
                   <StyledLogo size={55} />
-                </IonCol>
-              </IonRow>
+                </div>
+              </div>
               <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
               <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
               {event.meta.venue.country ? (
@@ -214,7 +205,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
                 </HeaderLinks>
               </HeaderMetaList> */}
             </animated.div>
-          </IonGrid>
+          </div>
           <StyledExpander />
         </StyledHeaderFull>
       </StyledHeaderWrapper>
@@ -229,7 +220,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
               justifyContent: 'center',
             }}
           >
-            <IonSpinner />
+            <p>Validating</p>
           </div>
         ) : error ? (
           <ScheduleList>
@@ -278,7 +269,7 @@ function HomePage({event}: IProps & RouteComponentProps) {
           </React.Fragment>
         )}
       </Content>
-    </IonPage>
+    </div>
   );
 }
 

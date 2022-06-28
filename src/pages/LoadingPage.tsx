@@ -1,9 +1,8 @@
 import React from 'react';
-import {IonPage} from '@ionic/react';
 import styled from 'styled-components';
 import Logo from '../assets/Logo';
 
-const Page = styled(IonPage)`
+const Page = styled.div`
   background: #fff;
 `;
 

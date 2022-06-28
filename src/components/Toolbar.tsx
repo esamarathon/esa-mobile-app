@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {IonToolbar, IonTitle, IonButtons, IonMenuButton} from '@ionic/react';
 import {MenuIcon} from '../assets/Icons';
 
 const ToolbarWrapper = styled.div<{opaque?: boolean}>`
@@ -8,10 +7,9 @@ const ToolbarWrapper = styled.div<{opaque?: boolean}>`
   box-shadow: ${(props) => (props.opaque ? '0' : '0 1px 15px rgba(136, 26, 232, 0.4)')};
 `;
 
-const StyledToolbar = styled(IonToolbar)`
-  --background: transparent;
-  --color: rgba(255, 255, 255, 0.9);
-  --border-width: 0 !important;
+const StyledToolbar = styled('div')`
+  transparent;
+  color: rgba(255, 255, 255, 0.9);
 
   margin: 0;
 
@@ -21,8 +19,7 @@ const StyledToolbar = styled(IonToolbar)`
   }
 `;
 
-const MenuTitle = styled(IonTitle)`
-  font-family: 'Titillium Web', sans-serif;
+const MenuTitle = styled('div')`
   line-height: 37px;
   font-size: 24px;
 `;
@@ -36,11 +33,7 @@ function Toolbar({children, opaque}: IProps) {
   return (
     <ToolbarWrapper opaque={opaque}>
       <StyledToolbar>
-        <IonButtons slot="start">
-          <IonMenuButton>
-            <MenuIcon />
-          </IonMenuButton>
-        </IonButtons>
+        <MenuIcon />
         <MenuTitle>{children}</MenuTitle>
       </StyledToolbar>
     </ToolbarWrapper>

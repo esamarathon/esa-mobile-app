@@ -19,7 +19,6 @@ export const Title = styled.p`
   font-size: 14px;
   line-height: 21px;
   text-transform: uppercase;
-  font-family: 'Titillium Web', sans-serif;
 `;
 
 export const Meta = styled.p<{link?: boolean}>`

@@ -1,11 +1,10 @@
 import React from 'react';
-import {IonPage} from '@ionic/react';
 import styled from 'styled-components';
 import Logo from '../assets/Logo';
 import {IEvent} from '../services/EventService';
 import dayjs from 'dayjs';
 
-const Page = styled(IonPage)`
+const Page = styled.div`
   background: #fff;
   justify-content: flex-start !important;
 `;
@@ -19,7 +18,6 @@ const Title = styled.h1`
   text-transform: uppercase;
   font-size: 16px;
   font-weight: bold;
-  font-family: 'Titillium Web', sans-serif;
   text-align: center;
   margin: 40px 0;
 `;

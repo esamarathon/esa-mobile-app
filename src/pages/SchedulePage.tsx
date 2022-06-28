@@ -1,6 +1,4 @@
 import React, {useMemo, useState} from 'react';
-import {IonContent, IonPage, IonSpinner} from '@ionic/react';
-import {RouteComponentProps} from 'react-router';
 import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import styled from 'styled-components';
@@ -10,7 +8,7 @@ import {IEvent} from '../services/EventService';
 import ScheduleList from '../components/ScheduleList';
 import dayjs from 'dayjs';
 
-const Content = styled(IonContent)`
+const Content = styled('div')`
   background-color: var(--ion-background);
 `;
 
@@ -59,16 +57,18 @@ interface IProps {
   event: IEvent;
 }
 
-function SchedulePage({event}: IProps & RouteComponentProps) {
+function SchedulePage({event}: IProps) {
+  console.log(event);
+
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
+    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}1` : null,
     (path: string) => loadFromHoraro<IScheduleResponse>(path),
   );
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);
   const [scrollToDate, setScrollToDate] = useState<string>();
 
   return (
-    <IonPage>
+    <div>
       <StyledHeaderWrapper>
         <StyledHeader>
           <Toolbar opaque>Schedule</Toolbar>
@@ -88,7 +88,7 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
       </StyledHeaderWrapper>
       <Content>
         {isValidating ? (
-          <IonSpinner />
+          <p>We be loading</p>
         ) : error ? (
           <ErrorMessage>Failed to get scheduled runs</ErrorMessage>
         ) : schedule.length === 0 ? (
@@ -97,7 +97,7 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
           <ScheduleList scrollToDate={scrollToDate} schedule={schedule} />
         )}
       </Content>
-    </IonPage>
+    </div>
   );
 }
 

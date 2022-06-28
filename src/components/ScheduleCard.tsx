@@ -34,7 +34,6 @@ const Content = styled.div`
 
 const Game = styled.p`
   font-size: 16px;
-  font-family: 'Titillium Web', sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -108,12 +107,12 @@ function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
   const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
 
-  async function expandToggle(state: boolean) {
-    setExpanded((state = !expanded));
+  async function expandToggle() {
+    setExpanded(!expanded);
   }
 
   return (
-    <Card onClick={() => expandToggle(expanded)}>
+    <Card onClick={() => expandToggle}>
       <Date>{date}</Date>
       <Content>
         <Game>{run.game}</Game>

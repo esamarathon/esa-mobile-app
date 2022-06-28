@@ -1,14 +1,4 @@
-import {
-  IonContent,
-  IonHeader,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenu,
-  IonToolbar,
-  IonMenuToggle,
-} from '@ionic/react';
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
@@ -24,31 +14,40 @@ const StyledHeaderWrapper = styled.div`
   border-top-right-radius: 30px;
 `;
 
-const StyledMenu = styled(IonMenu)`
-  --background: none;
-`;
+interface MenuProps {
+  isOpen: boolean;
+}
 
-const StyledHeader = styled(IonHeader)`
-  position: absolute;
+const StyledMenu = styled.div<MenuProps>`
+  position: fixed;
+  left: ${(props) => (props.isOpen ? '0' : '-100%')};
+  top: 0;
+  z-index: 100;
+  width: 50%;
+  max-height: 100vh;
   height: 100%;
-  width: 100%;
-  background: ${(props) => props.theme.primaryGradient};
+  background: ;
+  
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
   border-top-right-radius: 30px;
   color: #fff;
   padding-bottom: 32px;
   overflow: hidden;
-  will-change: height;
 
   &:after {
     content: none;
   }
 `;
 
-const StyledToolbar = styled(IonToolbar)`
-  --background: transparent;
-  --color: rgba(255, 255, 255, 0.9);
-  --border-width: 0 !important;
+const StyledHeader = styled('div')`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+`;
+
+const StyledToolbar = styled('div')`
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
 
   margin: 0;
 
@@ -77,7 +76,6 @@ const StyledTitle = styled.h3`
   font-weight: 700;
   line-height: 27px;
   white-space: nowrap;
-  font-family: 'Titillium Web', sans-serif;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   margin: 0;
 `;
@@ -89,13 +87,11 @@ const StyledParagraph = styled.p`
   font-size: 12px;
   margin: 0;
   line-height: 16px;
-  font-family: 'Open Sans', sans-serif;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const StyledDateLocation = styled(StyledParagraph)`
   text-transform: uppercase;
-  font-family: 'Titillium Web', sans-serif;
 `;
 
 const StyledSchedule = styled(ScheduleIcon)`
@@ -110,31 +106,24 @@ const StyledUser = styled(UserIcon)`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const StyledList = styled(IonList)`
+const StyledList = styled.div`
   padding: 0 20px;
 `;
 
-const StyledItem = styled(IonItem)`
-  --color: #757575;
-  --border-width: 0;
-  --border-color: transparent;
-  --padding-top: 12px;
-  --padding-bottom: 12px;
-  --detail-icon-opacity: 0;
+const StyledItem = styled.div`
+  padding-top: 12px;
+  padding-bottom: 12px;
   font-size: 12px;
+  display: flex;
 `;
 
-const ExtraItems = styled(IonItem)`
-  --color: #757575;
-  --border-width: 0;
-  --border-color: transparent;
-  --detail-icon-opacity: 0;
+const ExtraItems = styled.div`
   font-size: 14px;
   font-weight: 600;
   font-family: Titillium Web, sans-serif;
 `;
 
-const StyledLabel = styled(IonLabel)`
+const StyledLabel = styled.div`
   padding-left: 30px;
 `;
 
@@ -150,8 +139,10 @@ interface IProps {
 }
 
 function MenuBar({event, onClearEvent}: IProps) {
+  const [state, setState] = useState(false);
+
   return (
-    <StyledMenu contentId="main" type="overlay">
+    <StyledMenu isOpen={state}>
       <StyledHeaderWrapper>
         <StyledHeader>
           <StyledToolbar>
@@ -174,19 +165,19 @@ function MenuBar({event, onClearEvent}: IProps) {
           </StyledToolbar>
         </StyledHeader>
       </StyledHeaderWrapper>
-      <IonContent>
+      <div>
         <StyledList>
-          <IonMenuToggle autoHide={false}>
-            <StyledItem routerLink="/home" routerDirection="none">
+          <div>
+            <StyledItem>
               {/*@TODO This should probably be some sort of Announcement icon in the future*/}
               <StyledUser />
               <StyledLabel>Home</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/schedule" routerDirection="none">
+            <StyledItem>
               <StyledSchedule />
               <StyledLabel>Schedule</StyledLabel>
             </StyledItem>
-            <StyledItem routerLink="/bookmarks" routerDirection="none">
+            <StyledItem>
               <StyledBookmark />
               <StyledLabel>My Bookmarks</StyledLabel>
             </StyledItem>
@@ -205,12 +196,12 @@ function MenuBar({event, onClearEvent}: IProps) {
             {/*  <IonLabel>Settings Etc</IonLabel>*/}
             {/*</ExtraItems>*/}
 
-            <ExtraItems onClick={onClearEvent} button routerDirection="none">
-              <IonLabel>Event Picker</IonLabel>
+            <ExtraItems onClick={onClearEvent}>
+              <button>Event Picker</button>
             </ExtraItems>
-          </IonMenuToggle>
+          </div>
         </StyledList>
-      </IonContent>
+      </div>
     </StyledMenu>
   );
 }
