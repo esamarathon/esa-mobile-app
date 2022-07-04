@@ -1,6 +1,5 @@
-import {IonRow} from '@ionic/react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 
 interface IProps {
   title: string;
@@ -8,12 +7,12 @@ interface IProps {
   link?: boolean;
 }
 
-const StyledRow = styled(IonRow)`
+const StyledRow = styled('div')`
   flex-direction: column;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 `;
 
-export const Title = styled.p`
+export const Title = styled('p')`
   margin: 0;
   margin-top: 10px;
   font-size: 14px;
@@ -21,7 +20,7 @@ export const Title = styled.p`
   text-transform: uppercase;
 `;
 
-export const Meta = styled.p<{link?: boolean}>`
+export const Meta = styled('p')<{link?: boolean}>`
   font-size: 12px;
   line-height: 16px;
   font-weight: 600;

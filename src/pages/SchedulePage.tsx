@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import Toolbar from '../components/Toolbar';
 import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import useSWR from 'swr';
 import {IScheduleResponse, loadFromHoraro} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
@@ -12,7 +12,7 @@ const Content = styled('div')`
   background-color: var(--ion-background);
 `;
 
-const DayScroller = styled.ul`
+const DayScroller = styled('ul')`
   display: flex;
   flex-wrap: nowrap;
   overflow-y: scroll;
@@ -22,14 +22,14 @@ const DayScroller = styled.ul`
   margin: 0 15px;
 `;
 
-const ScrollItem = styled.li`
+const ScrollItem = styled('li')`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 5px 15px;
 `;
 
-const ScrollLink = styled.button`
+const ScrollLink = styled('button')`
   text-decoration: none;
   background: transparent;
   outline: none;
@@ -39,7 +39,7 @@ const ScrollLink = styled.button`
   font-size: 12px;
 `;
 
-const ScrollBorder = styled.span`
+const ScrollBorder = styled('span')`
   width: 130%;
   border-radius: 3px;
   height: 3px;
@@ -47,7 +47,7 @@ const ScrollBorder = styled.span`
   margin-top: 4px;
 `;
 
-const ErrorMessage = styled.span`
+const ErrorMessage = styled('span')`
   display: block;
   margin-top: 60px;
   padding: 0 15px;
@@ -71,7 +71,7 @@ function SchedulePage({event}: IProps) {
     <div>
       <StyledHeaderWrapper>
         <StyledHeader>
-          <Toolbar opaque>Schedule</Toolbar>
+          <Toolbar>Schedule</Toolbar>
           {schedule.length === 0 ? null : (
             <DayScroller>
               {schedule.map(([date]) => (

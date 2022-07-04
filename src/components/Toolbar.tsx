@@ -1,16 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {MenuIcon} from '../assets/Icons';
 
-const ToolbarWrapper = styled.div<{opaque?: boolean}>`
-  background: ${(props) => (props.opaque ? 'transparent' : props.theme.primaryGradient)};
-  box-shadow: ${(props) => (props.opaque ? '0' : '0 1px 15px rgba(136, 26, 232, 0.4)')};
-`;
-
 const StyledToolbar = styled('div')`
-  transparent;
   color: rgba(255, 255, 255, 0.9);
-
   margin: 0;
 
   .button {
@@ -25,18 +18,15 @@ const MenuTitle = styled('div')`
 `;
 
 interface IProps {
-  opaque?: boolean;
   children?: React.ReactNode;
 }
 
-function Toolbar({children, opaque}: IProps) {
+function Toolbar({children}: IProps) {
   return (
-    <ToolbarWrapper opaque={opaque}>
-      <StyledToolbar>
-        <MenuIcon />
-        <MenuTitle>{children}</MenuTitle>
-      </StyledToolbar>
-    </ToolbarWrapper>
+    <StyledToolbar>
+      <MenuIcon />
+      <MenuTitle>{children}</MenuTitle>
+    </StyledToolbar>
   );
 }
 

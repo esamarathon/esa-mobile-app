@@ -134,21 +134,30 @@ function App() {
   //   primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
   //   highlight: '#FFBD17',
 
+  console.log();
+
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#C670D0'
+        main: Themes[selectedEvent.meta.theme].primaryColor
+      },
+      secondary: {
+        main: Themes[selectedEvent.meta.theme].secondaryColor
+      },
+      info: {
+        main: Themes[selectedEvent.meta.theme].accentColor
+      },
+      warning: {
+        main: Themes[selectedEvent.meta.theme].shadowColor
       },
       background: {
-        default: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
+        default: Themes[selectedEvent.meta.theme].primaryGradient
       }
     },
     typography: {
       fontFamily: ['Titillium Web', 'sans-serif'].join(','),
     },
   });
-
-  console.log(theme);
 
   return (
     <ThemeProvider theme={theme}>

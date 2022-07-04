@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {IRun} from '../services/ScheduleService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {formatPlayers} from '../services/PlayersService';
 import EstimateParser from './common/EstimateParser';
 
-const Card = styled.li`
+const Card = styled('li')`
   position: relative;
   margin-right: 4px;
   list-style-type: none;
@@ -19,20 +19,11 @@ const Card = styled.li`
   overflow: hidden;
 `;
 
-// const Header = styled.div`
-//   background: var(--ion-color-primary);
-//   color: var(--ion-color-secondary);
-//   padding: 5px 0;
-//   font-weight: 600;
-//   font-size: 12px;
-//   text-align: center;
-// `;
-
-const Content = styled.div`
+const Content = styled('div')`
   font-size: 14px;
 `;
 
-const Game = styled.p`
+const Game = styled('p')`
   font-size: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -42,22 +33,23 @@ const Game = styled.p`
   margin: 0;
 `;
 
-const Runner = styled.div`
+const Runner = styled('div')`
   color: #979797;
   margin: 0;
 `;
 
-const Date = styled.div`
+const Date = styled('div')(
+  ({ theme }) => `
   display: inline-block;
   font-size: 10px;
   color: #fff;
   text-align: center;
-  background-color: ${(props) => props.theme.secondaryColor};
+  background-color: ${theme.palette.secondary.main};
   padding: 4px 7px;
   border-radius: 3px;
-`;
+`);
 
-const HeartButton = styled.button`
+const HeartButton = styled('button')`
   position: absolute;
   right: 12px;
   top: 8px;
@@ -78,18 +70,17 @@ const HeartSymbolLiked = styled(HeartIcon)`
   stroke: none;
 `;
 
-const Expanded = styled.div``;
+const Expanded = styled('div')``;
 
-const Expander = styled.div`
+const Expander = styled('div')`
   border-top: 1px solid #dadada;
   margin: 6px 0;
 `;
 
-const InnerExpander = styled.div`
+const InnerExpander = styled('div')`
   display: flex;
   p {
     margin: 0 8px 0 0;
-    font-family: Titillium Web;
     font-style: normal;
     font-weight: normal;
     font-size: 10px;

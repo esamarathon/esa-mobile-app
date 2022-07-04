@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import Logo from '../assets/Logo';
 
-const Page = styled.div`
+const Page = styled('div')`
   background: #fff;
 `;
 

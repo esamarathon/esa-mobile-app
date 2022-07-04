@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import {logoMap} from '../theme/constants';
 import {shortDateRange} from '../services/DateFormatService';
 
-const StyledHeaderWrapper = styled.div`
+const StyledHeaderWrapper = styled('div')`
   height: 200px;
   position: relative;
   overflow: visible;
@@ -15,18 +15,22 @@ const StyledHeaderWrapper = styled.div`
 `;
 
 interface MenuProps {
-  isOpen: boolean;
+  isOpen: string;
 }
 
-const StyledMenu = styled.div<MenuProps>`
+const StyledMenu = styled('div', {
+  shouldForwardProp: (prop) =>
+    prop !== 'isOpen'
+})<MenuProps>(
+  ({ theme }) => `
   position: fixed;
-  left: ${(props) => (props.isOpen ? '0' : '-100%')};
+  left: ${(props: MenuProps) => (props.isOpen ? '0' : '-100%')};
   top: 0;
   z-index: 100;
   width: 50%;
   max-height: 100vh;
   height: 100%;
-  background: ;
+  background: ${theme.palette.background.default};
   
   box-shadow: 0 1px 15px rgba(136, 26, 232, 0.4);
   border-top-right-radius: 30px;
@@ -37,7 +41,7 @@ const StyledMenu = styled.div<MenuProps>`
   &:after {
     content: none;
   }
-`;
+`);
 
 const StyledHeader = styled('div')`
   position: absolute;
@@ -57,20 +61,20 @@ const StyledToolbar = styled('div')`
   }
 `;
 
-const InnerToolbar = styled.div`
+const InnerToolbar = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 25px;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled('img')`
   width: 99px;
   height: 80px;
   margin-bottom: 10px;
 `;
 
-const StyledTitle = styled.h3`
+const StyledTitle = styled('h3')`
   color: #fff;
   font-size: 18px;
   font-weight: 700;
@@ -80,7 +84,7 @@ const StyledTitle = styled.h3`
   margin: 0;
 `;
 
-const StyledParagraph = styled.p`
+const StyledParagraph = styled('p')`
   display: flex;
   justify-content: center;
   color: #fff;
@@ -94,40 +98,42 @@ const StyledDateLocation = styled(StyledParagraph)`
   text-transform: uppercase;
 `;
 
-const StyledSchedule = styled(ScheduleIcon)`
-  color: ${(props) => props.theme.accentColor};
-`;
+const StyledSchedule = styled(ScheduleIcon)(
+  ({ theme }) => `
+  color: ${theme.palette.info.main};
+`);
 
-const StyledBookmark = styled(HeartIcon)`
-  color: ${(props) => props.theme.accentColor};
-`;
+const StyledBookmark = styled(HeartIcon)(
+  ({ theme }) => `
+  color: ${theme.palette.info.main};
+`);
 
-const StyledUser = styled(UserIcon)`
-  color: ${(props) => props.theme.accentColor};
-`;
+const StyledUser = styled(UserIcon)(
+  ({ theme }) => `
+  color: ${theme.palette.info.main};
+`);
 
-const StyledList = styled.div`
+const StyledList = styled('div')`
   padding: 0 20px;
 `;
 
-const StyledItem = styled.div`
+const StyledItem = styled('div')`
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 12px;
   display: flex;
 `;
 
-const ExtraItems = styled.div`
+const ExtraItems = styled('div')`
   font-size: 14px;
   font-weight: 600;
-  font-family: Titillium Web, sans-serif;
 `;
 
-const StyledLabel = styled.div`
+const StyledLabel = styled('div')`
   padding-left: 30px;
 `;
 
-const MenuDivider = styled.div`
+const MenuDivider = styled('div')`
   height: 1px;
   background: #dadada;
   margin: 20px 0;
@@ -139,10 +145,10 @@ interface IProps {
 }
 
 function MenuBar({event, onClearEvent}: IProps) {
-  const [state, setState] = useState(false);
+  const [state, setState] = useState<boolean>(false);
 
   return (
-    <StyledMenu isOpen={state}>
+    <StyledMenu isOpen={state ? '1' : '0'}>
       <StyledHeaderWrapper>
         <StyledHeader>
           <StyledToolbar>

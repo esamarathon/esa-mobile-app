@@ -1,6 +1,6 @@
 import {IonRow} from '@ionic/react';
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {Title, Meta} from './HeaderMetaRow';
 
 const StyledRow = styled(IonRow)`

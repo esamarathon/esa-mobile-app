@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useMemo, useRef} from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import {GroupedVirtuoso, GroupedVirtuosoHandle} from 'react-virtuoso';
 import ScheduleCard from './ScheduleCard';
 import {IRun} from '../services/ScheduleService';
 import {BookmarkContext, IBookmarkContext} from '../App';
 
-const List = styled.ul`
+const List = styled('ul')`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -15,7 +15,7 @@ const List = styled.ul`
   overflow-x: scroll;
 `;
 
-const DayTitle = styled.p`
+const DayTitle = styled('p')`
   font-weight: 600;
   font-size: 16px;
   padding-top: 60px;

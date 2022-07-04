@@ -1,12 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import {BackButtonEvent} from '@ionic/core';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
 import {IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
-import {useHomePageGesture} from '../hooks/useHomePageGesture';
 import ScheduleCard from '../components/ScheduleCard';
 import HeaderMetaRow from '../components/HeaderMetaRow';
 import Logo from '../assets/Logo';
@@ -19,12 +18,14 @@ import dayjs from 'dayjs';
 import { App } from '@capacitor/app';
 
 import {BookmarkContext, IBookmarkContext} from '../App';
+import {Grid} from '@mui/material';
+import {useHomePageGesture} from '../hooks/useHomePageGesture';
 
 const Content = styled('div')`
   background-color: tomato;
 `;
 
-const Title = styled.h2`
+const Title = styled('h2')`
   font-size: 16px;
   font-weight: 600;
   margin: 0;
@@ -48,7 +49,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StyledExpander = styled.button`
+const StyledExpander = styled('button')`
   position: absolute;
   transform: translateX(-50%);
   left: 50%;
@@ -58,7 +59,7 @@ const StyledExpander = styled.button`
   background: var(--ion-color-light);
 `;
 
-const ScheduleList = styled.ul`
+const ScheduleList = styled('ul')`
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -66,20 +67,21 @@ const ScheduleList = styled.ul`
   overflow-x: scroll;
 `;
 
-const PageHeaderContainer = styled.div`
+const PageHeaderContainer = styled('div')`
   display: flex;
   margin: 10px 20px 5px;
 `;
 
-const HeaderTitle = styled.h2`
+const HeaderTitle = styled('h2')`
   font-size: 24px;
+  text-align: center;
   font-weight: 700;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   color: #fff;
   margin: 0;
 `;
 
-const Paragraph = styled.p`
+const Paragraph = styled('p')`
   font-size: 14px;
   margin: 0 0 0 15px;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -89,7 +91,7 @@ const StyledLogo = styled(Logo)`
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
-const ShortDate = styled.div`
+const ShortDate = styled('div')`
   color: #fff;
   font-size: 14px;
   text-align: center;
@@ -98,7 +100,7 @@ const ShortDate = styled.div`
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
-const SomeDiv = styled.div`
+const SomeDiv = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,64 +140,56 @@ function HomePage({event}: IProps) {
     };
   });
 
+  console.log(animatedValue);
+
   return (
     <div>
-      <StyledHeaderWrapper large>
+      <StyledHeaderWrapper>
         <StyledHeaderFull>
-          <Toolbar opaque />
-          <div {...bind()}>
-            <animated.div
-              // style={{
-              //   opacity: animatedValue.interpolate([stops[0], stops[1] / 2], [1, 0]),
-              // }}
-            >
-              <div>
-                <div className="ion-text-center">
-                  <HeaderTitle>{event.name}</HeaderTitle>
-                </div>
-                <div className="ion-align-self-start ion-text-center">
-                  <SomeDiv>
-                    {event.meta.venue.country ? (
-                      <React.Fragment>
-                        <LocationIcon />
-                        <Paragraph>
-                          {event.meta.venue.city}, {event.meta.venue.country} |
-                        </Paragraph>
-                      </React.Fragment>
-                    ) : null}
-                    <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
-                  </SomeDiv>
-                </div>
-              </div>
-            </animated.div>
-            <animated.div
-              style={{
-                opacity: animatedValue.interpolate(stops, [0, 1]),
-                transform: animatedValue.interpolate(
-                  (x: number) =>
-                    `translate3d(0, ${x <= stops[0] + 30 ? -1000 : x - stops[1] - 60}px, 0)`,
-                ),
-              }}
-            >
-              <div>
-                <div className="ion-align-self-start ion-text-center">
+          <Toolbar />
+          <Grid container spacing={2} {...bind()}>
+            <Grid item xs={12}>
+              <HeaderTitle>{event.name}</HeaderTitle>
+            </Grid>
+              <animated.div style={{
+                opacity: animatedValue.to([stops[0], stops[1] / 2], [1, 0]),
+              }}>
+                <Grid item xs={12}>
+                  {event.meta.venue.country && (
+                    <React.Fragment>
+                      <LocationIcon />
+                      <Paragraph>
+                        {event.meta.venue.city}, {event.meta.venue.country} |
+                      </Paragraph>
+                    </React.Fragment>
+                  )}
+                  <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
+                </Grid>
+                <Grid item xs={12}>
                   <StyledLogo size={55} />
-                </div>
-              </div>
-              <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
-              <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-              {event.meta.venue.country ? (
-                <HeaderMetaRow
-                  title="Location"
-                  content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
-                />
-              ) : null}
-              <HeaderMetaRow
-                title="Stream"
-                content={`twitch.tv/${event.meta.twitchChannel}`}
-                link
-              />
-              {/* <HeaderMetaList>
+                </Grid>
+                <Grid item xs={12}>
+                  <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
+                </Grid>
+                <Grid item xs={12}>
+                  <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
+                </Grid>
+                <Grid item xs={12}>
+                  {event.meta.venue.country && (
+                    <HeaderMetaRow
+                      title="Location"
+                      content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
+                    />
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <HeaderMetaRow
+                    title="Stream"
+                    content={`twitch.tv/${event.meta.twitchChannel}`}
+                    link
+                  />z
+                </Grid>
+                {/* <HeaderMetaList>
                 <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
                   Master Post
                 </HeaderLinks>
@@ -204,8 +198,8 @@ function HomePage({event}: IProps) {
                   Attendee Guide
                 </HeaderLinks>
               </HeaderMetaList> */}
-            </animated.div>
-          </div>
+              </animated.div>
+          </Grid>
           <StyledExpander />
         </StyledHeaderFull>
       </StyledHeaderWrapper>
