@@ -64,6 +64,7 @@ export const BookmarkContext = createContext<IBookmarkContext | null>(null);
 function App() {
   const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
+  const [menuState, setMenuState] = useState(false);
   const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
     bookmarks: getBookmarks(),
     onBookmark,
@@ -127,15 +128,6 @@ function App() {
       ? selectedEvent.meta.theme
       : 'default';
 
-  // primaryColor: '#C670D0',
-  //   secondaryColor: '#881AE8',
-  //   accentColor: '#881AE8',
-  //   shadowColor: '#C670D0',
-  //   primaryGradient: 'linear-gradient(120.83deg, #c670d0 -22.04%, #881ae8 100%), #EEEEEE',
-  //   highlight: '#FFBD17',
-
-  console.log();
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -159,10 +151,14 @@ function App() {
     },
   });
 
+  function handleMenuState(newState: boolean) {
+    setMenuState(newState)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <BookmarkContext.Provider value={bookmarkContext}>
-        <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
+        <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} menuState={menuState} handleMenuState={handleMenuState} />
         <BrowserRouter>
           <Routes>
             <Route

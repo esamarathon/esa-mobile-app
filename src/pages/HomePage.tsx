@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect} from 'react';
 import {BackButtonEvent} from '@ionic/core';
 import { styled } from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
@@ -13,7 +13,7 @@ import {ChevronRight, LocationIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
-import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
+import {StyledHeaderFull, StyledHeaderSmall, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
 import { App } from '@capacitor/app';
 
@@ -22,7 +22,6 @@ import {Grid} from '@mui/material';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 
 const Content = styled('div')`
-  background-color: tomato;
 `;
 
 const Title = styled('h2')`
@@ -81,31 +80,6 @@ const HeaderTitle = styled('h2')`
   margin: 0;
 `;
 
-const Paragraph = styled('p')`
-  font-size: 14px;
-  margin: 0 0 0 15px;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const StyledLogo = styled(Logo)`
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
-`;
-
-const ShortDate = styled('div')`
-  color: #fff;
-  font-size: 14px;
-  text-align: center;
-  padding: 0 5px;
-  font-weight: 700;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const SomeDiv = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface IProps {
   event: IEvent;
 }
@@ -140,68 +114,15 @@ function HomePage({event}: IProps) {
     };
   });
 
-  console.log(animatedValue);
-
   return (
-    <div>
+    <Fragment>
       <StyledHeaderWrapper>
-        <StyledHeaderFull>
+        <StyledHeaderSmall>
           <Toolbar />
-          <Grid container spacing={2} {...bind()}>
-            <Grid item xs={12}>
-              <HeaderTitle>{event.name}</HeaderTitle>
-            </Grid>
-              <animated.div style={{
-                opacity: animatedValue.to([stops[0], stops[1] / 2], [1, 0]),
-              }}>
-                <Grid item xs={12}>
-                  {event.meta.venue.country && (
-                    <React.Fragment>
-                      <LocationIcon />
-                      <Paragraph>
-                        {event.meta.venue.city}, {event.meta.venue.country} |
-                      </Paragraph>
-                    </React.Fragment>
-                  )}
-                  <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
-                </Grid>
-                <Grid item xs={12}>
-                  <StyledLogo size={55} />
-                </Grid>
-                <Grid item xs={12}>
-                  <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
-                </Grid>
-                <Grid item xs={12}>
-                  <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-                </Grid>
-                <Grid item xs={12}>
-                  {event.meta.venue.country && (
-                    <HeaderMetaRow
-                      title="Location"
-                      content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
-                    />
-                  )}
-                </Grid>
-                <Grid item xs={12}>
-                  <HeaderMetaRow
-                    title="Stream"
-                    content={`twitch.tv/${event.meta.twitchChannel}`}
-                    link
-                  />z
-                </Grid>
-                {/* <HeaderMetaList>
-                <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
-                  Master Post
-                </HeaderLinks>
-                <HeaderLinks href="https://esamarathon.com/rules">Code of Conduct</HeaderLinks>
-                <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">
-                  Attendee Guide
-                </HeaderLinks>
-              </HeaderMetaList> */}
-              </animated.div>
+          <Grid item xs={12}>
+            <HeaderTitle>{event.name}</HeaderTitle>
           </Grid>
-          <StyledExpander />
-        </StyledHeaderFull>
+        </StyledHeaderSmall>
       </StyledHeaderWrapper>
 
       <Content>
@@ -263,7 +184,7 @@ function HomePage({event}: IProps) {
           </React.Fragment>
         )}
       </Content>
-    </div>
+    </Fragment>
   );
 }
 

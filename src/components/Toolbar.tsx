@@ -24,7 +24,6 @@ interface IProps {
 function Toolbar({children}: IProps) {
   return (
     <StyledToolbar>
-      <MenuIcon />
       <MenuTitle>{children}</MenuTitle>
     </StyledToolbar>
   );
