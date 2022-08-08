@@ -1,13 +1,13 @@
 import React, {Fragment, useState} from 'react';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import {ScheduleIcon, LocationIcon, HeartIcon, UserIcon, MenuIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import {logoMap} from '../theme/constants';
 import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import {animated} from 'react-spring';
 import {Grid} from '@mui/material';
 import HeaderMetaRow from './HeaderMetaRow';
 import Logo from '../assets/Logo';
+import {Link} from 'react-router-dom';
 
 const StyledHeaderWrapper = styled('div')`
   height: 200px;
@@ -22,36 +22,36 @@ interface MenuProps {
   isopen: string;
 }
 
-const StyledComp = styled("div", {
-  shouldForwardProp: (prop) => prop !== "color" && prop !== 'myProp',
-})<{ myProp?: boolean; color?: string }>(({ theme, myProp, color }) => ({
-  backgroundColor: myProp ? "aliceblue" : "red",
+const StyledComp = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'color' && prop !== 'myProp',
+})<{myProp?: boolean; color?: string}>(({theme, myProp, color}) => ({
+  backgroundColor: myProp ? 'aliceblue' : 'red',
   color,
-  padding: theme.spacing(1)
+  padding: theme.spacing(1),
 }));
 
 const StyledMenu = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isopen'})<MenuProps>(
-  ({ theme, isopen}) => ({
-    position: 'fixed',
-    left: isopen === '1' ? '0px' : '-50%',
-    top: 0,
-    zIndex: 100,
-    width: '50%',
-    maxHeight: '100vh',
-    height: '100%',
-    background: theme.palette.background.default,
+  shouldForwardProp: (prop) => prop !== 'isopen',
+})<MenuProps>(({theme, isopen}) => ({
+  position: 'fixed',
+  left: isopen === '1' ? '0px' : '-50%',
+  top: 0,
+  zIndex: 100,
+  width: '50%',
+  maxHeight: '100vh',
+  height: '100%',
+  background: theme.palette.background.default,
 
-    boxShadow: '0 1px 15px rgba(136, 26, 232, 0.4)',
-    borderTopRightRadius: '30px',
-    color: '#fff',
-    paddingBottom: '32px',
-    overflow: 'hidden',
-    transition: 'all .3s ease-in-out'
-//
-// &:after {
-//   content: none;
-// }
+  boxShadow: '0 1px 15px rgba(136, 26, 232, 0.4)',
+  borderTopRightRadius: '30px',
+  color: '#fff',
+  paddingBottom: '32px',
+  overflow: 'hidden',
+  transition: 'all .3s ease-in-out',
+  //
+  // &:after {
+  //   content: none;
+  // }
 }));
 
 const StyledHeader = styled('div')`
@@ -110,19 +110,22 @@ const StyledDateLocation = styled(StyledParagraph)`
 `;
 
 const StyledSchedule = styled(ScheduleIcon)(
-  ({ theme }) => `
-  color: ${theme.palette.info.main};
-`);
+  ({theme}) => `
+  color: ${theme.palette.common.white};
+`,
+);
 
 const StyledBookmark = styled(HeartIcon)(
-  ({ theme }) => `
-  color: ${theme.palette.info.main};
-`);
+  ({theme}) => `
+  color: ${theme.palette.common.white};
+`,
+);
 
 const StyledUser = styled(UserIcon)(
-  ({ theme }) => `
-  color: ${theme.palette.info.main};
-`);
+  ({theme}) => `
+  color: ${theme.palette.common.white};
+`,
+);
 
 const StyledList = styled('div')`
   padding: 0 20px;
@@ -141,9 +144,13 @@ const ExtraItems = styled('div')`
   margin-top: 24px;
 `;
 
-const StyledLabel = styled('div')`
-  padding-left: 30px;
-`;
+const StyledLabel = styled(Link)(
+  ({theme}) => `
+  text-decoration: none;
+  padding-left: 12px;
+  color: ${theme.palette.common.white};
+`,
+);
 
 const MenuDivider = styled('div')`
   height: 1px;
@@ -163,19 +170,18 @@ const StyledIconButton = styled('button')`
 `;
 
 const StyledBackground = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isopen'})<MenuProps>(
-  ({ isopen}) => ({
-    opacity: isopen === '1' ? 1 : 0,
-    pointerEvents: isopen === '1' ? 'auto' : 'none',
-    background: 'rgba(0, 0, 0, 0.5)',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100vh',
-    zIndex: 100
-  }));
-
+  shouldForwardProp: (prop) => prop !== 'isopen',
+})<MenuProps>(({isopen}) => ({
+  opacity: isopen === '1' ? 1 : 0,
+  pointerEvents: isopen === '1' ? 'auto' : 'none',
+  background: 'rgba(0, 0, 0, 0.5)',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100vh',
+  zIndex: 100,
+}));
 
 const Paragraph = styled('p')`
   font-size: 14px;
@@ -238,15 +244,15 @@ function MenuBar({event, onClearEvent, menuState, handleMenuState}: IProps) {
               <StyledItem>
                 {/*@TODO This should probably be some sort of Announcement icon in the future*/}
                 <StyledUser />
-                <StyledLabel>Home</StyledLabel>
+                <StyledLabel to="home">Home</StyledLabel>
               </StyledItem>
               <StyledItem>
                 <StyledSchedule />
-                <StyledLabel>Schedule</StyledLabel>
+                <StyledLabel to="schedule">Schedule</StyledLabel>
               </StyledItem>
               <StyledItem>
                 <StyledBookmark />
-                <StyledLabel>My Bookmarks</StyledLabel>
+                <StyledLabel to="bookmarks">My Bookmarks</StyledLabel>
               </StyledItem>
 
               <MenuDivider />
@@ -254,7 +260,10 @@ function MenuBar({event, onClearEvent, menuState, handleMenuState}: IProps) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   {event.meta.venue.country && (
-                    <HeaderMetaRow title="Country" content={`${event.meta.venue.city}, ${event.meta.venue.country}`} />
+                    <HeaderMetaRow
+                      title="Country"
+                      content={`${event.meta.venue.city}, ${event.meta.venue.country}`}
+                    />
                   )}
                 </Grid>
                 <Grid item xs={12}>
@@ -265,20 +274,23 @@ function MenuBar({event, onClearEvent, menuState, handleMenuState}: IProps) {
                     />
                   )}
                 </Grid>
-                  <Grid item xs={12}>
-                    <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <HeaderMetaRow
-                      title="Stream"
-                      content={`twitch.tv/${event.meta.twitchChannel}`}
-                      link
-                    />
-                  </Grid>
-                  {/* <HeaderMetaList>
+                <Grid item xs={12}>
+                  <HeaderMetaRow
+                    title="Date"
+                    content={longDateRange(event.startDate, event.endDate)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
+                </Grid>
+                <Grid item xs={12}>
+                  <HeaderMetaRow
+                    title="Stream"
+                    content={`twitch.tv/${event.meta.twitchChannel}`}
+                    link
+                  />
+                </Grid>
+                {/* <HeaderMetaList>
                 <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
                   Master Post
                 </HeaderLinks>
