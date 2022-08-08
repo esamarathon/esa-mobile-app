@@ -48,6 +48,6 @@ export async function loadFromHoraro<T extends IScheduleResponse | IUpcomingResp
   horaroEvent: string,
 ): Promise<T> {
   const path = horaroEvent.startsWith('/') ? horaroEvent.slice(1) : horaroEvent;
-  const response = await fetch('https://app.esamarathon.dev/horaro-proxy/v2/esa/schedule/2022-summer1');
+  const response = await fetch(`${baseUrl}/${path}`);
   return response.json();
 }

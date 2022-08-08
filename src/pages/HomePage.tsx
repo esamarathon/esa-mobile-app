@@ -1,6 +1,6 @@
 import React, {Fragment, useContext, useEffect} from 'react';
 import {BackButtonEvent} from '@ionic/core';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
 import useSWR from 'swr';
@@ -13,16 +13,19 @@ import {ChevronRight, LocationIcon} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
-import {StyledHeaderFull, StyledHeaderSmall, StyledHeaderWrapper} from '../components/common/HeaderBar';
+import {
+  StyledHeaderFull,
+  StyledHeaderSmall,
+  StyledHeaderWrapper,
+} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
-import { App } from '@capacitor/app';
+import {App} from '@capacitor/app';
 
 import {BookmarkContext, IBookmarkContext} from '../App';
 import {Grid} from '@mui/material';
 import {useHomePageGesture} from '../hooks/useHomePageGesture';
 
-const Content = styled('div')`
-`;
+const Content = styled('div')``;
 
 const Title = styled('h2')`
   font-size: 16px;
@@ -68,6 +71,8 @@ const ScheduleList = styled('ul')`
 
 const PageHeaderContainer = styled('div')`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 10px 20px 5px;
 `;
 
@@ -87,7 +92,7 @@ interface IProps {
 function HomePage({event}: IProps) {
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}?amount=5` : null,
+    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}` : null,
     (path: string) => loadFromHoraro<IUpcomingResponse>(path),
   );
   const {animatedValue, bind, stops} = useHomePageGesture();
@@ -145,15 +150,11 @@ function HomePage({event}: IProps) {
           <ScheduleList>
             <p>No runs scheduled yet. Stay tuned!</p>
           </ScheduleList>
-        ) : eventIsOver ? (
-          <ScheduleList>
-            <p>Event is over</p>
-          </ScheduleList>
         ) : (
           <React.Fragment>
             {liveNow ? (
               <React.Fragment>
-                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+                <PageHeaderContainer>
                   <Title>Live Now</Title>
                 </PageHeaderContainer>
                 <ScheduleList>
@@ -163,9 +164,9 @@ function HomePage({event}: IProps) {
             ) : null}
             {upNext ? (
               <React.Fragment>
-                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
+                <PageHeaderContainer>
                   <Title>Up Next</Title>
-                  <StyledLink to="schedule">
+                  <StyledLink to="/schedule">
                     Schedule <ChevronRight />
                   </StyledLink>
                 </PageHeaderContainer>

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo, useRef} from 'react';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import dayjs from 'dayjs';
 import {GroupedVirtuoso, GroupedVirtuosoHandle} from 'react-virtuoso';
 import ScheduleCard from './ScheduleCard';
@@ -9,7 +9,7 @@ import {BookmarkContext, IBookmarkContext} from '../App';
 const List = styled('ul')`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   margin: 20px 0 0;
   padding: 0 20px 0;
   overflow-x: scroll;
