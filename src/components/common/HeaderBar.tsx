@@ -1,8 +1,7 @@
-import { styled } from '@mui/material/styles';
-
+import {styled} from '@mui/material/styles';
 
 export const StyledHeaderWrapper = styled('div')(
-  ({ theme }) => `
+  ({theme}) => `
   background: ${theme.palette.background.default};
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -10,10 +9,11 @@ export const StyledHeaderWrapper = styled('div')(
   overflow: visible;
   width: 100%;
   padding: 0;
-`);
+`,
+);
 
 export const StyledHeader = styled('header')(
-  ({ theme }) => `
+  ({theme}) => `
     z-index: 10;
     position: absolute;
     width: 100%;
@@ -28,10 +28,11 @@ export const StyledHeader = styled('header')(
     &:after {
       content: none;
     }  
-`);
+`,
+);
 
 export const StyledHeaderSmall = styled('header')(
-  ({ theme }) => `
+  ({theme}) => `
     width: 100%;
     color: #fff;
     overflow: hidden;
@@ -42,10 +43,11 @@ export const StyledHeaderSmall = styled('header')(
     &:after {
       content: none;
     }
-`);
+`,
+);
 
 export const StyledHeaderFull = styled('header')(
-  ({ theme }) => `
+  ({theme}) => `
     z-index: 10;
     min-height: 75px;
     width: 100%;
@@ -62,4 +64,5 @@ export const StyledHeaderFull = styled('header')(
     .expanded {
       display: none;
     }
-`);
+`,
+);

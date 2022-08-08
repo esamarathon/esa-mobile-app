@@ -1,9 +1,9 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {BrowserRouter, Routes, Route,} from "react-router-dom";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import useSWR from 'swr';
 import dayjs from 'dayjs';
-import { SplashScreen } from '@capacitor/splash-screen';
+import {SplashScreen} from '@capacitor/splash-screen';
 import {loadFromESASubmissions} from './services/EventService';
 import {IRun} from './services/ScheduleService';
 import {
@@ -131,20 +131,20 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: Themes[selectedEvent.meta.theme].primaryColor
+        main: Themes[selectedEvent.meta.theme].primaryColor,
       },
       secondary: {
-        main: Themes[selectedEvent.meta.theme].secondaryColor
+        main: Themes[selectedEvent.meta.theme].secondaryColor,
       },
       info: {
-        main: Themes[selectedEvent.meta.theme].accentColor
+        main: Themes[selectedEvent.meta.theme].accentColor,
       },
       warning: {
-        main: Themes[selectedEvent.meta.theme].shadowColor
+        main: Themes[selectedEvent.meta.theme].shadowColor,
       },
       background: {
-        default: Themes[selectedEvent.meta.theme].primaryGradient
-      }
+        default: Themes[selectedEvent.meta.theme].primaryGradient,
+      },
     },
     typography: {
       fontFamily: ['Titillium Web', 'sans-serif'].join(','),
@@ -152,24 +152,23 @@ function App() {
   });
 
   function handleMenuState(newState: boolean) {
-    setMenuState(newState)
+    setMenuState(newState);
   }
 
   return (
     <ThemeProvider theme={theme}>
       <BookmarkContext.Provider value={bookmarkContext}>
-        <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} menuState={menuState} handleMenuState={handleMenuState} />
         <BrowserRouter>
+          <MenuBar
+            event={selectedEvent}
+            onClearEvent={() => setSelectedEvent(undefined)}
+            menuState={menuState}
+            handleMenuState={handleMenuState}
+          />
           <Routes>
-            <Route
-              path="/home"
-              element={<HomePage event={selectedEvent} />}
-            />
+            <Route path="/home" element={<HomePage event={selectedEvent} />} />
             <Route path="/bookmarks" element={() => <BookmarkPage />} />
-            <Route
-              path="/schedule"
-              element={<SchedulePage event={selectedEvent} />}
-            />
+            <Route path="/schedule" element={<SchedulePage event={selectedEvent} />} />
           </Routes>
         </BrowserRouter>
       </BookmarkContext.Provider>
