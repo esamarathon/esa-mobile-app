@@ -1,5 +1,5 @@
 import React, {Fragment, useContext, useEffect} from 'react';
-import {BackButtonEvent} from '@ionic/core';
+import {App, BackButtonListener} from '@capacitor/app';
 import {styled} from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
 import {animated} from 'react-spring';
@@ -19,7 +19,6 @@ import {
   StyledHeaderWrapper,
 } from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
-import {App} from '@capacitor/app';
 
 import {BookmarkContext, IBookmarkContext} from '../App';
 import {Grid} from '@mui/material';
@@ -103,7 +102,7 @@ function HomePage({event}: IProps) {
   const upNext = data?.data?.slice(1);
 
   useEffect(() => {
-    function onBackButton(event: BackButtonEvent) {
+    function onBackButton(event: any) {
       event.detail.register(-1, () => {
         const path = location.pathname;
         if (path === '/home') {
@@ -112,10 +111,10 @@ function HomePage({event}: IProps) {
       });
     }
 
-    document.addEventListener('ionBackButton', onBackButton as EventListener);
+    App.addListener('backButton', onBackButton as BackButtonListener);
 
     return () => {
-      document.removeEventListener('ionBackButton', onBackButton as EventListener);
+      App.addListener('backButton', onBackButton as BackButtonListener);
     };
   });
 

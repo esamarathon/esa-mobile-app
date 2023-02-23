@@ -57,7 +57,7 @@ interface IProps {
 
 function SchedulePage({event}: IProps) {
   const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}1` : null,
+    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
     (path: string) => loadFromHoraro<IScheduleResponse>(path),
   );
 

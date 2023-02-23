@@ -48,6 +48,6 @@ export async function loadFromHoraro<T extends IScheduleResponse | IUpcomingResp
   horaroEvent: string,
 ): Promise<T> {
   const path = horaroEvent.startsWith('/') ? horaroEvent.slice(1) : horaroEvent;
-  const response = await fetch(`${baseUrl}/${path}`);
+  const response = await fetch(`${baseUrl}/${path}1`);
   return response.json();
 }

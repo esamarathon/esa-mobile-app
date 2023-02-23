@@ -167,7 +167,7 @@ function App() {
           />
           <Routes>
             <Route path="/home" element={<HomePage event={selectedEvent} />} />
-            <Route path="/bookmarks" element={() => <BookmarkPage />} />
+            <Route path="/bookmarks" element={<BookmarkPage />} />
             <Route path="/schedule" element={<SchedulePage event={selectedEvent} />} />
           </Routes>
         </BrowserRouter>
