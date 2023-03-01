@@ -1,16 +1,18 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import {MenuIcon} from '../assets/Icons';
 
-const StyledToolbar = styled('div')`
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
+const StyledToolbar = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'centered',
+})<{centered?: boolean}>(({theme, centered}) => ({
+  backgroundColor: centered ? 'center' : 'left',
+  padding: theme.spacing(1),
+}));
 
-  .button {
-    color: var(--icon-color-contrast);
-    margin-left: 10px;
-  }
-`;
+// .button {
+//   color: ${theme.palette.primary.main};
+//   margin-left: 10px;
+// }
 
 const MenuTitle = styled('div')`
   line-height: 37px;
@@ -19,11 +21,12 @@ const MenuTitle = styled('div')`
 
 interface IProps {
   children?: React.ReactNode;
+  centered?: boolean;
 }
 
-function Toolbar({children}: IProps) {
+function Toolbar({children, centered = false}: IProps) {
   return (
-    <StyledToolbar>
+    <StyledToolbar centered>
       <MenuTitle>{children}</MenuTitle>
     </StyledToolbar>
   );

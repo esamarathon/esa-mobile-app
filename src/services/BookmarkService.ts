@@ -2,7 +2,7 @@ import {IRun} from './ScheduleService';
 
 export interface IBookmark {
   run: IRun;
-  notificationId: string;
+  notificationId: number;
 }
 
 export function getBookmark(runId: string) {

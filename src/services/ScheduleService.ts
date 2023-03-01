@@ -28,6 +28,12 @@ export interface IRun {
   layout: string | null;
   info: string | null;
   id: string;
+  parsedGame?: IParsedGame | string;
+}
+
+export interface IParsedGame {
+  name: string;
+  highlightUrl: string;
 }
 
 export interface IUpcomingResponse {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { styled } from '@mui/material/styles';
-import {IRun} from '../services/ScheduleService';
+import {styled} from '@mui/material/styles';
+import {IRun, IParsedGame} from '../services/ScheduleService';
 import {HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {formatPlayers} from '../services/PlayersService';
@@ -39,7 +39,7 @@ const Runner = styled('div')`
 `;
 
 const Date = styled('div')(
-  ({ theme }) => `
+  ({theme}) => `
   display: inline-block;
   font-size: 10px;
   color: #fff;
@@ -47,7 +47,8 @@ const Date = styled('div')(
   background-color: ${theme.palette.secondary.main};
   padding: 4px 7px;
   border-radius: 3px;
-`);
+`,
+);
 
 const HeartButton = styled('button')`
   position: absolute;
@@ -65,10 +66,12 @@ const HeartSymbol = styled(HeartIcon)`
   stroke: #979797;
 `;
 
-const HeartSymbolLiked = styled(HeartIcon)`
-  color: #ffbd17;
+const HeartSymbolLiked = styled(HeartIcon)(
+  ({theme}) => `
+  color: ${theme.palette.primary.main};
   stroke: none;
-`;
+`,
+);
 
 const Expanded = styled('div')``;
 
@@ -94,19 +97,37 @@ interface IProps {
   onBookmark: (run: IRun) => void;
 }
 
+function parseGame(game: string): IParsedGame | undefined {
+  const regex = /\[(.*?)\]\((.*?)\)/gm;
+  const regexResult = [...game.matchAll(regex)];
+
+  if (regexResult.length > 0) {
+    const result = regexResult[0];
+
+    return {
+      name: result[1],
+      highlightUrl: result[2],
+    };
+  }
+}
+
 function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
   const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
 
-  async function expandToggle() {
+  run.parsedGame = parseGame(run.game as string);
+
+  function expandToggle() {
     setExpanded(!expanded);
   }
 
+  console.log(run.parsedGame);
+
   return (
-    <Card onClick={() => expandToggle}>
+    <Card>
       <Date>{date}</Date>
-      <Content>
-        <Game>{run.game}</Game>
+      <Content onClick={expandToggle}>
+        {run.parsedGame ? <Game>{run.parsedGame.name}</Game> : <Game>{run.game}</Game>}
         <Runner>{formatPlayers(run.players)}</Runner>
         {run.id ? (
           <HeartButton onClick={() => onBookmark(run)}>
@@ -121,6 +142,9 @@ function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
                 <EstimateParser seconds={run.length} />
               </p>
               <p>{run.category}</p>
+              <p>
+                <a href={run.parsedGame?.highlightUrl}>Twitch Highlight</a>
+              </p>
             </InnerExpander>
           </Expanded>
         ) : null}

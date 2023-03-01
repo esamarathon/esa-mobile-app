@@ -48,10 +48,6 @@ const StyledMenu = styled('div', {
   paddingBottom: '32px',
   overflow: 'hidden',
   transition: 'all .3s ease-in-out',
-  //
-  // &:after {
-  //   content: none;
-  // }
 }));
 
 const StyledHeader = styled('div')`
@@ -128,7 +124,9 @@ const StyledUser = styled(UserIcon)(
 );
 
 const StyledList = styled('div')`
-  padding: 0 20px;
+  padding: 0 20px 32px;
+  overflow: scroll;
+  height: calc(100vh - 180px);
 `;
 
 const StyledItem = styled('div')`
@@ -175,12 +173,13 @@ const StyledBackground = styled('div', {
   opacity: isopen === '1' ? 1 : 0,
   pointerEvents: isopen === '1' ? 'auto' : 'none',
   background: 'rgba(0, 0, 0, 0.5)',
-  position: 'absolute',
+  position: 'fixed',
   top: 0,
   left: 0,
   width: '100%',
   height: '100vh',
   zIndex: 100,
+  overflow: 'hidden',
 }));
 
 const Paragraph = styled('p')`
