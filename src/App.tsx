@@ -62,7 +62,7 @@ export interface IBookmarkContext {
 export const BookmarkContext = createContext<IBookmarkContext | null>(null);
 
 function App() {
-  const {error, data: events} = useQuery('/events', loadFromESASubmissions);
+  const {error, data: events, status} = useQuery('/events', loadFromESASubmissions);
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
   const [menuState, setMenuState] = useState(false);
   const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
@@ -103,16 +103,16 @@ function App() {
     SplashScreen.hide().then((r) => r);
   }, []);
 
-  // if (isValidating) {
-  //   return <LoadingPage />;
-  // }
+  if (status === 'loading') {
+    return <LoadingPage />;
+  }
 
   if (error) {
     return <p>Something went wrong...</p>;
   }
 
   if (!events) {
-    return <p>No events dsfsdfhdsfdsffskljfhsfound</p>;
+    return <p>No events found</p>;
   }
 
   const selectedEvent = selectedEventID
