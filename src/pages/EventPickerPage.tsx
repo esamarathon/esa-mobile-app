@@ -59,12 +59,12 @@ function EventPickerPage({events, onPickEvent}: IProps) {
       {events.length ? (
         <EventWrapper>
           {events
-            // .filter(
-            //   (event) =>
-            //     // uncomment next line for debugging old events
-            //     // true ||
-            //     dayjs(event.endDate).isAfter(dayjs()) && !blackListedEvents.has(event._id),
-            // )
+            .filter(
+              (event) =>
+                // uncomment next line for debugging old events
+                // true ||
+                dayjs(event.endDate).isAfter(dayjs()) && !blackListedEvents.has(event._id),
+            )
             .map((event) => (
               <Event key={event._id} onClick={() => onPickEvent(event)}>
                 <span>{event.name}</span>
