@@ -53,7 +53,6 @@ const baseUrl = 'https://app.esamarathon.dev/horaro-proxy/v1/esa';
 export async function loadFromHoraro<T extends IScheduleResponse | IUpcomingResponse>(
   horaroEvent: string,
 ): Promise<T> {
-  const path = horaroEvent.startsWith('/') ? horaroEvent.slice(1) : horaroEvent;
-  const response = await fetch(`${baseUrl}/${path}1`);
+  const response = await fetch(`${baseUrl}/${horaroEvent}1`);
   return response.json();
 }

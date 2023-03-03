@@ -41,8 +41,6 @@ const StyledMenu = styled('div', {
   maxHeight: '100vh',
   height: '100%',
   background: theme.palette.background.default,
-
-  boxShadow: '0 1px 15px rgba(136, 26, 232, 0.4)',
   borderTopRightRadius: '30px',
   color: '#fff',
   paddingBottom: '32px',
@@ -228,7 +226,7 @@ function MenuBar({event, onClearEvent, menuState, handleMenuState}: IProps) {
                   {event.meta.venue.country ? (
                     <React.Fragment>
                       <LocationIcon />
-                      {event.meta.venue.city || 'yes'}, {event.meta.venue.country || 'Oakland'} |{' '}
+                      {event.meta.venue.city || 'yes'}, {event.meta.venue.country || 'Malmo'} |{' '}
                     </React.Fragment>
                   ) : null}
                   {shortDateRange(event.startDate, event.endDate)}
@@ -243,7 +241,7 @@ function MenuBar({event, onClearEvent, menuState, handleMenuState}: IProps) {
               <StyledItem>
                 {/*@TODO This should probably be some sort of Announcement icon in the future*/}
                 <StyledUser />
-                <StyledLabel to="home">Home</StyledLabel>
+                <StyledLabel to="/">Home</StyledLabel>
               </StyledItem>
               <StyledItem>
                 <StyledSchedule />

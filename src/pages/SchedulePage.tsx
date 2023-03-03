@@ -2,11 +2,11 @@ import React, {useMemo, useState, Fragment} from 'react';
 import Toolbar from '../components/Toolbar';
 import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import {styled} from '@mui/material/styles';
-import useSWR from 'swr';
 import {IScheduleResponse, loadFromHoraro} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleList from '../components/ScheduleList';
 import dayjs from 'dayjs';
+import {useQuery} from 'react-query';
 
 const Content = styled('div')``;
 
@@ -35,6 +35,7 @@ const ScrollLink = styled('button')`
   margin: 0;
   color: #fff;
   font-size: 12px;
+  border: none;
 `;
 
 const ScrollBorder = styled('span')`
@@ -56,9 +57,9 @@ interface IProps {
 }
 
 function SchedulePage({event}: IProps) {
-  const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
-    (path: string) => loadFromHoraro<IScheduleResponse>(path),
+  const encodedUrl = encodeURIComponent(event.meta.horaro);
+  const {data, error, status} = useQuery([`schedule/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
+    loadFromHoraro<IScheduleResponse>(`schedule/${encodedUrl}`),
   );
 
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);
@@ -68,7 +69,7 @@ function SchedulePage({event}: IProps) {
     <Fragment>
       <StyledHeaderWrapper>
         <StyledHeaderFull>
-          <Toolbar>Schedule</Toolbar>
+          <Toolbar centered={true}>Schedule</Toolbar>
           {schedule.length === 0 ? null : (
             <DayScroller>
               {schedule.map(([date]) => (
@@ -84,7 +85,7 @@ function SchedulePage({event}: IProps) {
         </StyledHeaderFull>
       </StyledHeaderWrapper>
       <Content>
-        {isValidating ? (
+        {status === 'loading' ? (
           <p>We be loading</p>
         ) : error ? (
           <ErrorMessage>Failed to get scheduled runs</ErrorMessage>

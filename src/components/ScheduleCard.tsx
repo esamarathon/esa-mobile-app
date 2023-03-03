@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {styled} from '@mui/material/styles';
 import {IRun, IParsedGame} from '../services/ScheduleService';
-import {HeartIcon} from '../assets/Icons';
+import {ChevronRight, HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {formatPlayers} from '../services/PlayersService';
 import EstimateParser from './common/EstimateParser';
@@ -91,6 +91,22 @@ const InnerExpander = styled('div')`
   }
 `;
 
+interface ChevronProps {
+  expanded: boolean;
+}
+
+const StyledChevron = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'expanded',
+})<ChevronProps>(({expanded}) => ({
+  position: 'absolute',
+  right: '20px',
+  bottom: '8px',
+  svg: {
+    transform: expanded ? 'rotate(-90deg)' : 'rotate(90deg)',
+    transition: 'transform .1s ease-in-out',
+  },
+}));
+
 interface IProps {
   run: IRun;
   bookmarked: boolean;
@@ -121,12 +137,10 @@ function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
     setExpanded(!expanded);
   }
 
-  console.log(run.parsedGame);
-
   return (
     <Card>
       <Date>{date}</Date>
-      <Content onClick={expandToggle}>
+      <Content>
         {run.parsedGame ? <Game>{run.parsedGame.name}</Game> : <Game>{run.game}</Game>}
         <Runner>{formatPlayers(run.players)}</Runner>
         {run.id ? (
@@ -134,6 +148,9 @@ function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
             {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
           </HeartButton>
         ) : null}
+        <StyledChevron onClick={expandToggle} expanded={expanded}>
+          <ChevronRight />
+        </StyledChevron>
         {expanded ? (
           <Expanded>
             <Expander />

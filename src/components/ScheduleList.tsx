@@ -24,6 +24,11 @@ const DayTitle = styled('div')(
 `,
 );
 
+const IndentCards = styled('div')`
+  margin-top: 12px;
+  padding: 0 12px;
+`;
+
 function transformGroups(schedule: IProps['schedule']) {
   const groupsCount = schedule.map((runs) => runs[1].length);
   const runs = schedule.flatMap((runs) => runs[1]);
@@ -67,11 +72,13 @@ function ScheduleList({scrollToDate, schedule}: IProps) {
           </DayTitle>
         )}
         itemContent={(index) => (
-          <ScheduleCard
-            run={runs[index]}
-            bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
-            onBookmark={() => runs[index].id && onBookmark(runs[index])}
-          />
+          <IndentCards>
+            <ScheduleCard
+              run={runs[index]}
+              bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
+              onBookmark={() => runs[index].id && onBookmark(runs[index])}
+            />
+          </IndentCards>
         )}
       />
     </List>

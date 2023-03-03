@@ -1,11 +1,10 @@
 import React from 'react';
 import {styled} from '@mui/material/styles';
-import {MenuIcon} from '../assets/Icons';
 
 const StyledToolbar = styled('div', {
   shouldForwardProp: (prop) => prop !== 'centered',
 })<{centered?: boolean}>(({theme, centered}) => ({
-  backgroundColor: centered ? 'center' : 'left',
+  textAlign: centered ? 'center' : 'left',
   padding: theme.spacing(1),
 }));
 
@@ -26,7 +25,7 @@ interface IProps {
 
 function Toolbar({children, centered = false}: IProps) {
   return (
-    <StyledToolbar centered>
+    <StyledToolbar centered={centered}>
       <MenuTitle>{children}</MenuTitle>
     </StyledToolbar>
   );

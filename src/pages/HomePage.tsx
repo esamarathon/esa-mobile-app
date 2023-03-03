@@ -2,22 +2,14 @@ import React, {Fragment, useContext, useEffect} from 'react';
 import {App, BackButtonListener} from '@capacitor/app';
 import {styled} from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
-import {animated} from 'react-spring';
-import useSWR from 'swr';
-import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import {IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
+import {useQuery} from 'react-query';
+import {IRun, IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
 import ScheduleCard from '../components/ScheduleCard';
-import HeaderMetaRow from '../components/HeaderMetaRow';
-import Logo from '../assets/Logo';
-import {ChevronRight, LocationIcon} from '../assets/Icons';
+import {ChevronRight} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
-import {
-  StyledHeaderFull,
-  StyledHeaderSmall,
-  StyledHeaderWrapper,
-} from '../components/common/HeaderBar';
+import {StyledHeaderSmall, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
 
 import {BookmarkContext, IBookmarkContext} from '../App';
@@ -89,17 +81,14 @@ interface IProps {
 }
 
 function HomePage({event}: IProps) {
+  const encodedUrl = encodeURIComponent(event.meta.horaro);
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
-  const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}` : null,
-    (path: string) => loadFromHoraro<IUpcomingResponse>(path),
+  const {data, error, status} = useQuery([`upcoming/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
+    loadFromHoraro<IUpcomingResponse>(`upcoming/${encodedUrl}`),
   );
+
   const {animatedValue, bind, stops} = useHomePageGesture();
   const location = useLocation();
-
-  const eventIsOver = dayjs().isAfter(event.endDate);
-  const liveNow = data?.data?.[0];
-  const upNext = data?.data?.slice(1);
 
   useEffect(() => {
     function onBackButton(event: any) {
@@ -118,6 +107,45 @@ function HomePage({event}: IProps) {
     };
   });
 
+  if (status === 'loading') {
+    return (
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <p>Validating</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <ScheduleList>
+        <p>Could not fetch scheduled runs</p>
+      </ScheduleList>
+    );
+  }
+
+  if (!data) {
+    return (
+      <ScheduleList>
+        <p>No runs scheduled yet. Stay tuned!</p>
+      </ScheduleList>
+    );
+  }
+
+  const eventIsOver = dayjs().isAfter(event.endDate);
+  const liveNow = data?.data?.[0];
+  const upNext = data?.data?.slice(1);
+
+  if (eventIsOver) {
+    return <p>The event is over Sadge</p>;
+  }
+
   return (
     <Fragment>
       <StyledHeaderWrapper>
@@ -130,59 +158,38 @@ function HomePage({event}: IProps) {
       </StyledHeaderWrapper>
 
       <Content>
-        {isValidating ? (
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <p>Validating</p>
-          </div>
-        ) : error ? (
-          <ScheduleList>
-            <p>Could not fetch scheduled runs</p>
-          </ScheduleList>
-        ) : !data ? (
-          <ScheduleList>
-            <p>No runs scheduled yet. Stay tuned!</p>
-          </ScheduleList>
-        ) : (
-          <React.Fragment>
-            {liveNow ? (
-              <React.Fragment>
-                <PageHeaderContainer>
-                  <Title>Live Now</Title>
-                </PageHeaderContainer>
-                <ScheduleList>
-                  <LiveNow run={liveNow} />
-                </ScheduleList>
-              </React.Fragment>
-            ) : null}
-            {upNext ? (
-              <React.Fragment>
-                <PageHeaderContainer>
-                  <Title>Up Next</Title>
-                  <StyledLink to="/schedule">
-                    Schedule <ChevronRight />
-                  </StyledLink>
-                </PageHeaderContainer>
-                <ScheduleList>
-                  {upNext.map((run) => (
-                    <ScheduleCard
-                      key={run.scheduled + run.players.join('')}
-                      run={run}
-                      bookmarked={!!run.id && bookmarks.has(run.id)}
-                      onBookmark={() => onBookmark(run)}
-                    />
-                  ))}
-                </ScheduleList>
-              </React.Fragment>
-            ) : null}
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {liveNow ? (
+            <React.Fragment>
+              <PageHeaderContainer>
+                <Title>Live Now</Title>
+              </PageHeaderContainer>
+              <ScheduleList>
+                <LiveNow run={liveNow} />
+              </ScheduleList>
+            </React.Fragment>
+          ) : null}
+          {upNext ? (
+            <React.Fragment>
+              <PageHeaderContainer>
+                <Title>Up Next</Title>
+                <StyledLink to="/schedule">
+                  Schedule <ChevronRight />
+                </StyledLink>
+              </PageHeaderContainer>
+              <ScheduleList>
+                {upNext.map((run: IRun) => (
+                  <ScheduleCard
+                    key={run.scheduled + run.players.join('')}
+                    run={run}
+                    bookmarked={!!run.id && bookmarks.has(run.id)}
+                    onBookmark={() => onBookmark(run)}
+                  />
+                ))}
+              </ScheduleList>
+            </React.Fragment>
+          ) : null}
+        </React.Fragment>
       </Content>
     </Fragment>
   );
