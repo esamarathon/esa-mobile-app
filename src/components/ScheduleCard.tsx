@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
-import {IRun} from '../services/ScheduleService';
-import {HeartIcon} from '../assets/Icons';
+import {styled} from '@mui/material/styles';
+import {IRun, IParsedGame} from '../services/ScheduleService';
+import {ChevronRight, HeartIcon} from '../assets/Icons';
 import dayjs from 'dayjs';
 import {formatPlayers} from '../services/PlayersService';
 import EstimateParser from './common/EstimateParser';
 
-const Card = styled.li`
+const Card = styled('li')`
   position: relative;
   margin-right: 4px;
   list-style-type: none;
@@ -19,22 +19,12 @@ const Card = styled.li`
   overflow: hidden;
 `;
 
-// const Header = styled.div`
-//   background: var(--ion-color-primary);
-//   color: var(--ion-color-secondary);
-//   padding: 5px 0;
-//   font-weight: 600;
-//   font-size: 12px;
-//   text-align: center;
-// `;
-
-const Content = styled.div`
+const Content = styled('div')`
   font-size: 14px;
 `;
 
-const Game = styled.p`
+const Game = styled('p')`
   font-size: 16px;
-  font-family: 'Titillium Web', sans-serif;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -43,22 +33,24 @@ const Game = styled.p`
   margin: 0;
 `;
 
-const Runner = styled.div`
+const Runner = styled('div')`
   color: #979797;
   margin: 0;
 `;
 
-const Date = styled.div`
+const Date = styled('div')(
+  ({theme}) => `
   display: inline-block;
   font-size: 10px;
   color: #fff;
   text-align: center;
-  background-color: ${(props) => props.theme.secondaryColor};
+  background-color: ${theme.palette.secondary.main};
   padding: 4px 7px;
   border-radius: 3px;
-`;
+`,
+);
 
-const HeartButton = styled.button`
+const HeartButton = styled('button')`
   position: absolute;
   right: 12px;
   top: 8px;
@@ -74,23 +66,24 @@ const HeartSymbol = styled(HeartIcon)`
   stroke: #979797;
 `;
 
-const HeartSymbolLiked = styled(HeartIcon)`
-  color: #ffbd17;
+const HeartSymbolLiked = styled(HeartIcon)(
+  ({theme}) => `
+  color: ${theme.palette.primary.main};
   stroke: none;
-`;
+`,
+);
 
-const Expanded = styled.div``;
+const Expanded = styled('div')``;
 
-const Expander = styled.div`
+const Expander = styled('div')`
   border-top: 1px solid #dadada;
   margin: 6px 0;
 `;
 
-const InnerExpander = styled.div`
+const InnerExpander = styled('div')`
   display: flex;
   p {
     margin: 0 8px 0 0;
-    font-family: Titillium Web;
     font-style: normal;
     font-weight: normal;
     font-size: 10px;
@@ -98,31 +91,66 @@ const InnerExpander = styled.div`
   }
 `;
 
+interface ChevronProps {
+  expanded: boolean;
+}
+
+const StyledChevron = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'expanded',
+})<ChevronProps>(({expanded}) => ({
+  position: 'absolute',
+  right: '20px',
+  bottom: '8px',
+  svg: {
+    transform: expanded ? 'rotate(-90deg)' : 'rotate(90deg)',
+    transition: 'transform .1s ease-in-out',
+  },
+}));
+
 interface IProps {
   run: IRun;
   bookmarked: boolean;
   onBookmark: (run: IRun) => void;
 }
 
+function parseGame(game: string): IParsedGame | undefined {
+  const regex = /\[(.*?)\]\((.*?)\)/gm;
+  const regexResult = [...game.matchAll(regex)];
+
+  if (regexResult.length > 0) {
+    const result = regexResult[0];
+
+    return {
+      name: result[1],
+      highlightUrl: result[2],
+    };
+  }
+}
+
 function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
   const [expanded, setExpanded] = useState(false);
   const date = dayjs(run.scheduled).format('H:mm A').toUpperCase();
 
-  async function expandToggle(state: boolean) {
-    setExpanded((state = !expanded));
+  run.parsedGame = parseGame(run.game as string);
+
+  function expandToggle() {
+    setExpanded(!expanded);
   }
 
   return (
-    <Card onClick={() => expandToggle(expanded)}>
+    <Card>
       <Date>{date}</Date>
       <Content>
-        <Game>{run.game}</Game>
+        {run.parsedGame ? <Game>{run.parsedGame.name}</Game> : <Game>{run.game}</Game>}
         <Runner>{formatPlayers(run.players)}</Runner>
         {run.id ? (
           <HeartButton onClick={() => onBookmark(run)}>
             {bookmarked ? <HeartSymbolLiked /> : <HeartSymbol />}
           </HeartButton>
         ) : null}
+        <StyledChevron onClick={expandToggle} expanded={expanded}>
+          <ChevronRight />
+        </StyledChevron>
         {expanded ? (
           <Expanded>
             <Expander />
@@ -131,6 +159,9 @@ function ScheduleCard({run, bookmarked, onBookmark}: IProps) {
                 <EstimateParser seconds={run.length} />
               </p>
               <p>{run.category}</p>
+              <p>
+                <a href={run.parsedGame?.highlightUrl}>Twitch Highlight</a>
+              </p>
             </InnerExpander>
           </Expanded>
         ) : null}

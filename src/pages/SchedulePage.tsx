@@ -1,20 +1,16 @@
-import React, {useMemo, useState} from 'react';
-import {IonContent, IonPage, IonSpinner} from '@ionic/react';
-import {RouteComponentProps} from 'react-router';
+import React, {useMemo, useState, Fragment} from 'react';
 import Toolbar from '../components/Toolbar';
-import {StyledHeader, StyledHeaderWrapper} from '../components/common/HeaderBar';
-import styled from 'styled-components';
-import useSWR from 'swr';
+import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
+import {styled} from '@mui/material/styles';
 import {IScheduleResponse, loadFromHoraro} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleList from '../components/ScheduleList';
 import dayjs from 'dayjs';
+import {useQuery} from 'react-query';
 
-const Content = styled(IonContent)`
-  background-color: var(--ion-background);
-`;
+const Content = styled('div')``;
 
-const DayScroller = styled.ul`
+const DayScroller = styled('ul')`
   display: flex;
   flex-wrap: nowrap;
   overflow-y: scroll;
@@ -24,14 +20,14 @@ const DayScroller = styled.ul`
   margin: 0 15px;
 `;
 
-const ScrollItem = styled.li`
+const ScrollItem = styled('li')`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 5px 15px;
 `;
 
-const ScrollLink = styled.button`
+const ScrollLink = styled('button')`
   text-decoration: none;
   background: transparent;
   outline: none;
@@ -39,9 +35,10 @@ const ScrollLink = styled.button`
   margin: 0;
   color: #fff;
   font-size: 12px;
+  border: none;
 `;
 
-const ScrollBorder = styled.span`
+const ScrollBorder = styled('span')`
   width: 130%;
   border-radius: 3px;
   height: 3px;
@@ -49,7 +46,7 @@ const ScrollBorder = styled.span`
   margin-top: 4px;
 `;
 
-const ErrorMessage = styled.span`
+const ErrorMessage = styled('span')`
   display: block;
   margin-top: 60px;
   padding: 0 15px;
@@ -59,19 +56,20 @@ interface IProps {
   event: IEvent;
 }
 
-function SchedulePage({event}: IProps & RouteComponentProps) {
-  const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `schedule/${encodeURIComponent(event.meta.horaro)}` : null,
-    (path: string) => loadFromHoraro<IScheduleResponse>(path),
+function SchedulePage({event}: IProps) {
+  const encodedUrl = encodeURIComponent(event.meta.horaro);
+  const {data, error, status} = useQuery([`schedule/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
+    loadFromHoraro<IScheduleResponse>(`schedule/${encodedUrl}`),
   );
+
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);
   const [scrollToDate, setScrollToDate] = useState<string>();
 
   return (
-    <IonPage>
+    <Fragment>
       <StyledHeaderWrapper>
-        <StyledHeader>
-          <Toolbar opaque>Schedule</Toolbar>
+        <StyledHeaderFull>
+          <Toolbar centered={true}>Schedule</Toolbar>
           {schedule.length === 0 ? null : (
             <DayScroller>
               {schedule.map(([date]) => (
@@ -84,20 +82,22 @@ function SchedulePage({event}: IProps & RouteComponentProps) {
               ))}
             </DayScroller>
           )}
-        </StyledHeader>
+        </StyledHeaderFull>
       </StyledHeaderWrapper>
       <Content>
-        {isValidating ? (
-          <IonSpinner />
+        {status === 'loading' ? (
+          <p>We be loading</p>
         ) : error ? (
           <ErrorMessage>Failed to get scheduled runs</ErrorMessage>
         ) : schedule.length === 0 ? (
           <ErrorMessage>No runs scheduled yet. Stay tuned!</ErrorMessage>
         ) : (
-          <ScheduleList scrollToDate={scrollToDate} schedule={schedule} />
+          <Fragment>
+            <ScheduleList scrollToDate={scrollToDate} schedule={schedule} />
+          </Fragment>
         )}
       </Content>
-    </IonPage>
+    </Fragment>
   );
 }
 

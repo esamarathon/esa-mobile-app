@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import demoImg from '../assets/NowPlayingDemo.png';
 import {IRun} from '../services/ScheduleService';
 import {formatPlayers} from '../services/PlayersService';
 
-const LiveCard = styled.div`
+const LiveCard = styled('div')`
   position: relative;
   border-radius: 10px;
   overflow: hidden;
@@ -16,7 +16,7 @@ const LiveCard = styled.div`
   margin-bottom: 12px;
 `;
 
-const Title = styled.h3`
+const Title = styled('h3')`
   position: relative;
   z-index: 2;
   color: #fff;
@@ -27,7 +27,7 @@ const Title = styled.h3`
   margin: 0;
 `;
 
-const Runner = styled.p`
+const Runner = styled('p')`
   position: relative;
   z-index: 2;
   color: #fff;
@@ -37,7 +37,7 @@ const Runner = styled.p`
   margin: 0;
 `;
 
-const Image = styled.img`
+const Image = styled('img')`
   position: absolute;
   top: 0;
   left: 0;

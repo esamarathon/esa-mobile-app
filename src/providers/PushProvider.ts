@@ -1,7 +1,6 @@
-import {Plugins} from '@capacitor/core';
-const {LocalNotifications} = Plugins;
+import {LocalNotifications} from '@capacitor/local-notifications';
 
-export function cancelNotification(notificationId: string) {
+export function cancelNotification(notificationId: number) {
   return LocalNotifications.cancel({
     notifications: [{id: notificationId}],
   });
@@ -13,7 +12,7 @@ export function scheduleNotification(options: {title: string; body: string; sche
   let notificationId = 0;
   try {
     if (storedNotificationId !== null && storedNotificationId !== '') {
-      notificationId = parseInt(JSON.parse(storedNotificationId)) + 1;
+      notificationId = JSON.parse(storedNotificationId) + 1;
     }
   } catch (error) {
     console.warn('Invalid notification id stored, resetting to 0');

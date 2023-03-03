@@ -1,11 +1,9 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {Redirect, Route} from 'react-router-dom';
-import {ThemeProvider} from 'styled-components';
-import useSWR from 'swr';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {useQuery} from 'react-query';
 import dayjs from 'dayjs';
-import {IonApp, IonRouterOutlet, IonSplitPane} from '@ionic/react';
-import {IonReactRouter} from '@ionic/react-router';
-import {Plugins} from '@capacitor/core';
+import {SplashScreen} from '@capacitor/splash-screen';
 import {loadFromESASubmissions} from './services/EventService';
 import {IRun} from './services/ScheduleService';
 import {
@@ -25,24 +23,8 @@ import EventPickerPage from './pages/EventPickerPage';
 import SchedulePage from './pages/SchedulePage';
 import BookmarkPage from './pages/BookmarksPage';
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import './theme/variables.css';
+// Core CSS
+import './global.css';
 
 const Themes = {
   default: {
@@ -80,8 +62,9 @@ export interface IBookmarkContext {
 export const BookmarkContext = createContext<IBookmarkContext | null>(null);
 
 function App() {
-  const {error, data: events, isValidating} = useSWR('/events', loadFromESASubmissions);
+  const {error, data: events, status} = useQuery('/events', loadFromESASubmissions);
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
+  const [menuState, setMenuState] = useState(false);
   const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
     bookmarks: getBookmarks(),
     onBookmark,
@@ -117,10 +100,10 @@ function App() {
   }
 
   useEffect(() => {
-    Plugins.SplashScreen.hide();
+    SplashScreen.hide().then((r) => r);
   }, []);
 
-  if (isValidating) {
+  if (status === 'loading') {
     return <LoadingPage />;
   }
 
@@ -135,6 +118,7 @@ function App() {
   const selectedEvent = selectedEventID
     ? events.find((event) => event._id === selectedEventID)
     : undefined;
+
   if (!selectedEvent) {
     return <EventPickerPage events={events} onPickEvent={(event) => setSelectedEvent(event._id)} />;
   }
@@ -144,30 +128,50 @@ function App() {
     selectedEvent.meta.theme && selectedEvent.meta.theme in Themes
       ? selectedEvent.meta.theme
       : 'default';
-  const theme = Themes[selectedEvent.meta.theme];
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: Themes[selectedEvent.meta.theme].primaryColor,
+      },
+      secondary: {
+        main: Themes[selectedEvent.meta.theme].secondaryColor,
+      },
+      info: {
+        main: Themes[selectedEvent.meta.theme].accentColor,
+      },
+      warning: {
+        main: Themes[selectedEvent.meta.theme].shadowColor,
+      },
+      background: {
+        default: Themes[selectedEvent.meta.theme].primaryGradient,
+      },
+    },
+    typography: {
+      fontFamily: ['Titillium Web', 'sans-serif'].join(','),
+    },
+  });
+
+  function handleMenuState(newState: boolean) {
+    setMenuState(newState);
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <BookmarkContext.Provider value={bookmarkContext}>
-        <IonApp>
-          <IonReactRouter>
-            <IonSplitPane contentId="main">
-              <MenuBar event={selectedEvent} onClearEvent={() => setSelectedEvent(undefined)} />
-              <IonRouterOutlet id="main">
-                <Route
-                  path="/home"
-                  render={(props) => <HomePage {...props} event={selectedEvent} />}
-                />
-                <Route path="/bookmarks" render={(props) => <BookmarkPage {...props} />} />
-                <Route
-                  path="/schedule"
-                  render={(props) => <SchedulePage {...props} event={selectedEvent} />}
-                />
-                <Redirect from="/" to="/home" exact />
-              </IonRouterOutlet>
-            </IonSplitPane>
-          </IonReactRouter>
-        </IonApp>
+        <BrowserRouter>
+          <MenuBar
+            event={selectedEvent}
+            onClearEvent={() => setSelectedEvent(undefined)}
+            menuState={menuState}
+            handleMenuState={handleMenuState}
+          />
+          <Routes>
+            <Route path="/" element={<HomePage event={selectedEvent} />} />
+            <Route path="/bookmarks" element={<BookmarkPage />} />
+            <Route path="/schedule" element={<SchedulePage event={selectedEvent} />} />
+          </Routes>
+        </BrowserRouter>
       </BookmarkContext.Provider>
     </ThemeProvider>
   );

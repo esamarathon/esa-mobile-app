@@ -1,54 +1,54 @@
 import React from 'react';
-import {IonCard, IonCardContent, IonCardHeader, IonCol, IonGrid, IonRow} from '@ionic/react';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import {ChevronRight} from '../assets/Icons';
 
-const Card = styled(IonCard)`
-  --background: #f8f8f8;
-  --color: var(--ion-color-primary);
+const Card = styled('div')(
+  ({ theme }) => `
+  background: #f8f8f8;
+  color: ${theme.palette.primary.main};
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-top: 0;
   margin-bottom: 4px;
-`;
+`);
 
-const CardHeader = styled(IonCardHeader)`
+const CardHeader = styled('header')`
   padding-bottom: 12px;
   display: flex;
   justify-content: space-between;
   position: relative;
 `;
 
-const CardContent = styled(IonCardContent)`
+const CardContent = styled('div')`
   padding-top: 0;
   padding-bottom: 13px;
 `;
 
-const Title = styled.h2`
-  color: ${(props) => props.theme.secondaryColor};
-  font-family: 'Titillium Web', sans-serif;
+const Title = styled('h2')(
+  ({ theme }) => `
+  color: ${theme.palette.secondary.main};
   font-weight: 700;
   font-size: 12px;
   line-height: 18px;
   margin: 0;
-`;
+`);
 
-const Date = styled.p`
+const Date = styled('p')(
+  ({ theme }) => `
   position: absolute;
   top: 4px;
   right: 0;
   padding: 2px 8px;
   color: #fff;
   font-weight: bold;
-  background: var(--ion-color-secondary);
+  background: ${theme.palette.secondary.main};
   font-size: 12px;
-`;
+`);
 
-const Paragraph = styled.p`
+const Paragraph = styled('p')`
   font-size: 12px !important;
-  color: var(--ion-color-medium);
   margin: 0;
 `;
 
@@ -73,16 +73,16 @@ function AnnouncementCard({title, date, paragraph}: IProps) {
         <Date>{dateString}</Date>
       </CardHeader>
       <CardContent>
-        <IonGrid className="ion-no-padding">
-          <IonRow>
-            <IonCol className="ion-no-padding">
+        <div>
+          <div>
+            <div>
               <Paragraph>{paragraph}</Paragraph>
-            </IonCol>
-            <IonCol size="2" className="home-flex ion-align-items-center ion-justify-content-end">
+            </div>
+            <div>
               <Chevron />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

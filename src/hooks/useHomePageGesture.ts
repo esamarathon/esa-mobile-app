@@ -72,7 +72,7 @@ export function useHomePageGesture() {
   }));
 
   function toggleDrawer() {
-    const isClosed = value.getValue() === stops[0];
+    const isClosed = value.animation.to === stops[0];
 
     set(
       {
@@ -86,7 +86,7 @@ export function useHomePageGesture() {
 
   const bind = useDrag(
     ({vxvy: [, velocityY], movement: [movementX, movementY], last, memo, event}) => {
-      if (event) {
+      if (event.target) {
         if (event.target.toString().startsWith('http')) {
           return;
         }
@@ -107,12 +107,12 @@ export function useHomePageGesture() {
           return memo;
         }
 
-        memo = (value.getValue() as number) - movementY;
+        memo = (value.animation.to as number) - movementY;
       }
 
       // On drag end
       if (last) {
-        const projectedEndpoint = (value.getValue() as number) + projection(velocityY);
+        const projectedEndpoint = (value.animation.to as number) + projection(velocityY);
         const point = findNearestNumberInArray(projectedEndpoint, stops);
 
         set(

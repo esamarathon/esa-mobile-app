@@ -6,6 +6,6 @@
   "semi": true,
   "arrowParens": "always",
   "bracketSpacing": false,
-  "endOfLine": "lf", 
+  "endOfLine": "auto",
   "parser": "typescript"
 }

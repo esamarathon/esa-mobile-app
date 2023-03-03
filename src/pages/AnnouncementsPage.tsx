@@ -1,12 +1,10 @@
 import React from 'react';
-import {IonPage} from '@ionic/react';
-import {RouteComponentProps} from 'react-router';
 
-function AnnouncementsPage(_: RouteComponentProps) {
+function AnnouncementsPage() {
   return (
-    <IonPage>
+    <div>
       <p>Announcements</p>
-    </IonPage>
+    </div>
   );
 }
 

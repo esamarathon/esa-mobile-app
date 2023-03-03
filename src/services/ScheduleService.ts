@@ -28,6 +28,12 @@ export interface IRun {
   layout: string | null;
   info: string | null;
   id: string;
+  parsedGame?: IParsedGame | string;
+}
+
+export interface IParsedGame {
+  name: string;
+  highlightUrl: string;
 }
 
 export interface IUpcomingResponse {
@@ -47,7 +53,6 @@ const baseUrl = 'https://app.esamarathon.dev/horaro-proxy/v1/esa';
 export async function loadFromHoraro<T extends IScheduleResponse | IUpcomingResponse>(
   horaroEvent: string,
 ): Promise<T> {
-  const path = horaroEvent.startsWith('/') ? horaroEvent.slice(1) : horaroEvent;
-  const response = await fetch(`${baseUrl}/${path}`);
+  const response = await fetch(`${baseUrl}/${horaroEvent}1`);
   return response.json();
 }

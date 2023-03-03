@@ -39,8 +39,7 @@ export interface IEvent {
 }
 
 const baseURL = 'https://api.submissions.esamarathon.com';
-export async function loadFromESASubmissions<T extends IEvent[]>(endpoint: string): Promise<T> {
-  const path = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  const response = await fetch(`${baseURL}/${path}`);
+export async function loadFromESASubmissions<T extends IEvent[]>(): Promise<T> {
+  const response = await fetch(`${baseURL}/events`);
   return response.json();
 }

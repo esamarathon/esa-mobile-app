@@ -1,17 +1,15 @@
 import React, {useContext} from 'react';
-import {IonContent, IonPage} from '@ionic/react';
-import {RouteComponentProps} from 'react-router';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 import {StyledHeaderWrapper, StyledHeaderSmall} from '../components/common/HeaderBar';
 import Toolbar from '../components/Toolbar';
 import ScheduleCard from '../components/ScheduleCard';
 import {BookmarkContext, IBookmarkContext} from '../App';
 
-const Content = styled(IonContent)`
+const Content = styled('div')`
   background-color: var(--ion-background);
 `;
 
-const ScheduleList = styled.ul`
+const ScheduleList = styled('ul')`
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -19,14 +17,14 @@ const ScheduleList = styled.ul`
   overflow-x: scroll;
 `;
 
-function BookmarkPage(_: RouteComponentProps) {
+function BookmarkPage() {
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
 
   return (
-    <IonPage>
+    <div>
       <StyledHeaderWrapper>
         <StyledHeaderSmall>
-          <Toolbar opaque>My Bookmarks</Toolbar>
+          <Toolbar>My Bookmarks</Toolbar>
         </StyledHeaderSmall>
       </StyledHeaderWrapper>
       <Content>
@@ -45,7 +43,7 @@ function BookmarkPage(_: RouteComponentProps) {
           )}
         </ScheduleList>
       </Content>
-    </IonPage>
+    </div>
   );
 }
 

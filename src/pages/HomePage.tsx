@@ -1,33 +1,24 @@
-import React, {useContext, useEffect} from 'react';
-import {IonContent, IonPage, IonRow, IonCol, IonGrid, IonSpinner} from '@ionic/react';
-import {BackButtonEvent} from '@ionic/core';
-import styled from 'styled-components';
-import {Link, RouteComponentProps, useLocation} from 'react-router-dom';
-import {animated} from 'react-spring';
-import useSWR from 'swr';
-import {longDateRange, shortDateRange} from '../services/DateFormatService';
-import {IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
-import {useHomePageGesture} from '../hooks/useHomePageGesture';
+import React, {Fragment, useContext, useEffect} from 'react';
+import {App, BackButtonListener} from '@capacitor/app';
+import {styled} from '@mui/material/styles';
+import {Link, useLocation} from 'react-router-dom';
+import {useQuery} from 'react-query';
+import {IRun, IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
 import ScheduleCard from '../components/ScheduleCard';
-import HeaderMetaRow from '../components/HeaderMetaRow';
-import Logo from '../assets/Logo';
-import {ChevronRight, LocationIcon} from '../assets/Icons';
+import {ChevronRight} from '../assets/Icons';
 import {IEvent} from '../services/EventService';
 import Toolbar from '../components/Toolbar';
 import LiveNow from '../components/LiveNow';
-import {StyledHeaderFull, StyledHeaderWrapper} from '../components/common/HeaderBar';
+import {StyledHeaderSmall, StyledHeaderWrapper} from '../components/common/HeaderBar';
 import dayjs from 'dayjs';
-import {Plugins} from '@capacitor/core';
+
 import {BookmarkContext, IBookmarkContext} from '../App';
+import {Grid} from '@mui/material';
+import {useHomePageGesture} from '../hooks/useHomePageGesture';
 
-const {App} = Plugins;
+const Content = styled('div')``;
 
-const Content = styled(IonContent)`
-  background-color: var(--ion-background);
-`;
-
-const Title = styled.h2`
-  font-family: 'Titillium Web', sans-serif;
+const Title = styled('h2')`
   font-size: 16px;
   font-weight: 600;
   margin: 0;
@@ -51,7 +42,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const StyledExpander = styled.button`
+const StyledExpander = styled('button')`
   position: absolute;
   transform: translateX(-50%);
   left: 50%;
@@ -61,7 +52,7 @@ const StyledExpander = styled.button`
   background: var(--ion-color-light);
 `;
 
-const ScheduleList = styled.ul`
+const ScheduleList = styled('ul')`
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -69,64 +60,38 @@ const ScheduleList = styled.ul`
   overflow-x: scroll;
 `;
 
-const PageHeaderContainer = styled.div`
+const PageHeaderContainer = styled('div')`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 10px 20px 5px;
 `;
 
-const HeaderTitle = styled.h2`
-  font-family: Titillium Web, sans-serif;
+const HeaderTitle = styled('h2')`
   font-size: 24px;
+  text-align: center;
   font-weight: 700;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   color: #fff;
   margin: 0;
 `;
 
-const Paragraph = styled.p`
-  font-size: 14px;
-  margin: 0 0 0 15px;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const StyledLogo = styled(Logo)`
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
-`;
-
-const ShortDate = styled.div`
-  color: #fff;
-  font-size: 14px;
-  text-align: center;
-  padding: 0 5px;
-  font-weight: 700;
-  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const SomeDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface IProps {
   event: IEvent;
 }
 
-function HomePage({event}: IProps & RouteComponentProps) {
+function HomePage({event}: IProps) {
+  const encodedUrl = encodeURIComponent(event.meta.horaro);
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
-  const {data, error, isValidating} = useSWR(
-    event.meta.horaro ? `upcoming/${encodeURIComponent(event.meta.horaro)}?amount=5` : null,
-    (path: string) => loadFromHoraro<IUpcomingResponse>(path),
+  const {data, error, status} = useQuery([`upcoming/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
+    loadFromHoraro<IUpcomingResponse>(`upcoming/${encodedUrl}`),
   );
+
   const {animatedValue, bind, stops} = useHomePageGesture();
   const location = useLocation();
 
-  const eventIsOver = dayjs().isAfter(event.endDate);
-  const liveNow = data?.data?.[0];
-  const upNext = data?.data?.slice(1);
-
   useEffect(() => {
-    function onBackButton(event: BackButtonEvent) {
+    function onBackButton(event: any) {
       event.detail.register(-1, () => {
         const path = location.pathname;
         if (path === '/home') {
@@ -135,150 +100,98 @@ function HomePage({event}: IProps & RouteComponentProps) {
       });
     }
 
-    document.addEventListener('ionBackButton', onBackButton as EventListener);
+    App.addListener('backButton', onBackButton as BackButtonListener);
 
     return () => {
-      document.removeEventListener('ionBackButton', onBackButton as EventListener);
+      App.addListener('backButton', onBackButton as BackButtonListener);
     };
   });
 
+  if (status === 'loading') {
+    return (
+      <div
+        style={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <p>Validating</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <ScheduleList>
+        <p>Could not fetch scheduled runs</p>
+      </ScheduleList>
+    );
+  }
+
+  if (!data) {
+    return (
+      <ScheduleList>
+        <p>No runs scheduled yet. Stay tuned!</p>
+      </ScheduleList>
+    );
+  }
+
+  const eventIsOver = dayjs().isAfter(event.endDate);
+  const liveNow = data?.data?.[0];
+  const upNext = data?.data?.slice(1);
+
+  if (eventIsOver) {
+    return <p>The event is over Sadge</p>;
+  }
+
   return (
-    <IonPage>
-      <StyledHeaderWrapper large>
-        <StyledHeaderFull
-          as={animated.div}
-          style={{
-            height: animatedValue.interpolate((x: number) => `${x}px`),
-          }}
-        >
-          <Toolbar opaque />
-          <IonGrid {...bind()}>
-            <animated.div
-              style={{
-                opacity: animatedValue.interpolate([stops[0], stops[1] / 2], [1, 0]),
-              }}
-            >
-              <IonRow>
-                <IonCol size="12" className="ion-text-center">
-                  <HeaderTitle>{event.name}</HeaderTitle>
-                </IonCol>
-                <IonCol size="12" className="ion-align-self-start ion-text-center">
-                  <SomeDiv>
-                    {event.meta.venue.country ? (
-                      <React.Fragment>
-                        <LocationIcon />
-                        <Paragraph>
-                          {event.meta.venue.city}, {event.meta.venue.country} |
-                        </Paragraph>
-                      </React.Fragment>
-                    ) : null}
-                    <ShortDate>{shortDateRange(event.startDate, event.endDate)}</ShortDate>
-                  </SomeDiv>
-                </IonCol>
-              </IonRow>
-            </animated.div>
-            <animated.div
-              style={{
-                opacity: animatedValue.interpolate(stops, [0, 1]),
-                transform: animatedValue.interpolate(
-                  (x: number) =>
-                    `translate3d(0, ${x <= stops[0] + 30 ? -1000 : x - stops[1] - 60}px, 0)`,
-                ),
-              }}
-            >
-              <IonRow>
-                <IonCol size="12" className="ion-align-self-start ion-text-center">
-                  <StyledLogo size={55} />
-                </IonCol>
-              </IonRow>
-              <HeaderMetaRow title="Date" content={longDateRange(event.startDate, event.endDate)} />
-              <HeaderMetaRow title="Cause" content={event.meta.cause.name} />
-              {event.meta.venue.country ? (
-                <HeaderMetaRow
-                  title="Location"
-                  content={`${event.meta.venue.name} in ${event.meta.venue.city}, ${event.meta.venue.country}`}
-                />
-              ) : null}
-              <HeaderMetaRow
-                title="Stream"
-                content={`twitch.tv/${event.meta.twitchChannel}`}
-                link
-              />
-              {/* <HeaderMetaList>
-                <HeaderLinks href="https://esamarathon.com/news/e7a9a8a5-658a-4eea-a2f9-5b178a812be4">
-                  Master Post
-                </HeaderLinks>
-                <HeaderLinks href="https://esamarathon.com/rules">Code of Conduct</HeaderLinks>
-                <HeaderLinks href="https://esamarathon.com/news/5ec16dac-492c-4fa3-9ac4-1bcf896aadbb">
-                  Attendee Guide
-                </HeaderLinks>
-              </HeaderMetaList> */}
-            </animated.div>
-          </IonGrid>
-          <StyledExpander />
-        </StyledHeaderFull>
+    <Fragment>
+      <StyledHeaderWrapper>
+        <StyledHeaderSmall>
+          <Toolbar />
+          <Grid item xs={12}>
+            <HeaderTitle>{event.name}</HeaderTitle>
+          </Grid>
+        </StyledHeaderSmall>
       </StyledHeaderWrapper>
 
       <Content>
-        {isValidating ? (
-          <div
-            style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <IonSpinner />
-          </div>
-        ) : error ? (
-          <ScheduleList>
-            <p>Could not fetch scheduled runs</p>
-          </ScheduleList>
-        ) : !data ? (
-          <ScheduleList>
-            <p>No runs scheduled yet. Stay tuned!</p>
-          </ScheduleList>
-        ) : eventIsOver ? (
-          <ScheduleList>
-            <p>Event is over</p>
-          </ScheduleList>
-        ) : (
-          <React.Fragment>
-            {liveNow ? (
-              <React.Fragment>
-                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-                  <Title>Live Now</Title>
-                </PageHeaderContainer>
-                <ScheduleList>
-                  <LiveNow run={liveNow} />
-                </ScheduleList>
-              </React.Fragment>
-            ) : null}
-            {upNext ? (
-              <React.Fragment>
-                <PageHeaderContainer className="ion-align-items-center ion-justify-content-between">
-                  <Title>Up Next</Title>
-                  <StyledLink to="schedule">
-                    Schedule <ChevronRight />
-                  </StyledLink>
-                </PageHeaderContainer>
-                <ScheduleList>
-                  {upNext.map((run) => (
-                    <ScheduleCard
-                      key={run.scheduled + run.players.join('')}
-                      run={run}
-                      bookmarked={!!run.id && bookmarks.has(run.id)}
-                      onBookmark={() => onBookmark(run)}
-                    />
-                  ))}
-                </ScheduleList>
-              </React.Fragment>
-            ) : null}
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {liveNow ? (
+            <React.Fragment>
+              <PageHeaderContainer>
+                <Title>Live Now</Title>
+              </PageHeaderContainer>
+              <ScheduleList>
+                <LiveNow run={liveNow} />
+              </ScheduleList>
+            </React.Fragment>
+          ) : null}
+          {upNext ? (
+            <React.Fragment>
+              <PageHeaderContainer>
+                <Title>Up Next</Title>
+                <StyledLink to="/schedule">
+                  Schedule <ChevronRight />
+                </StyledLink>
+              </PageHeaderContainer>
+              <ScheduleList>
+                {upNext.map((run: IRun) => (
+                  <ScheduleCard
+                    key={run.scheduled + run.players.join('')}
+                    run={run}
+                    bookmarked={!!run.id && bookmarks.has(run.id)}
+                    onBookmark={() => onBookmark(run)}
+                  />
+                ))}
+              </ScheduleList>
+            </React.Fragment>
+          ) : null}
+        </React.Fragment>
       </Content>
-    </IonPage>
+    </Fragment>
   );
 }
 

@@ -1,27 +1,32 @@
 import React, {useContext, useEffect, useMemo, useRef} from 'react';
-import styled from 'styled-components';
+import {styled} from '@mui/material/styles';
 import dayjs from 'dayjs';
 import {GroupedVirtuoso, GroupedVirtuosoHandle} from 'react-virtuoso';
 import ScheduleCard from './ScheduleCard';
 import {IRun} from '../services/ScheduleService';
 import {BookmarkContext, IBookmarkContext} from '../App';
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin: 20px 0 0;
-  padding: 0 20px 0;
-  overflow-x: scroll;
+const List = styled('div')`
+  margin-top: 24px;
+  height: calc(100vh - 150px);
 `;
 
-const DayTitle = styled.p`
+const DayTitle = styled('div')(
+  ({theme}) => `
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: #fff;
+  padding: 12px;
   font-weight: 600;
   font-size: 16px;
-  padding-top: 60px;
-  padding-bottom: 30px;
-  background: #e4e4e4;
+  background: linear-gradient(0deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%);
   margin: 0;
+`,
+);
+
+const IndentCards = styled('div')`
+  margin-top: 12px;
+  padding: 0 12px;
 `;
 
 function transformGroups(schedule: IProps['schedule']) {
@@ -67,11 +72,13 @@ function ScheduleList({scrollToDate, schedule}: IProps) {
           </DayTitle>
         )}
         itemContent={(index) => (
-          <ScheduleCard
-            run={runs[index]}
-            bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
-            onBookmark={() => runs[index].id && onBookmark(runs[index])}
-          />
+          <IndentCards>
+            <ScheduleCard
+              run={runs[index]}
+              bookmarked={!!runs[index].id && bookmarks.has(runs[index].id)}
+              onBookmark={() => runs[index].id && onBookmark(runs[index])}
+            />
+          </IndentCards>
         )}
       />
     </List>
