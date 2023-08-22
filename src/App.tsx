@@ -1,7 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import {SplashScreen} from '@capacitor/splash-screen';
 import {loadFromESASubmissions} from './services/EventService';
@@ -62,7 +62,8 @@ export interface IBookmarkContext {
 export const BookmarkContext = createContext<IBookmarkContext | null>(null);
 
 function App() {
-  const {error, data: events, status} = useQuery('/events', loadFromESASubmissions);
+  const {error, data: events, status} = useQuery({queryKey: ['events'], queryFn: loadFromESASubmissions});
+
   const [selectedEventID, setSelectedEvent] = usePersistent<string | undefined>('preferred_event');
   const [menuState, setMenuState] = useState(false);
   const [bookmarkContext, setBookmarkContext] = useState<IBookmarkContext>(() => ({
@@ -103,7 +104,7 @@ function App() {
     SplashScreen.hide().then((r) => r);
   }, []);
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return <LoadingPage />;
   }
 

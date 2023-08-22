@@ -2,7 +2,7 @@ import React, {Fragment, useContext, useEffect} from 'react';
 import {App, BackButtonListener} from '@capacitor/app';
 import {styled} from '@mui/material/styles';
 import {Link, useLocation} from 'react-router-dom';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 import {IRun, IUpcomingResponse, loadFromHoraro} from '../services/ScheduleService';
 import ScheduleCard from '../components/ScheduleCard';
 import {ChevronRight} from '../assets/Icons';
@@ -83,9 +83,10 @@ interface IProps {
 function HomePage({event}: IProps) {
   const encodedUrl = encodeURIComponent(event.meta.horaro);
   const {bookmarks, onBookmark} = useContext(BookmarkContext) as IBookmarkContext;
-  const {data, error, status} = useQuery([`upcoming/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
-    loadFromHoraro<IUpcomingResponse>(`upcoming/${encodedUrl}`),
-  );
+  const {data, error, status} = useQuery({
+    queryKey: [`upcoming/${encodedUrl}`, `upcoming/${encodedUrl}`],
+    queryFn: () => loadFromHoraro<IUpcomingResponse>(`upcoming/${encodedUrl}`)
+  });
 
   const {animatedValue, bind, stops} = useHomePageGesture();
   const location = useLocation();
@@ -107,7 +108,7 @@ function HomePage({event}: IProps) {
     };
   });
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <div
         style={{

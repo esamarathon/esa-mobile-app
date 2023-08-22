@@ -62,7 +62,7 @@ function EventPickerPage({events, onPickEvent}: IProps) {
             .filter(
               (event) =>
                 // uncomment next line for debugging old events
-                // true ||
+                true ||
                 dayjs(event.endDate).isAfter(dayjs()) && !blackListedEvents.has(event._id),
             )
             .map((event) => (

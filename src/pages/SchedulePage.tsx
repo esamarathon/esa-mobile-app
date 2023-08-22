@@ -6,7 +6,7 @@ import {IScheduleResponse, loadFromHoraro} from '../services/ScheduleService';
 import {IEvent} from '../services/EventService';
 import ScheduleList from '../components/ScheduleList';
 import dayjs from 'dayjs';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 
 const Content = styled('div')``;
 
@@ -58,9 +58,10 @@ interface IProps {
 
 function SchedulePage({event}: IProps) {
   const encodedUrl = encodeURIComponent(event.meta.horaro);
-  const {data, error, status} = useQuery([`schedule/${encodedUrl}`, `upcoming/${encodedUrl}`], () =>
-    loadFromHoraro<IScheduleResponse>(`schedule/${encodedUrl}`),
-  );
+  const {data, error, status} = useQuery({
+    queryKey: [`schedule/${encodedUrl}`, `upcoming/${encodedUrl}`],
+    queryFn: () => loadFromHoraro<IScheduleResponse>(`schedule/${encodedUrl}`)
+  });
 
   const schedule = useMemo(() => (data ? Object.entries(data.data) : []), [data]);
   const [scrollToDate, setScrollToDate] = useState<string>();
@@ -85,7 +86,7 @@ function SchedulePage({event}: IProps) {
         </StyledHeaderFull>
       </StyledHeaderWrapper>
       <Content>
-        {status === 'loading' ? (
+        {status === 'pending' ? (
           <p>We be loading</p>
         ) : error ? (
           <ErrorMessage>Failed to get scheduled runs</ErrorMessage>
